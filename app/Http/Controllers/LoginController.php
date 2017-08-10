@@ -14,8 +14,10 @@ class LoginController extends Controller
         return view('login');
     }
 
-    public function signup(){
-        return view('signup');
+    public function signin(){
+        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position')];
+        return view('admin.index', compact('return'));
+
     }
 
     public function login(Request $request){
@@ -48,7 +50,7 @@ class LoginController extends Controller
 	    	return redirect()->action('LoginController@index');
 	    }
 	    else{
-	    	return redirect()->action('WebController@index');
+	    	return redirect()->action('LoginController@signin');
 	    }
 
     }

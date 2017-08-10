@@ -32,23 +32,24 @@
                 </div>
             </div>
 
-            @if($return['position']==0)
+@if($return['position']==0)
                 @include('admin.aside_admin');
-            @elseif($return['position'==1])
+            @elseif($return['position']==1)
                 @include('admin.aside_pb');
-            @elseif($return['position_id'==2])
+            @elseif($return['position_id']==2)
                 @include('admin.aside_pb');
-            @elseif($return['position_id'==3])
+            @elseif($return['position_id']==3)
                 @include('admin.aside_admin');
-            @elseif($return['position_id'==4])
+            @elseif($return['position_id']==4)
                 @include('admin.aside_sec');
-            @elseif($return['position_id'==5])
+            @elseif($return['position_id']==5)
                 @include('admin.aside_desk');
-            @elseif($return['position_id'==6])
+            @elseif($return['position_id']==6)
                 @include('admin.aside_bpso');
-            @elseif($return['position_id'==7])
+            @elseif($return['position_id']==7)
                 @include('admin.aside_cashier');
             @endif
+            
 
             </aside>
 	<section class="content">

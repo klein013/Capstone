@@ -12,9 +12,10 @@
 */
 // Route::post('/login', 'LoginController@login');
 
-Route::get('/signup', 'LoginController@signup');
+Route::get('/signup', 'RegistrationController@create');
+Route::post('/signup_confirm', 'RegistrationController@store');
 
-Route::get('/index', 'WebController@index');
+Route::get('/index', 'LoginController@signin');
 Route::get('/indexcheck', 'LoginController@checkuser');
 Route::get('/', 'LoginController@index');
 Route::post('/login', 'LoginController@check');

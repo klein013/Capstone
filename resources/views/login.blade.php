@@ -8,7 +8,7 @@
     <div class="imgcontainer" style="text-align: center;margin: 0px;color:black;">
         <img src="{{asset('images/payatas.png')}}" alt="Avatar" class="avatar" style="width: 40%; border-radius: 50%;">
         <h1>BARANGAY PAYATAS</h1>
-        <h4>Blotter and Clearance Management Sytem</h4>
+        <h4>Blotter and Clearance Management System</h4>
         <hr>
       </div>
     <div class="login-box">
@@ -38,12 +38,18 @@
                             <center><span><h5 style="color:red;">Incorrect username or password</h5></span></center>
                         </div>
                     </div>
+                    <br>
                     <div class="row">
-                        <div class="col-md-6">
-                            <a href="{{URL('/signup')}}">Register Now!</a>
-                        </div>
+                        <div class="col-md-3"></div>
                         <div class="col-md-6">
                             <button class="btn btn-block bg-teal waves-effect" type="submit" id="Login">LOG IN</button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row clearfix">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-6">
+                            <a href="{{URL('/signup')}}">Register Now!</a>
                         </div>
                     </div>
                 </form>
