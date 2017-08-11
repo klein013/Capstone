@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Wed, 09 Aug 2017 16:04:41 +0000.
+ * Date: Fri, 11 Aug 2017 14:16:29 +0000.
  */
 
 namespace App\Models;
@@ -15,6 +15,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $clearance_id
  * @property string $clearance_type
  * @property string $clearance_desc
+ * @property string $clearance_content
  * @property int $clearance_price
  * @property bool $clearance_exists
  * 
@@ -38,6 +39,7 @@ class TblClearance extends Eloquent
 	protected $fillable = [
 		'clearance_type',
 		'clearance_desc',
+		'clearance_content',
 		'clearance_price',
 		'clearance_exists'
 	];

@@ -21,21 +21,25 @@
                         <span class="input-group-addon">
                             <i class="material-icons">person</i>
                         </span>
+                        <div class="form-group">
                         <div class="form-line">
                             <input type="text" class="form-control" id="username" name="username" placeholder="Username" required autofocus>
+                        </div>
                         </div>
                     </div>
                     <div class="input-group">
                         <span class="input-group-addon">
                             <i class="material-icons">lock</i>
                         </span>
+                        <div class="form-group">
                         <div class="form-line">
                             <input type="password" class="form-control" id="password" name= "password" placeholder="Password" required>
                         </div>
+                        </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12" id="error" style="display:none;">
-                            <center><span><h5 style="color:red;">Incorrect username or password</h5></span></center>
+                        <div class="col-md-12" style="display:none;">
+                            <center><span><h5 style="color:red;" id="error">Incorrect username or password</h5></span></center>
                         </div>
                     </div>
                     <br>

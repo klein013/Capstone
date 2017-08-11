@@ -29,11 +29,13 @@ class LoginController extends Controller
     	$user = DB::select('select official_username from tbl_officialuser where official_username = "'.$request->user.'"');
     	
     	if(!empty($user)){
+
     		$pass = DB::select('select o.official_id, p.position_id, concat(r.resident_fname," ",r.resident_lname) as name, r.resident_image from tbl_officialuser o join tbl_official p on o.official_id = p.official_id join tbl_resident r on r.resident_id = p.resident_id where o.official_password = SHA1("'.$request->pass.'") and o.official_username = "'.$request->user.'"');
     		if(!empty($pass)){                                                                                   
     			session(['position'=>$pass[0]->position_id]);
     			session(['name'=> $pass[0]->name]);
-    			session(['image', $pass[0]->resident_image]);
+    			session(['image'=> $pass[0]->resident_image]);
+                session(['official'=> $pass[0]->official_id]);
     			return response("success");
     		}
     		else{

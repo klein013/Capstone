@@ -14,17 +14,17 @@ class RegistrationController extends Controller
 
     public function store(Request $request){
 
-    	$exists = DB::select('select official_id from tbl_officialuser where official_id = '.$request->official);
+        $ifexists = DB::select('select official_id from tbl_official where official_id = '.$request->official.' and official_exists = 1');
 
-    	if(!empty($exists[0]->official_id)){
+    	if(empty($ifexists[0]->official_id)){
 
-    		return response("Official already registered");
+    		return response("Official not found");
     	}
     	else{
 
-    		$ifexists = DB::select('select official_id from tbl_official where official_id = '.$request->official);
+            $exists = DB::select('select official_id from tbl_officialuser where official_id = '.$request->official);
 
-    		if(!empty($ifexists[0]->official_id))
+    		if(empty($exists[0]->official_id))
     		{
     			$userexists = DB::select('select official_id from tbl_officialuser where official_username = "'.$request->user.'"');
 
@@ -44,7 +44,7 @@ class RegistrationController extends Controller
     			}
     		}
     		else{
-    			return response("Official can't be found");
+    			return response("Official already registered");
     		}
     	}
 

@@ -98,6 +98,7 @@ Route::get('/complaint_res', 'ComplaintController@com');
 Route::post('/complaint_process', 'ComplaintController@process');
 
 Route::get('/schedule', 'ScheduleController@create');
+Route::get('/getSchedule', 'ScheduleController@view');
 
 Route::get('/record', 'RecordController@create');
 Route::get('/records', 'RecordController@show');

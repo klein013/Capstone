@@ -108,6 +108,7 @@ class OfficialController extends Controller
     {
         DB::table('tbl_official')->where('official_id',$id)->update(['official_exists' => 0]);
         
+        DB::table('tbl_officialuser')->where('official_id','=',$id)->delete();
         return response("success");
     }
 

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use DB;
 use App\Models\TblPersoninvolve;
 use App\Models\TblCase;
+use App\Models\TblCaseallocation;
+use App\Models\TblHearing;
 use Response;
 use Session;
 
@@ -57,7 +59,7 @@ class ComplaintController extends Controller
 
         $case->case_caseskp = $request->case;
         $case->case_statement = $request->statement;
-        $case->case_status = $info->brgyinfo_case;
+        $case->case_status = $info[0]->brgyinfo_case;
         $case->case_exists = 1;
 
         $case->save();
@@ -85,56 +87,176 @@ class ComplaintController extends Controller
           $comp->save();
         
         }
-      }
+      
 
-        return response("success");
-
-        /*$involvenames = DB::select('select r.resident_mname, r.resident_lname, r.resident_street from tbl_resident r join tbl_personinvolve p on p.personinvolve_resident = r.resident_id join tbl_case c on c.case_id = p.personinvolve_case where c.case_id = '.$case->case_id);
+        $involvenames = DB::select('select r.resident_mname, r.resident_lname, r.resident_street from tbl_resident r join tbl_personinvolve p on p.personinvolve_resident = r.resident_id join tbl_case c on c.case_id = p.personinvolve_case where c.case_id = '.$case->case_id);
 
         $mnames = "";
         $lnames = "";
         $street = "";
 
-        if(!empty($involvenames->resident_mname)){
-          foreach ($involvenames->resident_mname as $name) {
-            $mnames += '"'.$name.'",';
+        if(!empty($involvenames)){
+          foreach ($involvenames as $name) {
+            if($name->resident_mname!=null){
+              $mnames .= '"'.$name->resident_mname.'",';
+            }
           }
-          substr($mnames, 0, -1);
+          if($mnames==""){
+            $mnames = rtrim($mnames, ",");
+          }
+
+          foreach ($involvenames as $name) {
+            if($name->resident_lname!=null){
+              $mnames .= '"'.$name->resident_lname.'",';
+            }
+          }
+          $mnames = rtrim($mnames, ",");
+
+          foreach ($involvenames as $name) {
+            $street .= '"'.$name->resident_street .'",';
+          }
+          $street = rtrim($street, ',');
         }
         else{
           $mnames = '""';
-        }
-
-        if(!empty($involvenames->resident_lname)){
-          foreach ($involvenames->resident_lname as $name) {
-            $lnames += '"'.$name.'",';
-          }
-          substr($lnames, 0, -1);
-        }
-        else{
           $lnames = '""';
-        }
-
-        if(!empty($involvenames->resident_street)){
-          foreach ($involvenames->resident_street as $name) {
-            $street += '"'.$name.'",';
-          }
-          substr($street, 0, -1);
-        }
-        else{
           $street = '""';
         }
-
         
-        if($info->brgyinfo_case=="Lupon"){
+        if($info[0]->brgyinfo_case=="Lupon"){
           $luponid = DB::select('select position_id from tbl_position where position_name = "Lupon"');
-          $lupon = DB::select('select o.official_id, concat(r.resident_fname," ",r.resident_mname," ",r.resident_lname) as name, r.resident_street from tbl_official o join tbl_resident r on r.resident_id = o.resident_id where o.position_id = '.$luponid->position_id. ' and o.official_exists = 1 and r.resident_mname in ('.$mnames.') or r.resident_lname not in ('.$lnames.') or r.resident_street not in ('.$street.') ');
-          if(!empty($lupon)){
-            $leastlupon = DB::select('select count()')
+          $lupons = DB::select('select o.official_id from tbl_official o join tbl_resident r on r.resident_id = o.resident_id where o.position_id = '.$luponid[0]->position_id. ' and o.official_exists = 1 and (r.resident_mname in ('.$mnames.') or r.resident_lname not in ('.$mnames.') or r.resident_street not in ('.$street.')) ');
+          if(!empty($lupons)){
+
+            $newlupons = "";
+
+            if($lupons > 1){
+              foreach($lupons as $lupon){
+                $newlupons .= $lupon->official_id.",";
+              }
+              $newlupons = rtrim($newlupons, ',');
+
+              $countcaseallocs = DB::select('select count(caseallocation_case) as number, caseallocation_official from tbl_caseallocation where caseallocation_official in ('.$newlupons.') group by caseallocation_official');
+
+              if(!empty($countcaseallocs)){
+                
+                $array1 = [];
+                $array2 = [];
+                foreach($countcaseallocs as $countcasealloc){
+                  array_push($array1, $countcasealloc->number) ;
+                  array_push($array2, $countcasealloc->caseallocation_official) ;
+                }
+
+                foreach($lupons as $newlupon){
+                  if(!in_array($newlupon->official_id, $array2)){
+                    array_push($array1, 0) ;
+                    array_push($array2, $newlupon->official_id);
+                    var_dump($newlupon->official_id);
+                  }
+                }
+
+                $min_value_key=array_keys($array1, min($array1));
+
+                $casealloc = new TblCaseallocation;
+
+                $casealloc->caseallocation_case = $case->case_id;
+                $casealloc->caseallocation_official = $array2[$min_value_key[0]];
+                $casealloc->save();
+              }
+              else{
+                $casealloc = new TblCaseallocation;
+
+                $casealloc->caseallocation_case = $case->case_id;
+                $casealloc->caseallocation_official = $lupons[0]->official_id;
+                $casealloc->save();
+              }
+
+            }
+            else{
+
+              $casealloc = new TblCaseallocation;
+
+              $casealloc->caseallocation_case = $case->case_id;
+              $casealloc->caseallocation_official = $lupons[0]->official_id;
+              $casealloc->save();
+
+            }
+
           }
           else{
             
           }
+
+          $brgytime = DB::select('select brgyinfo_opening, brgyinfo_closing from tbl_brgyinfo limit 1');
+
+          $open = strtotime($brgytime[0]->brgyinfo_opening);
+          $close = strtotime($brgytime[0]->brgyinfo_closing);
+
+          $hearing = DB::select('select h.hearing_sched from tbl_hearing h join tbl_caseallocation c on h.hearing_case = c.caseallocation_case where c.caseallocation_official = '.$casealloc->caseallocation_official.' and h.hearing_sched = curdate() + interval 3 day');
+
+          if(empty($hearing->hearing_sched)){
+
+            $newhearing = new TblHearing;
+
+            $heardate = date("Y-m-d", strtotime("+3 days"));
+            $heartime = date("H:i", strtotime('+30 minutes', $open));
+            $newhearing->hearing_case = $case->case_id;
+            $newhearing->hearing_sched = date('Y-m-d H:i:s', strtotime("$heardate $heartime"));
+            $newhearing->hearing_type = 1;
+            $newhearing->save();
+
+          }
+          else{
+
+            $heartime = "";
+            foreach($hearing as $hear){
+              $heardate = $hearing->hearing_sched;
+              $heardate->format('Y-m-d');
+              $time = $hearing->hearing_sched;
+              $time->format('H:i');
+            }
+
+            $newtime = date("H:i", strtotime('+240 minutes'), strtotime($time));
+            if(strtotime($newtime) <= strtotime('09:30')){
+              
+              $newhearing = new TblHearing;
+
+              $newhearing->hearing_case = $case->case_id;
+              $newhearing->hearing_sched = date('Y-m-d H:i:s', strtotime("$heardate $newtime"));
+              $newhearing->hearing_type = 1;
+              $newhearing->save();
+            }
+            else if(strtotime($newtime) <= $close){
+              
+              $newhearing = new TblHearing;
+
+              $newhearing->hearing_case = $casealloc->caseallocation_case;
+              $newhearing->hearing_sched = date('Y-m-d H:i:s', strtotime("$heardate $newtime"));
+              $newhearing->hearing_type = 1;
+              $newhearing->save();
+            }
+            else if(strtotime($newtime) > $close){
+
+              $newhearing = new TblHearing;
+
+              $date = date("Y-m-d", strtotime("+3 days"), strtotime($heardate));
+              $heartime = date("H:i", strtotime('+30 minutes', $open));
+              $newhearing->hearing_case = $casealloc->caseallocation_case;
+              $newhearing->hearing_sched = date('Y-m-d H:i:s', strtotime("$date $heartime"));
+              $newhearing->hearing_type = 1;
+              $newhearing->save();
+            }
+            else{
+
+              $newhearing = new TblHearing;
+
+              $newhearing->hearing_case = $casealloc->caseallocation_case;
+              $newhearing->hearing_sched = date('Y-m-d H:i:s', strtotime("$heardate $newtime"));
+              $newhearing->hearing_type = 1;
+              $newhearing->save();
+            }
+          }
+
         }
         else{
 
@@ -150,7 +272,7 @@ class ComplaintController extends Controller
       }
       else{
 
-      }*/
+      }
    }
 
 }

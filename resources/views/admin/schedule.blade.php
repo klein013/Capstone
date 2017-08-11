@@ -14,18 +14,14 @@
             <!-- User Info -->
             <div class="user-info">
                 <div class="image">
-                    <img src="../../images/human.png" width="48" height="48" alt="User" />
+                    <img src="../{{$return['image']}}" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$return['name']}}</div>
+                    <div class="email">Official ID: <strong id="sessionpos">{{$return['official']}}</strong></div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
-                            <li class="user-header">
-                            <div class="imgcontainer">
-                                <img src="../../{{$return['image']}}" alt="Avatar" class="avatar">
-                            </div>
-                            </li>
                             <li><a href="{{URL('/profile')}}"><i class="material-icons">person</i>Profile</a></li>
                             <li><a href="{{URL('/')}}"><i class="material-icons">input</i>Log Out</a></li>
                         </ul>
@@ -34,48 +30,52 @@
             </div>
 
        
-@if($return['position']==0)
+
+            @if($return['position']==0)
                 @include('admin.aside_admin');
             @elseif($return['position']==1)
                 @include('admin.aside_pb');
-            @elseif($return['position_id']==2)
+            @elseif($return['position']==2)
                 @include('admin.aside_pb');
-            @elseif($return['position_id']==3)
+            @elseif($return['position']==3)
                 @include('admin.aside_admin');
-            @elseif($return['position_id']==4)
+            @elseif($return['position']==4)
                 @include('admin.aside_sec');
-            @elseif($return['position_id']==5)
+            @elseif($return['position']==5)
                 @include('admin.aside_desk');
-            @elseif($return['position_id']==6)
+            @elseif($return['position']==6)
                 @include('admin.aside_bpso');
-            @elseif($return['position_id']==7)
+            @elseif($return['position']==7)
                 @include('admin.aside_cashier');
             @endif
             </aside>
 <section class="content">
-    <div class="container-fluid">
+    <div class="card">
+        <div class="container-fluid">
             <div class="header text-center">
-                        <div class="info-box bg-teal">
-                            <div class="content">
-                            <div class="text"><h1> SCHEDULE </h1></div>
-                            </div>
-                        </div>
+                <div class="info-box bg-teal">
+                    <div class="content">
+                        <div class="text"><h1> SCHEDULE </h1></div>
                     </div>
+                </div>
             </div>
+        </div>
 
 
-           
-     <div class="w3-container w3-center w3-light-grey">
-      <div class="w3-container">
-        <br>
-            <div class="col-md-12">
-              <div class="box box-primary">
-                <div class="box-body no-padding">
-                  <div id="calendar"></div>
-                </div><!-- /.box-body -->
-              </div><!-- /. box -->
-            </div><!-- /.col -->
-          </div><!-- /.row -->
+        <div class="row clearfix">
+        <div class="w3-container w3-center w3-light-grey">
+            <div class="w3-container">
+            <br>
+                <div class="col-md-12">
+                    <div class="box box-primary">
+                        <div class="box-body no-padding">
+                            <div id="calendar"></div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /. box -->
+                </div><!-- /.col -->
+            </div>
+            </div>
+        </div><!-- /.row -->
       </div><!-- /.content-wrapper -->
 
       <div class="row clearfix">
@@ -109,7 +109,7 @@
                 </div>
             </div>
 
-  </div>
+
 </section>
 <div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-lg" role="document">
@@ -259,11 +259,30 @@
 <script>
 
 $(document).ready(function(){
-    $('#calendar').fullCalendar({
+    var calendar = $('#calendar').fullCalendar({
         header : {
+            left: 'prev,next today'
         },
         selectable: true,
-        selectHelper: true,
+        selectHelper: true
+    });
+
+     $.ajax({
+        url: '/getSchedule',
+        method: 'GET',
+        dataType: 'json',
+        success: function(response){
+            var events = [];
+            $.each(response,function(index,value){
+                events.push({
+                    title : value.id+"/n"+value.case,
+                    start : moment(value.hearing_sched).format('YYYY-MM-DD hh:mm:ss'),
+                    end :  moment(value.hearing_sched).add(240, 'm'),
+                });
+            });
+            calendar.fullCalendar( 'addEventSource', events);
+            
+        }
     });
 
     $('#wizard_horizontal').steps({

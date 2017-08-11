@@ -4,25 +4,22 @@
 	<title></title>
 	@include('admin.layout.head');
 	<link href="{{asset('plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css')}}" rel="stylesheet">
+    
 </head>
 <body class="theme-blue-grey">
 @include('admin.layout.nav');
 <aside id="leftsidebar" class="sidebar">
             <!-- User Info -->
-            <div class="user-info">
+         <div class="user-info">
                 <div class="image">
-                    <img src="../../images/human.png" width="48" height="48" alt="User" />
+                    <img src="../{{$return['image']}}" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$return['name']}}</div>
+                    <div class="email">Official ID: <strong id="sessionpos">{{$return['position']}}</strong></div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
-                            <li class="user-header">
-                            <div class="imgcontainer">
-                                <img src="../../{{$return['image']}}" alt="Avatar" class="avatar">
-                            </div>
-                            </li>
                             <li><a href="{{URL('/profile')}}"><i class="material-icons">person</i>Profile</a></li>
                             <li><a href="{{URL('/')}}"><i class="material-icons">input</i>Log Out</a></li>
                         </ul>
@@ -31,21 +28,22 @@
             </div>
 
     
-@if($return['position']==0)
+
+            @if($return['position']==0)
                 @include('admin.aside_admin');
             @elseif($return['position']==1)
                 @include('admin.aside_pb');
-            @elseif($return['position_id']==2)
+            @elseif($return['position']==2)
                 @include('admin.aside_pb');
-            @elseif($return['position_id']==3)
+            @elseif($return['position']==3)
                 @include('admin.aside_admin');
-            @elseif($return['position_id']==4)
+            @elseif($return['position']==4)
                 @include('admin.aside_sec');
-            @elseif($return['position_id']==5)
+            @elseif($return['position']==5)
                 @include('admin.aside_desk');
-            @elseif($return['position_id']==6)
+            @elseif($return['position']==6)
                 @include('admin.aside_bpso');
-            @elseif($return['position_id']==7)
+            @elseif($return['position']==7)
                 @include('admin.aside_cashier');
             @endif
             </aside>
@@ -173,6 +171,8 @@
         </div>
 	</div>
 </div>
+<form id="clearance">
+{{ csrf_field() }}
 <div id="defaultModal" class="modal fade" tabindex="-1" role='dialog'>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -189,8 +189,6 @@
                 </div>
             </div>
             <div class="modal-body">
-                <form id="clearance">
-                    {{ csrf_field() }}
                     <div class="row clearfix">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -227,7 +225,7 @@
                                 <label>Clearance Requirement</label>
                                     <div class="demo-checkbox">
                                         @foreach($reqs as $req)
-                                            <input type="checkbox" class="cbadd" id="{{ $req->requirement_id }}"value="{{ $req->requirement_id }}"/>
+                                            <input type="checkbox" class="cbadd" id="{{ $req->requirement_id }}" value="{{ $req->requirement_id }}"/>
                                         <label for="{{ $req->requirement_id }}">{{ $req->requirement_name }}</label>
                                         @endforeach
                                     </div>
@@ -236,22 +234,57 @@
                     </div>
                     <div class="row clearfix">
                         <div class="col-md-4 col-md-offset-8">
-                            <button type="submit" class="btn bg-teal btn-lg waves-effect" id='add'>ADD</button>
+                            <button type="button" class="btn bg-teal btn-lg waves-effect"  data-toggle="modal" data-target="#largeModal" id='next'>NEXT</button>
                             <button type="button" class="btn bg-teal btn-lg waves-effect" data-dismiss="modal">CANCEL</button>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
+        </div>  
     </div>
-</div>
+    <div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="largeModalLabel">Create Content of Clearance</h4>
+                        </div>
+                        <div class="modal-body">
+                            <textarea id="myTextarea"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn bg-teal btn-lg waves-effect">SAVE</button>
+                            <button type="button" class="btn bg-teal btn-lg waves-effect" data-dismiss="modal">CLOSE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</form>
 @include('admin.layout.scripts');
 <script src="{{asset('plugins/jquery-datatable/jquery.dataTables.js')}}"></script>
 <script src="{{asset('plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js')}}"></script>
+<script src='{{asset("tinymce/tinymce.min.js")}}'></script>
+<script src="{{asset('tinymce/jquery.tinymce.min.js')}}"></script>
 <script>
 	$(document).ready(function(){
 		var CSRF_TOKEN = $('meta[name="csrf-token"').attr('content');
 		
+        tinymce.init({
+            selector: '#myTextarea',
+            theme: 'modern',
+            menubar: false,
+            resize: false,
+            branding: false,
+            width: 850,
+            height: 500,
+            plugins: [
+                'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+                'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+                'save table contextmenu directionality emoticons template paste textcolor'
+            ],
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
+        });
+
+
         var row;
         var id;
 		var table = $('#clearanceTable').DataTable({
@@ -445,7 +478,6 @@
                 }
             },
             submitHandler: function(form){
-                $('input:checkbox').removeAttr('checked');
                 $.ajax({
                     url: '/maintenance_clearance',
                     method: 'POST',
@@ -454,7 +486,8 @@
                         name : $('#cname').val(),
                         desc : $('#desc').val(),
                         price : $('#price').val(),
-                        req : $('.cbadd:checked').map(function() {return this.value;}).get().join(',')
+                        req : $('.cbadd:checked').map(function() {return this.value;}).get().join(','),
+                        cont: tinyMCE.get('myTextarea').getContent()
                     },
                     dataType: 'json',
                     success: function(response) {

@@ -13,18 +13,14 @@
             <!-- User Info -->
             <div class="user-info">
                 <div class="image">
-                    <img src="../../images/human.png" width="48" height="48" alt="User" />
+                    <img src="../{{$return['image']}}" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$return['name']}}</div>
+                    <div class="email">Official ID: <strong id="sessionpos">{{$return['official']}}</strong></div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
-                            <li class="user-header">
-                            <div class="imgcontainer">
-                                <img src="../../{{$return['image']}}" alt="Avatar" class="avatar">
-                            </div>
-                            </li>
                             <li><a href="{{URL('/profile')}}"><i class="material-icons">person</i>Profile</a></li>
                             <li><a href="{{URL('/')}}"><i class="material-icons">input</i>Log Out</a></li>
                         </ul>
@@ -32,24 +28,24 @@
                 </div>
             </div>
 
-@if($return['position']==0)
+
+            @if($return['position']==0)
                 @include('admin.aside_admin');
             @elseif($return['position']==1)
                 @include('admin.aside_pb');
-            @elseif($return['position_id']==2)
+            @elseif($return['position']==2)
                 @include('admin.aside_pb');
-            @elseif($return['position_id']==3)
+            @elseif($return['position']==3)
                 @include('admin.aside_admin');
-            @elseif($return['position_id']==4)
+            @elseif($return['position']==4)
                 @include('admin.aside_sec');
-            @elseif($return['position_id']==5)
+            @elseif($return['position']==5)
                 @include('admin.aside_desk');
-            @elseif($return['position_id']==6)
+            @elseif($return['position']==6)
                 @include('admin.aside_bpso');
-            @elseif($return['position_id']==7)
+            @elseif($return['position']==7)
                 @include('admin.aside_cashier');
             @endif
-            
 
             </aside>
 	<section class="content">

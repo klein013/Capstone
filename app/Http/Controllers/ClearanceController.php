@@ -28,7 +28,7 @@ class ClearanceController extends Controller
         if(empty($exist)){
 
             $priceexists = DB::select('select price_id from tbl_price where price_amt = '.$request->price);
-            if(empty($priceexists)){
+            if(empty($priceexists[0]->price_id)){
 
                 $price = new TblPrice;
 
@@ -127,7 +127,7 @@ class ClearanceController extends Controller
         if(empty($exist)){
 
             $priceexists = DB::select('select price_id from tbl_price where price_amt = '.$request->price);
-            if(empty($priceexists)){
+            if(empty($priceexists[0]->price_id)){
 
                 $price = new TblPrice;
 
@@ -140,6 +140,7 @@ class ClearanceController extends Controller
                 $clearance->clearance_type = $request->name;
                 $clearance->clearance_desc = $request->desc;
                 $clearance->clearance_price = $price->id;
+                $clearance->clearance_content = $request->cont;
                 $clearance->clearance_exists = 1;
                 $clearance->save();
 
@@ -172,6 +173,7 @@ class ClearanceController extends Controller
                 $clearance->clearance_type = $request->name;
                 $clearance->clearance_desc = $request->desc;
                 $clearance->clearance_price = $priceexists[0]->price_id;
+                $clearance->clearance_content = $request->cont;
                 $clearance->clearance_exists = 1;
                 $clearance->save();
 
