@@ -7,7 +7,6 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 
     <!-- Bootstrap Core Css -->
     <link href="{{asset('bootstrap/css/bootstrap.css')}}" rel="stylesheet">
@@ -18,9 +17,9 @@
     <!-- Animation Css -->
     <link href="{{asset('plugins/animate-css/animate.css')}}" rel="stylesheet" />
 
-    <link href="{{asset('bootstrap-select/css/bootstrap-select.css')}}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{{asset('bootstrap-daterangepicker-master/daterangepicker.css')}}" />
 
-    <link href="{{asset('bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css')}}" rel="stylesheet" />
+    <link href="{{asset('bootstrap-select/css/bootstrap-select.css')}}" rel="stylesheet" />
 
     <link href="{{asset('plugins/sweetalert/sweetalert.css')}}" rel="stylesheet" />
     <!-- Custom Css -->
@@ -28,6 +27,7 @@
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="{{asset('css/themes/theme-blue-grey.css')}}" rel="stylesheet" />
+    
     <style>
         .btn-space{
             margin-right:5px;
@@ -40,5 +40,41 @@
 img.avatar {
     width: 40%;
     border-radius: 50%;
-}s
-    </style>
+}
+@font-face {
+   font-family: 'Material Icons';
+   font-style: normal;
+   font-weight: 400;
+   src: url(iconfont/MaterialIcons-Regular.eot); /* For IE6-8 */
+   src: local('Material Icons'),
+        local('MaterialIcons-Regular'),
+        url(iconfont/MaterialIcons-Regular.woff2) format('woff2'),
+        url(iconfont/MaterialIcons-Regular.woff) format('woff'),
+        url(iconfont/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+</style>

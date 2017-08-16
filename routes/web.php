@@ -14,12 +14,15 @@
 
 Route::get('/signup', 'RegistrationController@create');
 Route::post('/signup_confirm', 'RegistrationController@store');
+Route::get('/', 'LoginController@index');
+
+Route::post('/login', 'LoginController@check');
+Route::get('/logout', 'LoginController@logout');
+
+Route::group(['middleware'=>'Login'], function(){
 
 Route::get('/index', 'LoginController@signin');
 Route::get('/indexcheck', 'LoginController@checkuser');
-Route::get('/', 'LoginController@index');
-Route::post('/login', 'LoginController@check');
-
 Route::get('/resident', 'ResidentController@create');
 Route::get('/resident/getResidents', 'ResidentController@getResidents');
 Route::post('/resident', 'ResidentController@store');
@@ -137,12 +140,11 @@ Route::post('/clearance_construction/{id}', 'ClearanceReqController@get_construc
 Route::post('/clearance_excavation/{id}', 'ClearanceReqController@get_excavation');
 
 Route::get('/incident', 'IncidentController@createIncident');
-Route::get('/incident/index', 'IncidentController@index');
-Route::get('/incident_getstat/{id}', 'IncidentController@getstat');
-Route::post('/incidentput', 'IncidentController@store');
-Route::post('/incident_update', 'IncidentController@update');
-Route::delete('/incident_delete/{id}', 'IncidentController@delete');
-Route::get('/incident_mapping', 'IncidentController@createMap');
+Route::get('/getIncident', 'IncidentController@getIncident');
+Route::post('/storeIncident', 'IncidentController@storeIncident');
+
+Route::get('/incident_mapping', 'MapController@createMap');
+Route::post('/getIncidentLoc', 'MapController@getIncidentLoc');
 
 Route::get('/reports_incident', 'ReportController@incident');
 Route::get('/reports_barangay', 'ReportController@barangay');
@@ -163,4 +165,6 @@ Route::get('/maintenance_luponsched/subtract', 'LuponSchedController@subtract');
 Route::get('/maintenance_holidays', 'HolidayController@create');
 
 Route::get('/profile', 'ProfileController@index');
+
+});
 

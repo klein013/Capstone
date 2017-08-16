@@ -21,7 +21,7 @@
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
                             <li><a href="{{URL('/profile')}}"><i class="material-icons">person</i>Profile</a></li>
-                            <li><a href="{{URL('/')}}"><i class="material-icons">input</i>Log Out</a></li>
+                            <li><a href="{{URL('/logout')}}"><i class="material-icons">input</i>Log Out</a></li>
                         </ul>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                                 <thead>
                                     <tr class="bg-blue-grey">
                                         <th>ID</th>
-                                        <th>Street Name</th>
+                                        <th>Street/Road Name</th>
                                         <th>Area</th>
                                         <th>Actions</th>
                                     </tr>
@@ -103,7 +103,7 @@
                                             <i class="material-icons">person_add</i>
                                         </div>
                                         <div class="content">
-                                            <div class="text"><h3> ADD BARANGAY STREET</h3></div>
+                                            <div class="text"><h3> ADD BARANGAY STREET/ROAD</h3></div>
                                         </div>
                                     </div>
                                 </div>
@@ -112,7 +112,7 @@
                         <div class="modal-body">
                             <form id="positionform">
                                 {{ csrf_field() }}
-                                <label for="Position">Street Name</label>
+                                <label for="Position">Street/Road Name</label>
                                 <div class="form-group">
                                     <div class="form-line">
                                         <input type="text" id="name" name="pos" class="form-control">
@@ -149,7 +149,7 @@
                             <i class="material-icons">person_add</i>
                         </div>
                         <div class="content">
-                            <div class="text"><h3>UPDATE BARANGAY STREET</h3></div>
+                            <div class="text"><h3>UPDATE BARANGAY STREET/ROAD</h3></div>
                         </div>
                     </div>
                 </div>
@@ -157,7 +157,7 @@
                         <div class="modal-body">
                             <form id="updatePositionform">
                                 {{ csrf_field() }}
-                                <label for="Position">Street Name</label>
+                                <label for="Position">Street/Road Name</label>
                                 <div class="form-group">
                                     <div class="form-line">
                                         <input type="text" id="upname" name="uppos" class="form-control">
@@ -199,7 +199,7 @@
                             'ID' : json[i].street_id,
                             'Name' : json[i].street_name,
                             'Area' : json[i].area_name,
-                            'Button': "<button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>update</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button>"
+                            'Button': "<button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button>"
                             });
                         }     
                         return return_data;
@@ -244,7 +244,7 @@
                     success : function(response){
                         if(response!="exists"){
                         $('#defaultModal').modal('toggle');
-                        var newRow = "<tr><td>"+response[0].street_id+"</td><td>"+response[0].street_name+"</td><td>"+response[0].area_name+"</td><td><button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>update</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button></td></tr>";
+                        var newRow = "<tr><td>"+response[0].street_id+"</td><td>"+response[0].street_name+"</td><td>"+response[0].area_name+"</td><td><button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button></td></tr>";
                         table.row.add($(newRow)).draw();
                         swal({
                             title : "Record Added",

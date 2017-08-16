@@ -7,13 +7,14 @@ use App\Models\TblArea;
 use DB;
 use App\Http\Requests;
 use Illuminate\Support\Facedes\Input;
+use Session;
 
 class AreaController extends Controller
 {
  
  	public function create(){
-
- 		return view('admin.maintenance_area');
+		$return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official')];
+	    return view('admin.maintenance_area', compact('return'));
  	}
 
  	public function getAreas(){

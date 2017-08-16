@@ -1,7 +1,7 @@
 
     <!-- Jquery Core Js -->
     <script async="" src="https://www.google-analytics.com/analytics.js"></script>
-    <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
+    <script src="{{asset('plugins/jquery/jquery.js')}}"></script>
 
     <!-- Bootstrap Core Js -->
     <script src="{{asset('bootstrap/js/bootstrap.js')}}"></script>
@@ -24,17 +24,16 @@
     <script src="{{asset('js/admin.js')}}"></script>
 
     <script src="{{asset('plugins/sweetalert/sweetalert.min.js')}}"></script>
+
     <!-- Demo Js -->
     <script src="{{asset('js/demo.js')}}"></script>
     <!--<script src="{{asset('js/app.js')}}"></script>-->
 
     <script src="{{asset('js/pages/ui/tooltips-popovers.js')}}"></script>
 
-    <script src="{{asset('plugins/momentjs/moment.js')}}"></script>
+    <script src="{{asset('momentjs/moment.js')}}"></script>
 
-    <script src="{{asset('js/pages/forms/basic-form-elements.js')}}"></script>
-
-    <script src="{{asset('bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js')}}"></script>
+    <script type="text/javascript" src="{{asset('bootstrap-daterangepicker-master/daterangepicker.js')}}"></script>
 
     <script src="{{asset('plugins/jquery-inputmask/jquery.inputmask.bundle.js') }}"></script>
     <script src="{{asset('plugins/jquery-validation/jquery.validate.js')}}"></script>

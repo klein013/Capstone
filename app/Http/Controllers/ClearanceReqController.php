@@ -21,7 +21,9 @@ class ClearanceReqController extends Controller
 
         $requests = DB::select('select c.ClearanceReq_ID as ID, concat(r.Resident_Fname," ",r.Resident_Lname) as Name, t.Clearance_Type as Type, c.ClearanceReq_Purpose as Purpose, c.ClearanceReq_Status as Status, t.Clearance_ID as cid from tbl_clearancereq c join tbl_residents r on c.ClearanceReq_Resident = r.Resident_ID join tbl_clearance t on c.ClearanceReq_Type = t.Clearance_ID where c.ClearanceReq_Status <> "Finished" order by c.ClearanceReq_Status desc, 2 desc, c.ClearanceReq_Date desc');
 
-        return view('admin.clearance')->with(array('clearances'=>$clearances, 'residents'=>$residents, 'requests'=>$requests));
+        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official')];
+
+        return view('admin.clearance')->with(array('clearances'=>$clearances, 'residents'=>$residents, 'requests'=>$requests), 'return'=>$return);
     }
 
     public function store(Request $request)

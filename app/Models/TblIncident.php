@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Fri, 11 Aug 2017 14:16:29 +0000.
+ * Date: Tue, 15 Aug 2017 14:52:54 +0000.
  */
 
 namespace App\Models;
@@ -20,6 +20,9 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property float $incident_lat
  * @property int $incident_cat
  * @property string $incident_status
+ * @property string $incident_notes
+ * @property \Carbon\Carbon $incident_filed
+ * @property bool $incident_exists
  * 
  * @property \App\Models\TblIncidentcat $tbl_incidentcat
  * @property \App\Models\TblStreet $tbl_street
@@ -30,19 +33,19 @@ class TblIncident extends Eloquent
 {
 	protected $table = 'tbl_incident';
 	protected $primaryKey = 'incident_id';
-	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [
-		'incident_id' => 'int',
 		'incident_street' => 'int',
 		'incident_long' => 'float',
 		'incident_lat' => 'float',
-		'incident_cat' => 'int'
+		'incident_cat' => 'int',
+		'incident_exists' => 'bool'
 	];
 
 	protected $dates = [
-		'incident_datetime'
+		'incident_datetime',
+		'incident_filed'
 	];
 
 	protected $fillable = [
@@ -52,7 +55,10 @@ class TblIncident extends Eloquent
 		'incident_long',
 		'incident_lat',
 		'incident_cat',
-		'incident_status'
+		'incident_status',
+		'incident_notes',
+		'incident_filed',
+		'incident_exists'
 	];
 
 	public function tbl_incidentcat()

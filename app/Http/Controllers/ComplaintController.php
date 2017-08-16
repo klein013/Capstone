@@ -31,7 +31,7 @@ class ComplaintController extends Controller
     public function create()
     {
         $cases = DB::select("select caseskp_id, caseskp_name from tbl_caseskp where caseskp_exists = 1 order by caseskp_name");
-        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position')];
+        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official')];
 
         return view('admin.complaint')->with(['cases'=>$cases, 'return'=>$return]);
     }

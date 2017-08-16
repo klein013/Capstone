@@ -31,7 +31,7 @@ class ResidentController extends Controller
     public function create()
     {
         $streets = DB::select("select street_id, street_name, area_name from tbl_street join tbl_area on tbl_street.street_area=tbl_area.area_id order by area_name,street_name");
-        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position')];
+        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official')];
 
         return view('admin.resident')->with(['streets'=>$streets, 'return'=>$return]);
     }

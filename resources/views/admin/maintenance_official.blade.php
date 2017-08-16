@@ -456,7 +456,7 @@
                     { "data": "Gender" },
                     { "data": "Add" },
                     { "data": "Pos" },
-                    { "defaultContent": "<button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>update</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button>" }
+                    { "defaultContent": "<button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button>" }
                 ],
                 "columnDefs": [
                     { 
@@ -597,7 +597,7 @@
                             }
                             $('#defaultModal').modal('toggle');
 
-                            var newRow = "<tr><td>"+response['official'][0].Off_ID+"</td><td><img src='"+response['official'][0].Off_Image+"' width='40px;' height='40px;'></td><td>"+response['official'][0].Off_Fname+' '+response['official'][0].Off_Lname+"</td><td>"+(response['official'][0].Off_Bdate).split(' ')[0]+"</td><td>"+sex+"</td><td>"+response['official'][0].Off_House+" "+response['official'][0].Off_Street+" "+response['official'][0].Off_Area+"</td><td>"+pos+"</td><td><button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>update</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button></td></tr>";
+                            var newRow = "<tr><td>"+response['official'][0].Off_ID+"</td><td><img src='"+response['official'][0].Off_Image+"' width='40px;' height='40px;'></td><td>"+response['official'][0].Off_Fname+' '+response['official'][0].Off_Lname+"</td><td>"+(response['official'][0].Off_Bdate).split(' ')[0]+"</td><td>"+sex+"</td><td>"+response['official'][0].Off_House+" "+response['official'][0].Off_Street+" "+response['official'][0].Off_Area+"</td><td>"+pos+"</td><td><button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button></td></tr>";
                             table.row.add($(newRow)).draw();
                             swal({
                                 title : "Record Added",
@@ -608,10 +608,11 @@
                             var pos1 = response['position'];
                             var i;
                             
+                            $('#position').empty();
                             for (i = 0; i < pos1.length; ++i) {
-                                $('#position').empty();
                                 $('#position').append($('<option></option>')).attr("value", pos1[i].Pos_ID).text(pos1[i].Pos_Name);
                             }
+                            $('#position').selectpicker('refresh');
                         }
                     });
                 },

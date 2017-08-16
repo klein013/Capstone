@@ -15,13 +15,18 @@ class LoginController extends Controller
     }
 
     public function signin(){
-        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position')];
+        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official')];
         return view('admin.index', compact('return'));
 
     }
 
     public function login(Request $request){
       return view('admin.index');
+    }
+
+    public function logout(){
+        session()->flush();
+        return redirect("/");
     }
 
     public function check(Request $request){

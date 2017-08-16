@@ -19,7 +19,7 @@
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
                             <li><a href="{{URL('/profile')}}"><i class="material-icons">person</i>Profile</a></li>
-                            <li><a href="{{URL('/')}}"><i class="material-icons">input</i>Log Out</a></li>
+                            <li><a href="{{URL('/logout')}}"><i class="material-icons">input</i>Log Out</a></li>
                         </ul>
                     </div>
                 </div>
@@ -64,8 +64,8 @@
             </div>
             
             <div class="row clearfix">
-                                    <div class="col-lg-offset-11 col-md-offset-2 col-sm-offset-4 col-xs-offset-5">
-                                        <a href="#" data-toggle="tooltip" title="Add Incident"><button type="button" class="btn bg-teal btn-circle-lg waves-effect waves-circle waves-float" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i></button></a>
+                                    <div class="col-sm-2 col-sm-offset-10">
+                                        <button type="button" class="btn bg-teal btn-lg waves-effect waves-float pull-right" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i>Add incident</button>
                                     </div>
                                 </div>
                                 <br>
@@ -80,8 +80,9 @@
                                         <th>ID</th>
                                         <th>Place</th>
                                         <th>Date and Time</th>
-                                        <th>Description</th>
+                                        <th>Incident Type</th>
                                         <th>Status</th>
+                                        <th>Notes</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -114,60 +115,64 @@
                         
                         <div class="modal-body">
                             <form id="incident">
-                                <div class="row clearfix">
-                                <div class="col-md-2">
-                                    <label>House No.</label>
-                                </div>
+                            
+                            <div class='row clearfix'>
                                 <div class="col-md-6">
                                     <label>Street</label>
-                                </div>
-                                <div class="col-md-4">
-                                    <label>Area</label>
-                                </div>
-                            </div>
-                            <div class="row clearfix">
-                                <div class="col-md-2">
                                     <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" id="house" name="house">
-                                        </div>
+                                        <select class="form-control show tick" id="street" name="street">
+                                            <option value="" disabled selected>Choose Street</option>
+                                            @foreach($streets as $street)
+                                                <option value ="{{$street->street_id}}">{{$street->street_name}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" id="street" name="street">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
+                                    <label>Area</label>
                                     <div class="form-group">
                                         <select class="form-control show tick" id="area" name="area">
                                             <option value="" disabled selected>Choose Area</option>
-                                            <option value="Area A">Area A</option>
-                                            <option value="Area B">Area B</option>
-                                            <option value="Area C">Area C</option>
+                                            @foreach($areas as $street)
+                                                <option value ="{{$street->area_id}}">{{$street->area_name}}</option>
+                                            @endforeach
+                                            <option value="">All Area</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                              <div class="row clearfix">
                                 <div class="col-md-6">
-                                <label for="datetime">Incident Date and Time</label>
+                                <label for="datetime">Date and Time</label>
                                    <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="datetimepicker form-control" id="dt" placeholder="Please choose date & time...">
+                                            <input type="text" class="form-control" id="dt" placeholder="Please choose date & time...">
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                                <label>Incident Description</label>
+                                <div class="col-md-6">
+                                    <label for="cat">Incident Type</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <textarea rows="4" class="form-control no-resize" id="desc" name="desc" placeholder="Please type what you want..." required></textarea>
+                                        <select id="cat" name="cat" class="form-control show tick">
+                                        <option value="" disabled selected>Choose Type</option>
+                                        @foreach($incidentcats as $incidentcat)
+                                            <option value="{{$incidentcat->incidentcat_id}}">{{$incidentcat->incidentcat_name}}</option>
+                                        @endforeach
+                                    </select>
+                                    </div>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-md-12">
+                                <label>Description</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <textarea rows="4" class="form-control no-resize" id="desc" name="desc" placeholder="Please type incident's description" required></textarea>
                                         </div>
                                     </div>
+                                </div>
                             </div>
                         
                         <div class="modal-footer">
@@ -211,7 +216,7 @@
                         </div>
                     </div>
                     <br>
-                    <div class="row clearfix">
+                        <div class="row clearfix">
                         <div class="col-md-6 col-md-offset-6">
                             <button type="submit" class="btn btn-lg bg-teal waves-effect" id="updatebtn">Update</button>
                             <button type="button" class="btn bg-teal btn-lg waves-effect" data-dismiss="modal">Cancel</button>
@@ -229,20 +234,94 @@
 <script>
     $(document).ready(function(){
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+        var streets = [
+            @foreach($streets as $street)
+                [{{$street->street_id}}, {{$street->area_id}}],
+            @endforeach
+        ];
+
+        console.log(streets);
+
+        $('#street').change(function(){
+            var street = $('#street').val();
+            if($('#area').val()==""||$('#area').val()==null){
+            $.each(streets, function(index, value){
+                if(street==value[0]){
+                    $('#area').val(streets[index][1]).change();
+                    console.log(streets[index][1]);
+                }
+            });
+            }
+        });
+
+        $('#area').change(function(){
+
+            var area = $('#area').val();
+            if(area==""){
+                var newOptions = [
+                    @foreach($streets as $street)
+                        [{{$street->street_id}}, "{{$street->street_name}}"],
+                    @endforeach
+                ];
+                var $el= $('#street');
+                $el.empty();
+                $el.html('');
+                $.each(newOptions, function(index, value){
+                    $el.append($("<option></option>").attr("value", value[0]).text(value[1]));
+                });
+            }
+            else{
+                console.log("dasdasd");
+                var newOptions = [
+                    @foreach($streets as $street)
+                        [{{$street->street_id}}, "{{$street->street_name}}", {{$street->area_id}}],
+                    @endforeach
+                ];
+                var $el= $('#street');
+                $el.empty();
+                $el.html('');
+                $.each(newOptions, function(index, value){
+                    if(value[2]==area){
+                        $el.append($("<option></option>").attr("value", value[0]).text(value[1]));
+                    }
+                });
+            }
+            $('#street').val("");
+            $('#street').selectpicker('refresh');
+        });
+
+
+        $('#dt').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                timePicker: true,
+                locale: {
+                    format: 'YYYY-MM-DD h:mm:ss'
+                },
+                minDate: moment().subtract(1,'months'),
+                maxDate: moment()
+        });
+
         var table = $('#incTable').DataTable({
             bSort: false,
             "ajax" : {
-                    "url": "/incident/index",
+                    "url": "/getIncident",
                     "dataSrc" : function (json) {
                         var return_data = new Array();
                         for(var i=0;i< json.length; i++){
+                            var notes = json[i].incident_notes;
+                            if(notes==null){
+                                notes="";
+                            }
                             return_data.push({
-                            'ID' : json[i].Incident_ID,
-                            'Place' : json[i].Place,
-                            'DateTime' : json[i].Incident_Datetime,
-                            'Desc' : json[i].Incident_Statement,
-                            'Status': json[i].Incident_Status,
-                            'Button': "<button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>update</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button>"
+                            'ID' : json[i].incident_id,
+                            'Place' : json[i].place,
+                            'DateTime' : json[i].incident_datetime,
+                            'Desc' : json[i].incidentcat_name,
+                            'Status': json[i].incident_status,
+                            'Notes': notes,
+                            'Button': "<button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'view btn btn-space bg-green waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='View Record'><i class='material-icons'>view_module</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button>"
                             });
                         }     
                         return return_data;
@@ -254,6 +333,7 @@
                     { "data": "DateTime" },
                     { "data": "Desc" },
                     { "data": "Status" },
+                    { "data": "Notes" },
                     { "data": "Button" },
                 ]
         });
@@ -261,50 +341,50 @@
         var finid;
 
         $.validator.addMethod("alpha", function(value, element) {
-                return this.optional(element) || value == value.match(/^[a-zA-Z .,]*$/);
+                return this.optional(element) || value.trim() == value.match(/^[a-zA-Z .,]*$/);
             },"Letters, spaces, period and comma only");
 
             $.validator.addMethod("letterwithbasicpunc", function(value, element) {
-                return this.optional(element) || value == value.match(/^[a-zA-Z0-9 !()?.,]*$/);
+                return this.optional(element) || value.trim() == value.match(/^[a-zA-Z0-9 !()?.,]*$/);
             },"Letters and numbers with basic punctuations only");            
 
             $('#incident').validate({
                 rules: {
-                    house: {
-                        required: false,
-                        alphanumeric: true,
-                        maxlength: 6
-                    },
                     street:{
-                        required: true,
-                        letterwithbasicpunc: true,
-                        maxlength: 50
+                        required: true
                     },
                     area:{
                         required: true
                     },
+                    datetime:{
+                        required: true,
+                        dateISOF: true
+                    },
+                    cat:{
+                        required: true
+                    },   
                     desc:{
-                        required: false,
+                        required: true,
                         maxlength: 300,
                         letterwithbasicpunc: true
                     }
                 },
                 submitHandler: function(form){
                     $.ajax({
-                    url : '/incidentput',
+                    url : '/storeIncident',
                     method : 'POST',
                     data : {
                         _token : CSRF_TOKEN,
-                        house : $('#huose').val(),
-                        street : $('#street').val(),
-                        desc : $('#desc').val(),
-                        area : $('#area').val(),
-                        datetime : $('#dt').val()
+                        street_id: $('#street').val(),
+                        street_name: $('#street option:selected').text(),
+                        datetime: $('#dt').val(),
+                        cat: $('#cat').val(),
+                        desc: $('#desc').val()
                     },
                     dataType : 'json',
                     success : function(response){
                         $('#defaultModal').modal('toggle');
-                        var newRow = "<tr><td>"+response.Incident_ID+"</td><td>"+response.Incident_House+" "+response.Incident_Street+" '"+response.Incident_Area+"</td><td>"+response.Incident_Datetime+"</td><td>"+response.Incident_Statement+"</td><td>"+response.Incident_Status+"</td><td><button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>update</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button></td></tr>";
+                        var newRow = "<tr><td>"+response[0].incident_id+"</td><td>"+response[0].place+"</td><td>"+response[0].incident_datetime+"</td><td>"+response[0].incidentcat_name+"</td><td>"+response[0].incident_status+"</td><td>"+response[0].incident_notes+"</td><td><button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'view btn btn-space bg-green waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='View Record'><i class='material-icons'>view_module</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button></td></tr>";
                         table.row.add($(newRow)).draw();
                         swal({
                             title : "Record Added",
@@ -312,7 +392,12 @@
                             timer : 1000,
                             showConfirmButton : false
                         });
-                        
+                        $('#street').val("");
+                        $('#street').selectpicker('refresh');
+                        $('#area').val("");
+                        $('#area').selectpicker('refresh');
+                        $('#desc').val("");
+                        $('#dt').val("");
                     }
                     });
                 },

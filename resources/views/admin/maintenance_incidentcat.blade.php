@@ -22,7 +22,7 @@
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
                             <li><a href="{{URL('/profile')}}"><i class="material-icons">person</i>Profile</a></li>
-                            <li><a href="{{URL('/')}}"><i class="material-icons">input</i>Log Out</a></li>
+                            <li><a href="{{URL('')}}"><i class="material-icons">input</i>Log Out</a></li>
                         </ul>
                     </div>
                 </div>
@@ -204,7 +204,7 @@
                             'ID' : json[i].incidentcat_id,
                             'Name' : json[i].incidentcat_name,
                             'Desc' : desc,
-                            'Button': "<button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>update</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button>"
+                            'Button': "<button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button>"
                             });
                         }     
                         return return_data;
@@ -260,7 +260,7 @@
                         else{
                             desc= response.incidentcat_desc;
                         }
-                        var newRow = "<tr><td>"+response.incidentcat_id+"</td><td>"+response.incidentcat_name+"</td><td>"+desc+"</td><td><button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>update</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button></td></tr>";
+                        var newRow = "<tr><td>"+response.incidentcat_id+"</td><td>"+response.incidentcat_name+"</td><td>"+desc+"</td><td><button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button></td></tr>";
                         table.row.add($(newRow)).draw();
                         swal({
                             title : "Record Added",

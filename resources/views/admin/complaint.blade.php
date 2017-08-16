@@ -233,7 +233,7 @@
     			clearButton : false
     	});
 
-        var used = [];
+        var used = [{{$return['position']}}];
         var com = [];
         var res = [];
         var table1 = $("#restable1").DataTable();
@@ -358,8 +358,8 @@
         }); 
 
         $.validator.addMethod("alphanum", function(value, element) {
-                return this.optional(element) || value == value.match(/^[a-zA-Z0-9 .,]*$/);
-            },"Letters, Numbers, spaces, period and comma only");
+                return this.optional(element) || value == value.match(/^[a-zA-Z0-9 .,!?()"'<>;:+=-_#*/@]*$/);
+            },"Letters, Numbers and basic punctuations only");
 
         $('#complaint').validate({
                 rules: {

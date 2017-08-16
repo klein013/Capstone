@@ -46,7 +46,7 @@ class OfficialController extends Controller
 
         $positions = DB::select("select position_id as 'Pos_ID', position_name as 'Pos_Name' from tbl_position where position_id not in(select p.position_id from tbl_position p left join tbl_official o on p.position_id=o.position_id where o.official_exists = 1 group by p.position_id, p.position_name, p.position_count having p.position_count = COUNT(o.position_id))");
 
-        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position')];
+        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official')];
 
         return view('admin.maintenance_official')->with(array('positions'=>$positions, 'streets'=>$streets,'return'=>$return));
     }
@@ -113,7 +113,7 @@ class OfficialController extends Controller
     }
 
     public function getOfficials(){
-        $officials = DB::select("select o.official_id, r.resident_image,p.position_name, concat(r.resident_fname,' ',r.resident_mname,' ',r.resident_lname) as name, r.resident_bdate, r.resident_contact, r.resident_gender, concat(r.resident_hno,' ',s.street_name,' ',a.area_name) as street from tbl_official o join tbl_resident r on r.resident_id = o.resident_id join tbl_street s on r.resident_street = s.street_id join tbl_area a on s.street_area = a.area_id join tbl_position p on p.position_id = o.position_id where o.official_exists = 1");
+        $officials = DB::select("select lpad(o.official_id,6,'0') as official_id, r.resident_image,p.position_name, concat(r.resident_fname,' ',coalesce(r.resident_mname,''),' ',r.resident_lname) as name, r.resident_bdate, r.resident_contact, r.resident_gender, concat(r.resident_hno,' ',s.street_name,' ',a.area_name) as street from tbl_official o join tbl_resident r on r.resident_id = o.resident_id join tbl_street s on r.resident_street = s.street_id join tbl_area a on s.street_area = a.area_id join tbl_position p on p.position_id = o.position_id where o.official_exists = 1");
         return response()->json($officials);
     }
 }

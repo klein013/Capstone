@@ -30,7 +30,7 @@ class InfoController extends Controller
     public function create()
     {
         $info = DB::table('tbl_brgyinfo')->first();
-          $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position')];
+          $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official')];
 
         return view('admin.maintenance_info')->with(['info'=>$info,'return'=>$return]);
         

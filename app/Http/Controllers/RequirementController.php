@@ -16,7 +16,7 @@ class RequirementController extends Controller
 
     public function create(){
     	$return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position')];
-        return view('admin.maintenance_requirement', compact('return'));
+        return view('admin.maintenance_requirement', compact('return'), 'official'=>Session::get('official'));
 
     }
 

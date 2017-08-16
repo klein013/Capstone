@@ -15,7 +15,7 @@ class ClearanceController extends Controller
     public function create()
     {
         $reqs = DB::select('select requirement_id, requirement_name from tbl_requirement where requirement_exists=1');
-          $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position')];
+          $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official')];
         
         return view('admin.maintenance_clearance')->with(['reqs'=>$reqs,'return'=>$return]);
     }

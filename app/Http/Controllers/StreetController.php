@@ -16,7 +16,7 @@ class StreetController extends Controller
 
         $areas = DB::select('select area_id, area_name from tbl_area where area_exists=1');
 
-        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position')];
+        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official')];
     	return view('admin.maintenance_street')->with(['areas'=>$areas,'return'=>$return]);
     } 
 
@@ -43,7 +43,7 @@ class StreetController extends Controller
 
     public function getStreets(){
 
-    	$streets = DB::select('select street_id, street_name, area_name from tbl_street s join tbl_area a on s.street_area=a.area_id where s.street_exists = 1');
+    	$streets = DB::select('select lpad(street_id,5,"0") as street_id, street_name, area_name from tbl_street s join tbl_area a on s.street_area=a.area_id where s.street_exists = 1');
     	
 
     	return response()->json($streets);
