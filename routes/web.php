@@ -107,41 +107,13 @@ Route::get('/record', 'RecordController@create');
 Route::get('/records', 'RecordController@show');
 
 Route::get('/clearance', 'ClearanceReqController@create');
-Route::post('/clearance', 'ClearanceReqController@store');
-Route::delete('/clearance', 'ClearanceReqController@destroy');
-
-Route::post('/clearance_indigency', 'ClearanceReqController@create_indigency');
-Route::post('/clearance_residency', 'ClearanceReqController@create_residency');
-Route::post('/clearance_businessliquor', 'ClearanceReqController@create_businessliquor');
-Route::post('/clearance_transpo', 'ClearanceReqController@create_transpo');
-Route::post('/clearance_noDerogatory', 'ClearanceReqController@create_noDerogatory');
-Route::post('/clearance_businessa', 'ClearanceReqController@create_businessa');
-Route::post('/clearance_businessb', 'ClearanceReqController@create_businessb');
-Route::post('/clearance_businessc', 'ClearanceReqController@create_businessc');
-Route::post('/clearance_businessd', 'ClearanceReqController@create_businessd');
-Route::post('/clearance_businesse', 'ClearanceReqController@create_businesse');
-Route::post('/clearance_water', 'ClearanceReqController@create_water');
-Route::post('/clearance_electric', 'ClearanceReqController@create_electric');
-Route::post('/clearance_construction', 'ClearanceReqController@create_construction');
-Route::post('/clearance_excavation', 'ClearanceReqController@create_excavation');
-Route::post('/clearance_addtl', 'ClearanceReqController@create_addtl');
-
-Route::post('/clearance_residency/{id}', 'ClearanceReqController@get_transpo');
-Route::post('/clearance_indigency/{id}', 'ClearanceReqController@get_indigency');
-Route::post('/clearance_noDerogatory/{id}', 'ClearanceReqController@get_noDerogatory');
-Route::post('/clearance_businessa/{id}', 'ClearanceReqController@get_businessa');
-Route::post('/clearance_businessb/{id}', 'ClearanceReqController@get_businessb');
-Route::post('/clearance_businessc/{id}', 'ClearanceReqController@get_businessc');
-Route::post('/clearance_businessd/{id}', 'ClearanceReqController@get_businessd');
-Route::post('/clearance_businesse/{id}', 'ClearanceReqController@get_businesse');
-Route::post('/clearance_water/{id}', 'ClearanceReqController@get_water');
-Route::post('/clearance_electric/{id}', 'ClearanceReqController@get_electric');
-Route::post('/clearance_construction/{id}', 'ClearanceReqController@get_construction');
-Route::post('/clearance_excavation/{id}', 'ClearanceReqController@get_excavation');
+Route::get('/getResidents', 'ClearanceReqController@getResidents');
 
 Route::get('/incident', 'IncidentController@createIncident');
 Route::get('/getIncident', 'IncidentController@getIncident');
 Route::post('/storeIncident', 'IncidentController@storeIncident');
+Route::post('/deleteIncident', 'IncidentController@deleteIncident');
+Route::get('/sendMessages', 'IncidentController@sendMessages');
 
 Route::get('/incident_mapping', 'MapController@createMap');
 Route::post('/getIncidentLoc', 'MapController@getIncidentLoc');

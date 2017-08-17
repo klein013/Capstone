@@ -233,6 +233,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
 		'Fpdf' => Anouar\Fpdf\Facades\Fpdf::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Carbon' => 'Carbon\Carbon',
     ],
 
 ];

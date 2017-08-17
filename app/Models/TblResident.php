@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 15 Aug 2017 14:52:55 +0000.
+ * Date: Thu, 17 Aug 2017 13:05:58 +0000.
  */
 
 namespace App\Models;
@@ -23,6 +23,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $resident_street
  * @property int $resident_yearstayed
  * @property string $resident_image
+ * @property bool $resident_allowmessage
  * @property bool $resident_exists
  * 
  * @property \App\Models\TblStreet $tbl_street
@@ -41,6 +42,7 @@ class TblResident extends Eloquent
 	protected $casts = [
 		'resident_street' => 'int',
 		'resident_yearstayed' => 'int',
+		'resident_allowmessage' => 'bool',
 		'resident_exists' => 'bool'
 	];
 
@@ -59,6 +61,7 @@ class TblResident extends Eloquent
 		'resident_street',
 		'resident_yearstayed',
 		'resident_image',
+		'resident_allowmessage',
 		'resident_exists'
 	];
 

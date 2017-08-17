@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use DB;
 use App\Models\TblIncident;
 use Session;
+use App\Jobs\SendMessages;
+use Carbon;
 
 class IncidentController extends Controller
 {
@@ -68,9 +70,19 @@ class IncidentController extends Controller
 
         $inc->save();
 
-        $incidents = DB::select('select lpad(i.incident_id,8,"0") as incident_id, concat(s.street_name," ",a.area_name) as place, i.incident_datetime, c.incidentcat_name, i.incident_status, i.incident_notes from tbl_incident i join tbl_incidentcat c on c.incidentcat_id = i.incident_cat join tbl_street s on s.street_id = i.incident_street join tbl_area a on s.street_area = a.area_id where i.incident_exists = 1 and i.incident_id = '.$inc->incident_id);
+        $incidents = DB::select('select lpad(i.incident_id,8,"0") as incident_id, concat(s.street_name," ",a.area_name) as place, i.incident_datetime, c.incidentcat_name, i.incident_status, coalesce(i.incident_notes," ") as incident_notes from tbl_incident i join tbl_incidentcat c on c.incidentcat_id = i.incident_cat join tbl_street s on s.street_id = i.incident_street join tbl_area a on s.street_area = a.area_id where i.incident_exists = 1 and i.incident_id = '.$inc->incident_id);
 
         return response()->json($incidents);
+    }
+
+    public function sendMessages(Request $request){
+        $numbers = DB::select('select resident_contact from tbl_resident where resident_exists = 1 and resident_contact is not null and resident_allowmessage = 1');
+        $job = (new SendMessages(["numbers" => $numbers, "incident" => $request->incident]))->delay(Carbon::now()->addMinutes(1));
+
+        dispatch($job);
+
+        return response("success");
+
     }
 
     public function getIncident(){
@@ -78,5 +90,11 @@ class IncidentController extends Controller
         $incidents = DB::select('select lpad(i.incident_id,8,"0") as incident_id, concat(s.street_name,", ",a.area_name) as place, i.incident_datetime, c.incidentcat_name, i.incident_status, i.incident_notes from tbl_incident i join tbl_incidentcat c on c.incidentcat_id = i.incident_cat join tbl_street s on s.street_id = i.incident_street join tbl_area a on s.street_area = a.area_id where i.incident_exists = 1');
 
        return response()->json($incidents);
+    }
+
+    public function deleteIncident(Request $request){
+
+        DB::table('tbl_incident')->where('incident_id',$request->id)->update(['incident_exists' => 0]);
+        return response("success");
     }
 }

@@ -14,7 +14,7 @@
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$return['name']}}</div>
-                    <div class="email">Official ID: <strong id="sessionpos">{{$return['position']}}</strong></div>
+                    <div class="email">Official ID: <strong id="sessionpos">{{$return['official']}}</strong></div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
@@ -398,6 +398,16 @@
                         $('#area').selectpicker('refresh');
                         $('#desc').val("");
                         $('#dt').val("");
+                        $.ajax({
+                            type: "get",
+                            url: "/sendMessages",
+                            data: {
+                                incident : response[0].incidentcat_name
+                            },
+                            success: function(data) {
+                                console.log("success"+" "+data);
+                            }
+                        });
                     }
                     });
                 },
@@ -432,20 +442,28 @@
                 
             });
 
+
          $('#incTable tbody').on('click', 'button.delete', function(){
-                var id = table.row($(this).parents('tr')).data().ID;    
-                finid = id;
-                $.ajax({
-                    url: 'incident_delete/'+id,
-                    method: 'POST',
-                    data : {
-                        _token : CSRF_TOKEN,
-                        method: 'DELETE',
-                        id : id
-                    },
-                    dataType : 'json',
-                    success : function(response){
-                        if(response=="success"){
+            var id = table.row($(this).parents('tr')).data().ID;    
+                 swal({
+                    title: "Are you sure?",
+                    text: "You will not be able to recover this record!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Delete",
+                    closeOnConfirm: false
+                }, function (isConfirm) {
+                    if(isConfirm){
+                    $.ajax({
+                        url: '/deleteIncident',
+                        method: 'POST',
+                        data : {
+                            _token : CSRF_TOKEN,
+                            id : id
+                        },
+                        success : function(response){
+                            if(response=="success"){
                                 swal({
                                     title : "Record Deleted",
                                     type : "success",
@@ -453,19 +471,19 @@
                                     showConfirmButton : false
                                 });
                                 table.ajax.reload();
-                        }
-                        else{
-                            swal({
-                                    title : "Record is not Deleted",
-                                    type : "erro",
-                                    timer : 1500,
-                                    showConfirmButton : false
+                            }
+                            else{
+                                swal({
+                                        title : "Record is not Deleted",
+                                        type : "erro",
+                                        timer : 1500,
+                                        showConfirmButton : false
                                 });
+                            }
                         }
+                    });
                     }
-                });
-                
-                
+                });                
             });
 
          $('#updatebtn').on('click', function(){
