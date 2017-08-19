@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 16, 2017 at 07:17 AM
+-- Generation Time: Aug 19, 2017 at 11:54 AM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -23,6 +23,37 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `failed_jobs`
+--
+
+CREATE TABLE `failed_jobs` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `jobs`
+--
+
+CREATE TABLE `jobs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `queue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attempts` tinyint(3) UNSIGNED NOT NULL,
+  `reserved_at` int(10) UNSIGNED DEFAULT NULL,
+  `available_at` int(10) UNSIGNED NOT NULL,
+  `created_at` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `migrations`
 --
 
@@ -31,6 +62,14 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `migrations`
+--
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '2017_08_16_072716_create_jobs_table', 1),
+(2, '2017_08_16_072755_create_failed_jobs_table', 1);
 
 -- --------------------------------------------------------
 
@@ -52,7 +91,8 @@ INSERT INTO `tbl_area` (`area_id`, `area_name`, `area_exists`) VALUES
 (1, 'Area A', 1),
 (2, 'Area B', 1),
 (3, 'Area C', 1),
-(4, 'Area D', 1);
+(4, 'Area D', 1),
+(5, 'sadaddd', 0);
 
 -- --------------------------------------------------------
 
@@ -121,6 +161,9 @@ CREATE TABLE `tbl_caseallocation` (
 INSERT INTO `tbl_caseallocation` (`caseallocation_case`, `caseallocation_official`, `caseallocation_pangkat`) VALUES
 (4, 6, NULL),
 (5, 2, NULL),
+(6, 3, NULL),
+(4, 6, NULL),
+(5, 2, NULL),
 (6, 3, NULL);
 
 -- --------------------------------------------------------
@@ -186,7 +229,8 @@ INSERT INTO `tbl_caseskp` (`caseskp_id`, `caseskp_name`, `caseskp_desc`, `casesk
 (43, 'Intriguing against honor', NULL, 1),
 (44, 'Issuing checks without sufficient funds', NULL, 1),
 (45, 'Fencing of stolen properties if the property involved is not more than P50.00', NULL, 1),
-(46, 'dagdag', NULL, 1);
+(46, 'dagdag', NULL, 1),
+(47, 'Extra Judicial Killings', 'pmataya', 0);
 
 -- --------------------------------------------------------
 
@@ -233,14 +277,15 @@ CREATE TABLE `tbl_clearance` (
 --
 
 INSERT INTO `tbl_clearance` (`clearance_id`, `clearance_type`, `clearance_desc`, `clearance_content`, `clearance_price`, `clearance_exists`) VALUES
-(2, 'Identification', NULL, '<p>TO WHOM IT MAY CONCERN:</p>\n<p>&nbsp; &nbsp; &nbsp; THIS IS TO CERTIFY THAT @name of legal age, Filipino and a bonafide resident of @adress since @year up to present.</p>\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; THIS FURTHER CERTIFIES that the applicant whose name mentioned above shall abide the rules and regulations of the PHILIPPINE ELECTRICAL CODE and such other requirements as may be imposed by the city governing agency/ department and for the purpose of securing a wiring permit/ clearance as requirement for @purpose.</p>\n<p>&nbsp;&nbsp;&nbsp; ISSUED this @date at @brgyaddress</p>', 1, 1),
+(2, 'Identification', NULL, '<p>TO WHOM IT MAY CONCERN:</p>\n<p>&nbsp; &nbsp; &nbsp; THIS IS TO CERTIFY THAT @name of legal age, Filipino and a bonafide resident of @address since @year up to present.</p>\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; THIS FURTHER CERTIFIES that the applicant whose name mentioned above shall abide the rules and regulations of the PHILIPPINE ELECTRICAL CODE and such other requirements as may be imposed by the city governing agency/ department and for the purpose of securing a wiring permit/ clearance as requirement for @purpose.</p>\n<p>&nbsp;&nbsp;&nbsp; ISSUED this @date at @brgyaddress</p>', 1, 1),
 (3, 'Identificdsad', NULL, '<p>TO WHOM IT MAY CONCERN:</p>\n<p>&nbsp; &nbsp; &nbsp; THIS IS TO CERTIFY THAT @name of legal age, Filipino and a bonafide resident of @adress since @year up to present.</p>\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; THIS FURTHER CERTIFIES that the applicant whose name mentioned above shall abide the rules and regulations of the PHILIPPINE ELECTRICAL CODE and such other requirements as may be imposed by the city governing agency/ department and for the purpose of securing a wiring permit/ clearance as requirement for @purpose.</p>\n<p>&nbsp;&nbsp;&nbsp; ISSUED this @date at @brgyaddress</p>', 1, 0),
-(4, 'Electrical Clearance', NULL, '<p>TO WHOM IT MAY CONCERN:</p>\n<p>&nbsp; &nbsp; &nbsp; THIS IS TO CERTIFY THAT @name of legal age, Filipino and a bonafide resident of @adress since @year up to present.</p>\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; THIS FURTHER CERTIFIES that the applicant whose name mentioned above shall abide the rules and regulations of the PHILIPPINE ELECTRICAL CODE and such other requirements as may be imposed by the city governing agency/ department and for the purpose of securing a wiring permit/ clearance as requirement for @purpose.</p>\n<p>&nbsp;&nbsp;&nbsp; ISSUED this @date at @brgyaddress</p>', 3, 1),
+(4, 'Electrical Clearance', NULL, '<p>TO WHOM IT MAY CONCERN:</p>\n<p>&nbsp; &nbsp; &nbsp; THIS IS TO CERTIFY THAT @name of legal age, Filipino and a bonafide resident of @address since @year up to present.</p>\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; THIS FURTHER CERTIFIES that the applicant whose name mentioned above shall abide the rules and regulations of the PHILIPPINE ELECTRICAL CODE and such other requirements as may be imposed by the city governing agency/ department and for the purpose of securing a wiring permit/ clearance as requirement for @purpose.</p>\n<p>&nbsp;&nbsp;&nbsp; ISSUED this @date at @brgyaddress</p>', 3, 1),
 (5, 'Electrical Clearance Trial', NULL, '<p>TO WHOM IT MAY CONCERN:</p>\n<p>&nbsp; &nbsp; &nbsp; THIS IS TO CERTIFY THAT @name of legal age, Filipino and a bonafide resident of @adress since @year up to present.</p>\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; THIS FURTHER CERTIFIES that the applicant whose name mentioned above shall abide the rules and regulations of the PHILIPPINE ELECTRICAL CODE and such other requirements as may be imposed by the city governing agency/ department and for the purpose of securing a wiring permit/ clearance as requirement for @purpose.</p>\n<p>&nbsp;&nbsp;&nbsp; ISSUED this @date at @brgyaddress</p>', 3, 0),
 (6, 'Electrical Clearance Trial 1', NULL, '<p>TO WHOM IT MAY CONCERN:</p>\n<p>&nbsp; &nbsp; &nbsp; THIS IS TO CERTIFY THAT @name of legal age, Filipino and a bonafide resident of @adress since @year up to present.</p>\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; THIS FURTHER CERTIFIES that the applicant whose name mentioned above shall abide the rules and regulations of the PHILIPPINE ELECTRICAL CODE and such other requirements as may be imposed by the city governing agency/ department and for the purpose of securing a wiring permit/ clearance as requirement for @purpose.</p>\n<p>&nbsp;&nbsp;&nbsp; ISSUED this @date at @brgyaddress</p>', 3, 0),
 (7, 'Electrical Clearance Trial 2', NULL, '<p>TO WHOM IT MAY CONCERN:</p>\n<p>&nbsp; &nbsp; &nbsp; THIS IS TO CERTIFY THAT @name of legal age, Filipino and a bonafide resident of @adress since @year up to present.</p>\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; THIS FURTHER CERTIFIES that the applicant whose name mentioned above shall abide the rules and regulations of the PHILIPPINE ELECTRICAL CODE and such other requirements as may be imposed by the city governing agency/ department and for the purpose of securing a wiring permit/ clearance as requirement for @purpose.</p>\n<p>&nbsp;&nbsp;&nbsp; ISSUED this @date at @brgyaddress</p>', 3, 0),
 (8, 'Electrical Clearance 3', NULL, '<p>[0]-&gt;price_id</p>', 3, 0),
-(9, 'BUSINESS CLEARANCE', NULL, '<p><strong>BUSINESS CLEARANCE</strong></p>\n<p>&nbsp;</p>\n<p><strong>THIS IS TO CERTIFY THAT @NAME KEME KEME</strong></p>', 1, 1);
+(9, 'BUSINESS CLEARANCE', NULL, '<p><strong>BUSINESS CLEARANCE</strong></p>\n<p>&nbsp;</p>\n<p><strong>THIS IS TO CERTIFY THAT @NAME KEME KEME</strong></p>', 1, 1),
+(10, 'fsfsafdfsad', NULL, '<p>fsdf</p>', 5, 1);
 
 -- --------------------------------------------------------
 
@@ -261,7 +306,12 @@ INSERT INTO `tbl_clearancerequirement` (`cr_requirement`, `cr_clearance`) VALUES
 (1, 2),
 (1, 4),
 (2, 4),
-(1, 9);
+(1, 9),
+(1, 2),
+(1, 4),
+(2, 4),
+(1, 9),
+(3, 10);
 
 -- --------------------------------------------------------
 
@@ -293,7 +343,7 @@ INSERT INTO `tbl_hearing` (`hearing_id`, `hearing_case`, `hearing_sched`, `heari
 
 CREATE TABLE `tbl_hearingattendance` (
   `ha_hearing` int(11) NOT NULL,
-  `ha_personinvolve` int(11) NOT NULL,
+  `ha_personinvolve` char(11) NOT NULL,
   `ha_attented` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -305,7 +355,7 @@ CREATE TABLE `tbl_hearingattendance` (
 
 CREATE TABLE `tbl_hearingletter` (
   `hl_hearing` int(11) NOT NULL,
-  `hl_personinvolve` int(11) NOT NULL,
+  `hl_personinvolve` char(11) NOT NULL,
   `hl_lettertype` varchar(50) NOT NULL,
   `hl_datereceive` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -351,13 +401,17 @@ CREATE TABLE `tbl_incident` (
 --
 
 INSERT INTO `tbl_incident` (`incident_id`, `incident_datetime`, `incident_statement`, `incident_street`, `incident_long`, `incident_lat`, `incident_cat`, `incident_status`, `incident_notes`, `incident_filed`, `incident_exists`) VALUES
-(1, '2017-08-10 18:00:00', 'Nasunog ang bahay at kumakalat ito', 18, 121.1027744, 14.7170936, 2, 'On-going', NULL, '2017-08-15 14:47:05', 1),
-(3, '2017-08-08 19:00:00', 'Na snatch', 20, 121.1023654, 14.7164064, 1, 'On-going', NULL, '2017-08-15 14:52:36', 1),
-(6, '2017-08-06 22:56:00', 'nasunog', 1, 121.1000973, 14.70639, 2, 'On-going', NULL, '2017-08-15 14:56:24', 1),
-(7, '2017-08-08 23:04:00', 'hala nasunog', 60, 121.0570569, 14.6723236, 2, 'On-going', NULL, '2017-08-15 15:04:30', 1),
-(8, '2017-08-01 23:04:00', 'nasunog ulit', 64, 121.0976902, 14.7148185, 2, 'On-going', NULL, '2017-08-15 15:04:52', 1),
-(9, '2017-08-02 23:46:00', 'xZxZx', 1, 121.1000973, 14.70639, 1, 'On-going', NULL, '2017-08-15 15:46:40', 1),
-(10, '2017-08-02 12:06:00', 'Nakuha ang cellphone ni Jose Rizal habang naglalakad', 18, 121.1027744, 14.7170936, 1, 'On-going', NULL, '2017-08-15 19:23:14', 1);
+(1, '2017-08-09 08:08:00', 'Nakuha ang toyota vios ng dalawang lalaki', 1, 121.1000973, 14.70639, 3, 'On-going', NULL, '2017-08-16 10:09:19', 1),
+(2, '2017-08-04 04:06:00', 'jkjkjjjjjkj', 11, 121.1009307, 14.7092602, 1, 'On-going', NULL, '2017-08-16 10:43:53', 1),
+(3, '2017-08-05 10:00:00', 'kjjhhsdhfjdsh', 4, 121.0987147, 14.7063178, 3, 'On-going', NULL, '2017-08-16 15:50:29', 0),
+(4, '2017-08-02 10:00:00', 'dsadas', 1, 121.1000973, 14.70639, 3, 'On-going', NULL, '2017-08-16 15:50:24', 0),
+(5, '2017-08-02 10:00:00', 'hhdsajhsa', 60, 121.0570569, 14.6723236, 3, 'On-going', NULL, '2017-08-16 15:47:29', 0),
+(6, '2017-08-06 10:00:00', 'dsfj', 30, 121.1042367, 14.707932, 1, 'On-going', NULL, '2017-08-16 15:49:40', 0),
+(7, '2017-08-10 12:00:00', 'iiyyuyuyi', 11, 121.1009307, 14.7092602, 2, 'On-going', NULL, '2017-08-19 08:52:54', 0),
+(8, '2017-08-08 12:00:00', 'mnhkjh', 8, 121.099131, 14.7087201, 1, 'On-going', NULL, '2017-08-17 12:49:19', 1),
+(9, '2017-08-05 08:06:00', 'HHUHHJKJH', 12, 121.0984659, 14.7100759, 3, 'On-going', NULL, '2017-08-17 12:50:19', 1),
+(10, '2017-08-19 07:29:06', 'dsklahdksjkd', 7, 121.0994819, 14.7068915, 2, 'Pending', NULL, '2017-08-19 08:33:22', 1),
+(11, '2017-08-19 12:00:00', 'dsadsad', 64, 121.0976902, 14.7148185, 1, 'Pending', NULL, '2017-08-19 09:25:38', 1);
 
 -- --------------------------------------------------------
 
@@ -377,8 +431,10 @@ CREATE TABLE `tbl_incidentcat` (
 --
 
 INSERT INTO `tbl_incidentcat` (`incidentcat_id`, `incidentcat_name`, `incidentcat_desc`, `incidentcat_exists`) VALUES
-(1, 'Snatching', NULL, 1),
-(2, 'Fire', 'Natural Phenomenon', 1);
+(1, 'Snatching', 'Stealing fastly', 1),
+(2, 'Fire', 'Natural Phenomenon', 1),
+(3, 'Carnapping', NULL, 1),
+(4, 'asfkjkk', 'fdsfjkl', 0);
 
 -- --------------------------------------------------------
 
@@ -414,7 +470,7 @@ CREATE TABLE `tbl_office` (
 
 CREATE TABLE `tbl_official` (
   `official_id` int(11) NOT NULL,
-  `resident_id` int(11) DEFAULT NULL,
+  `resident_id` char(11) DEFAULT NULL,
   `position_id` int(11) DEFAULT NULL,
   `official_exists` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -424,14 +480,14 @@ CREATE TABLE `tbl_official` (
 --
 
 INSERT INTO `tbl_official` (`official_id`, `resident_id`, `position_id`, `official_exists`) VALUES
-(0, 0, 0, 1),
-(1, 1, 1, 1),
-(2, 2, 2, 1),
-(3, 3, 2, 1),
-(4, 4, 2, 1),
-(5, 5, 6, 1),
-(6, 9, 2, 1),
-(7, 18, 5, 1);
+(0, '0', 0, 1),
+(1, 'RES00000001', 1, 1),
+(2, 'RES00000002', 2, 1),
+(3, 'RES00000003', 2, 1),
+(4, 'RES00000004', 2, 1),
+(5, 'RES00000005', 6, 1),
+(6, 'RES00000009', 2, 1),
+(7, 'RES00000018', 5, 1);
 
 -- --------------------------------------------------------
 
@@ -476,7 +532,7 @@ CREATE TABLE `tbl_pangkat` (
 --
 
 CREATE TABLE `tbl_personinvolve` (
-  `personinvolve_resident` int(11) NOT NULL,
+  `personinvolve_resident` char(11) NOT NULL,
   `personinvolve_case` int(11) NOT NULL,
   `personinvolve_type` varchar(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -486,12 +542,18 @@ CREATE TABLE `tbl_personinvolve` (
 --
 
 INSERT INTO `tbl_personinvolve` (`personinvolve_resident`, `personinvolve_case`, `personinvolve_type`) VALUES
-(17, 4, 'R'),
-(14, 4, 'C'),
-(9, 5, 'R'),
-(22, 5, 'C'),
-(9, 6, 'R'),
-(22, 6, 'C');
+('RES00000017', 4, 'R'),
+('RES00000014', 4, 'C'),
+('RES00000009', 5, 'R'),
+('RES00000022', 5, 'C'),
+('RES00000009', 6, 'R'),
+('RES00000022', 6, 'C'),
+('RES00000017', 4, 'R'),
+('RES00000014', 4, 'C'),
+('RES00000009', 5, 'R'),
+('RES00000022', 5, 'C'),
+('RES00000009', 6, 'R'),
+('RES00000022', 6, 'C');
 
 -- --------------------------------------------------------
 
@@ -540,7 +602,9 @@ CREATE TABLE `tbl_price` (
 INSERT INTO `tbl_price` (`price_id`, `price_date`, `price_amt`) VALUES
 (1, '2017-07-29 00:00:00', 100),
 (2, '2017-08-11 00:00:00', 10),
-(3, '2017-08-11 00:00:00', 90);
+(3, '2017-08-11 00:00:00', 90),
+(4, '2017-08-18 00:00:00', 122),
+(5, '2017-08-18 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -550,13 +614,13 @@ INSERT INTO `tbl_price` (`price_id`, `price_date`, `price_amt`) VALUES
 
 CREATE TABLE `tbl_request` (
   `request_id` int(11) NOT NULL,
-  `request_resident` int(11) NOT NULL,
+  `request_resident` char(11) NOT NULL,
   `request_clearance` int(11) NOT NULL,
   `request_purpose` text NOT NULL,
   `request_date` date NOT NULL,
   `request_expiry` date NOT NULL,
   `request_status` varchar(50) NOT NULL,
-  `request_doc` text NOT NULL
+  `request_doc` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -578,7 +642,9 @@ CREATE TABLE `tbl_requirement` (
 
 INSERT INTO `tbl_requirement` (`requirement_id`, `requirement_name`, `requirement_desc`, `requirement_exists`) VALUES
 (1, 'Picture', 'A 1x1 picture', 1),
-(2, 'House Blueprint', 'Original or Photocopy of the house blueprint', 0);
+(2, 'House Blueprint', 'Original or Photocopy of the house blueprint', 0),
+(3, 'Business Permit', 'Business Permit from City', 1),
+(4, 'lalala', 'laalalal', 0);
 
 -- --------------------------------------------------------
 
@@ -587,7 +653,7 @@ INSERT INTO `tbl_requirement` (`requirement_id`, `requirement_name`, `requiremen
 --
 
 CREATE TABLE `tbl_resident` (
-  `resident_id` int(11) NOT NULL,
+  `resident_id` char(11) NOT NULL,
   `resident_fname` varchar(50) DEFAULT NULL,
   `resident_mname` varchar(50) DEFAULT NULL,
   `resident_lname` varchar(50) DEFAULT NULL,
@@ -598,6 +664,7 @@ CREATE TABLE `tbl_resident` (
   `resident_street` int(11) DEFAULT NULL,
   `resident_yearstayed` int(4) DEFAULT NULL,
   `resident_image` text,
+  `resident_allowmessage` tinyint(1) DEFAULT NULL,
   `resident_exists` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -605,23 +672,37 @@ CREATE TABLE `tbl_resident` (
 -- Dumping data for table `tbl_resident`
 --
 
-INSERT INTO `tbl_resident` (`resident_id`, `resident_fname`, `resident_mname`, `resident_lname`, `resident_bdate`, `resident_gender`, `resident_contact`, `resident_hno`, `resident_street`, `resident_yearstayed`, `resident_image`, `resident_exists`) VALUES
-(0, 'admin', 'admin', 'admin', NULL, NULL, NULL, NULL, NULL, NULL, 'uploads/payatas.png', 1),
-(1, 'KZ', '', 'Tandingan', '1986-06-01', 'F', '+639992875678', 'Blk. 23 Lot 5 Phase 3 ', 1, 1996, 'uploads/16700466_1558096797537763_2979254293090447762_o.jpg', 1),
-(2, 'Racidon', '', 'Bernarte', '1984-04-08', 'M', '+639999805678', '21 ', 15, 1985, '', 1),
-(3, 'Silvia', '', 'Ambag', '1980-03-15', 'F', '+639292003741', 'Blk. 19 Lot 23 Phase 4 ', 8, 1999, '', 1),
-(4, 'Iris Rowena', '', 'Bernardo', '1984-01-07', 'F', '+639181234568', 'Blk. 3 Lot 5 ', 4, 1984, '', 1),
-(5, 'Emejidio', NULL, 'Gepila', '1946-07-21', 'M', '', 'Lot 32', 8, 1946, '', 1),
-(7, 'Daizylyn', '', 'Palilo', '1996-02-28', 'F', '+639980289574', 'Lot 1', 6, 1996, '', 1),
-(8, 'Rolan', '', 'Malvar', '1952-12-23', 'M', '+639982746475', 'Blk. 2 Lot 15 ', 41, 1961, '', 1),
-(9, 'Klein', 'Aguinaldo', 'Soriano', '1999-01-13', 'M', '09129856738', '34', 2, 2000, 'uploads/human.png', 1),
-(12, 'Victoria', 'Tecson', 'Caringal', '1994-07-13', 'F', '09782197329', '983', 52, 1995, 'uploads/human.png', 1),
-(14, 'Bill', '', 'Ambag', '1962-11-22', 'M', '+639982746476', 'Blk. 1 Lot 12 ', 39, 1987, '', 1),
-(15, 'Redentor', '', 'Pablo', '1973-04-09', 'M', '+639982236476', '13 ', 21, 1979, '', 1),
-(16, 'Maria Elena', '', 'Adarna', '1989-08-01', 'F', '+639981236476', 'Blk. 12 Lot 1 ', 18, 1989, '', 1),
-(17, 'Mark', '', 'Zuckerberg', '1992-07-20', 'F', '+639980982476', '29 ', 29, 1994, '', 1),
-(18, 'Yeng', NULL, 'Constantino', '1989-05-21', 'F', NULL, 'AAA', 63, 1989, 'uploads/13895409_1755819031353061_189628979544695294_n.png', 1),
-(22, 'Pau', NULL, 'Duque', '1992-08-24', 'F', NULL, 'sssss', 63, 2017, 'uploads/human.png', 1);
+INSERT INTO `tbl_resident` (`resident_id`, `resident_fname`, `resident_mname`, `resident_lname`, `resident_bdate`, `resident_gender`, `resident_contact`, `resident_hno`, `resident_street`, `resident_yearstayed`, `resident_image`, `resident_allowmessage`, `resident_exists`) VALUES
+('0', 'admin', 'admin', 'admin', NULL, NULL, NULL, NULL, NULL, NULL, 'uploads/payatas.png', NULL, 1),
+('RES00000001', 'KZ', '', 'Tandingan', '1986-06-01', 'F', '+639988693560', 'Blk. 23 Lot 5 Phase 3 ', 1, 1996, 'uploads/16700466_1558096797537763_2979254293090447762_o.jpg', 0, 1),
+('RES00000002', 'Racidon', '', 'Bernarte', '1984-04-08', 'M', NULL, '21 ', 15, 1985, 'uploads/human.png', NULL, 1),
+('RES00000003', 'Silvia', '', 'Ambag', '1980-03-15', 'F', NULL, 'Blk. 19 Lot 23 Phase 4 ', 8, 1999, 'uploads/human.png', NULL, 1),
+('RES00000004', 'Iris Rowena', '', 'Bernardo', '1984-01-07', 'F', NULL, 'Blk. 3 Lot 5 ', 4, 1984, 'uploads/human.png', NULL, 1),
+('RES00000005', 'Emejidio', NULL, 'Gepila', '1946-07-21', 'M', NULL, 'Lot 32', 8, 1946, 'uploads/human.png', NULL, 1),
+('RES00000007', 'Daizylyn', '', 'Palilo', '1996-02-28', 'F', NULL, 'Lot 1', 6, 1996, 'uploads/human.png', NULL, 1),
+('RES00000008', 'Rolan', '', 'Malvar', '1952-12-23', 'M', NULL, 'Blk. 2 Lot 15 ', 41, 1961, 'uploads/human.png', NULL, 1),
+('RES00000009', 'Klein', 'Aguinaldo', 'Soriano', '1999-01-13', 'M', NULL, '34', 2, 2000, 'uploads/human.png', NULL, 1),
+('RES00000012', 'Victoria', 'Tecson', 'Caringal', '1994-07-13', 'F', NULL, '983', 52, 1995, 'uploads/human.png', NULL, 0),
+('RES00000014', 'Bill', '', 'Ambag', '1962-11-22', 'M', NULL, 'Blk. 1 Lot 12 ', 39, 1987, 'uploads/human.png', NULL, 1),
+('RES00000015', 'Redentor', '', 'Pablo', '1973-04-09', 'M', '+639985543901', '13 ', 21, 1979, 'uploads/human.png', 0, 1),
+('RES00000016', 'Maria Elena', '', 'Adarna', '1989-08-01', 'F', NULL, 'Blk. 12 Lot 1 ', 18, 1989, 'uploads/human.png', NULL, 1),
+('RES00000017', 'Mark', '', 'Zuckerberg', '1992-07-20', 'F', '+639997078154', '29 ', 29, 1994, 'uploads/human.png', 1, 1),
+('RES00000018', 'Yeng', NULL, 'Constantino', '1989-05-21', 'F', NULL, 'AAA', 63, 1989, 'uploads/13895409_1755819031353061_189628979544695294_n.png', NULL, 1),
+('RES00000022', 'Pau', NULL, 'Duque', '1992-08-24', 'F', '+639292003741', 'sssss', 63, 2017, 'uploads/human.png', 1, 1),
+('RES00000025', 'Judy Anne', NULL, 'Jacobo', '1999-10-07', 'F', '+639123456789', 'Lot 19. Blk. 10', 41, 2010, 'uploads/human.png', NULL, 1),
+('RES00000026', 'Joviequel', NULL, 'Dela Cruz', '1999-12-18', 'F', '+639098765432', '347 Grand Villas', 64, 1999, 'uploads/human.png', NULL, 1),
+('RES00000027', 'Joviequel', NULL, 'Dela Cruz', '1999-12-18', 'F', '+639098765432', '347 Grand Villas', 64, 1999, 'uploads/human.png', NULL, 1);
+
+--
+-- Triggers `tbl_resident`
+--
+DELIMITER $$
+CREATE TRIGGER `tbl_resident_insert` BEFORE INSERT ON `tbl_resident` FOR EACH ROW BEGIN
+  INSERT INTO tbl_resident_seq VALUES (NULL);
+  SET NEW.resident_id = CONCAT('RES', LPAD(LAST_INSERT_ID(), 8, '0'));
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -631,12 +712,40 @@ INSERT INTO `tbl_resident` (`resident_id`, `resident_fname`, `resident_mname`, `
 
 CREATE TABLE `tbl_residentuser` (
   `resident_username` varchar(30) NOT NULL,
-  `resident_password` varchar(30) NOT NULL,
-  `resident_login` datetime NOT NULL,
-  `resident_long` double NOT NULL,
-  `resident_lat` double NOT NULL,
-  `resident_id` int(11) NOT NULL
+  `resident_password` char(40) NOT NULL,
+  `resident_login` datetime DEFAULT NULL,
+  `resident_long` double DEFAULT NULL,
+  `resident_lat` double DEFAULT NULL,
+  `resident_id` char(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_residentuser`
+--
+
+INSERT INTO `tbl_residentuser` (`resident_username`, `resident_password`, `resident_login`, `resident_long`, `resident_lat`, `resident_id`) VALUES
+('markfb', 'f0db825feca71e649218fc6d2539c6812c42802e', NULL, NULL, NULL, 'RES00000017');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_resident_seq`
+--
+
+CREATE TABLE `tbl_resident_seq` (
+  `id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_resident_seq`
+--
+
+INSERT INTO `tbl_resident_seq` (`id`) VALUES
+(23),
+(24),
+(25),
+(26),
+(27);
 
 -- --------------------------------------------------------
 
@@ -707,7 +816,7 @@ INSERT INTO `tbl_street` (`street_id`, `street_name`, `street_area`, `street_exi
 (36, 'Graceful Street', 3, 1),
 (37, 'Livingful Street', 3, 1),
 (38, 'Clover Street', 3, 1),
-(39, 'Cherry Street', 3, 1),
+(39, 'Cherry Street', 2, 1),
 (40, 'Aspen Street', 3, 1),
 (41, 'Apple Street', 3, 1),
 (42, 'Cedar Street', 3, 1),
@@ -732,11 +841,25 @@ INSERT INTO `tbl_street` (`street_id`, `street_name`, `street_area`, `street_exi
 (61, 'Banawe Street', 4, 1),
 (62, 'Samapaguita Street', 3, 1),
 (63, 'Champaca Street', 2, 1),
-(64, 'Manila Gravel Pit Rd', 4, 1);
+(64, 'Manila Gravel Pit Rd', 4, 1),
+(65, 'Yehey Street', 2, 0);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `jobs`
+--
+ALTER TABLE `jobs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `jobs_queue_reserved_at_index` (`queue`(191),`reserved_at`);
 
 --
 -- Indexes for table `migrations`
@@ -921,7 +1044,14 @@ ALTER TABLE `tbl_resident`
 -- Indexes for table `tbl_residentuser`
 --
 ALTER TABLE `tbl_residentuser`
-  ADD PRIMARY KEY (`resident_username`);
+  ADD PRIMARY KEY (`resident_username`),
+  ADD KEY `resident_iduser` (`resident_id`);
+
+--
+-- Indexes for table `tbl_resident_seq`
+--
+ALTER TABLE `tbl_resident_seq`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `tbl_settlement`
@@ -942,15 +1072,25 @@ ALTER TABLE `tbl_street`
 --
 
 --
+-- AUTO_INCREMENT for table `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `jobs`
+--
+ALTER TABLE `jobs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `tbl_area`
 --
 ALTER TABLE `tbl_area`
-  MODIFY `area_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `area_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `tbl_case`
 --
@@ -960,7 +1100,7 @@ ALTER TABLE `tbl_case`
 -- AUTO_INCREMENT for table `tbl_caseskp`
 --
 ALTER TABLE `tbl_caseskp`
-  MODIFY `caseskp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `caseskp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 --
 -- AUTO_INCREMENT for table `tbl_casestage`
 --
@@ -970,7 +1110,7 @@ ALTER TABLE `tbl_casestage`
 -- AUTO_INCREMENT for table `tbl_clearance`
 --
 ALTER TABLE `tbl_clearance`
-  MODIFY `clearance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `clearance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `tbl_hearing`
 --
@@ -980,12 +1120,12 @@ ALTER TABLE `tbl_hearing`
 -- AUTO_INCREMENT for table `tbl_incident`
 --
 ALTER TABLE `tbl_incident`
-  MODIFY `incident_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `incident_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `tbl_incidentcat`
 --
 ALTER TABLE `tbl_incidentcat`
-  MODIFY `incidentcat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `incidentcat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `tbl_minutes`
 --
@@ -1000,7 +1140,7 @@ ALTER TABLE `tbl_official`
 -- AUTO_INCREMENT for table `tbl_officialuser`
 --
 ALTER TABLE `tbl_officialuser`
-  MODIFY `official_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `official_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- AUTO_INCREMENT for table `tbl_pangkat`
 --
@@ -1015,17 +1155,22 @@ ALTER TABLE `tbl_position`
 -- AUTO_INCREMENT for table `tbl_price`
 --
 ALTER TABLE `tbl_price`
-  MODIFY `price_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `price_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `tbl_request`
+--
+ALTER TABLE `tbl_request`
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `tbl_requirement`
 --
 ALTER TABLE `tbl_requirement`
-  MODIFY `requirement_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `requirement_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
--- AUTO_INCREMENT for table `tbl_resident`
+-- AUTO_INCREMENT for table `tbl_resident_seq`
 --
-ALTER TABLE `tbl_resident`
-  MODIFY `resident_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+ALTER TABLE `tbl_resident_seq`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 --
 -- AUTO_INCREMENT for table `tbl_settlement`
 --
@@ -1035,7 +1180,7 @@ ALTER TABLE `tbl_settlement`
 -- AUTO_INCREMENT for table `tbl_street`
 --
 ALTER TABLE `tbl_street`
-  MODIFY `street_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `street_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 --
 -- Constraints for dumped tables
 --
@@ -1079,14 +1224,14 @@ ALTER TABLE `tbl_hearing`
 --
 ALTER TABLE `tbl_hearingattendance`
   ADD CONSTRAINT `ha_hearing` FOREIGN KEY (`ha_hearing`) REFERENCES `tbl_hearing` (`hearing_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `ha_personinvolve` FOREIGN KEY (`ha_personinvolve`) REFERENCES `tbl_personinvolve` (`personinvolve_resident`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `ha_personinvolve` FOREIGN KEY (`ha_personinvolve`) REFERENCES `tbl_personinvolve` (`personinvolve_resident`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_hearingletter`
 --
 ALTER TABLE `tbl_hearingletter`
   ADD CONSTRAINT `hl_hearing` FOREIGN KEY (`hl_hearing`) REFERENCES `tbl_hearing` (`hearing_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `hl_personinvolve` FOREIGN KEY (`hl_personinvolve`) REFERENCES `tbl_personinvolve` (`personinvolve_resident`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `hl_personinvolve` FOREIGN KEY (`hl_personinvolve`) REFERENCES `tbl_personinvolve` (`personinvolve_resident`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_hs`
@@ -1119,33 +1264,39 @@ ALTER TABLE `tbl_office`
 --
 ALTER TABLE `tbl_official`
   ADD CONSTRAINT `position_id` FOREIGN KEY (`position_id`) REFERENCES `tbl_position` (`position_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `resident_id` FOREIGN KEY (`resident_id`) REFERENCES `tbl_resident` (`resident_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `resident_id` FOREIGN KEY (`resident_id`) REFERENCES `tbl_resident` (`resident_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_officialuser`
 --
 ALTER TABLE `tbl_officialuser`
-  ADD CONSTRAINT `official_id` FOREIGN KEY (`official_id`) REFERENCES `tbl_official` (`official_id`) ON DELETE NO ACTION;
+  ADD CONSTRAINT `official_id` FOREIGN KEY (`official_id`) REFERENCES `tbl_official` (`official_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_personinvolve`
 --
 ALTER TABLE `tbl_personinvolve`
   ADD CONSTRAINT `personinvolve_case` FOREIGN KEY (`personinvolve_case`) REFERENCES `tbl_case` (`case_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `personinvolve_resident` FOREIGN KEY (`personinvolve_resident`) REFERENCES `tbl_resident` (`resident_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `personinvolve_resident` FOREIGN KEY (`personinvolve_resident`) REFERENCES `tbl_resident` (`resident_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_request`
 --
 ALTER TABLE `tbl_request`
   ADD CONSTRAINT `request_clearance` FOREIGN KEY (`request_clearance`) REFERENCES `tbl_clearance` (`clearance_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `request_resident` FOREIGN KEY (`request_resident`) REFERENCES `tbl_resident` (`resident_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `request_resident` FOREIGN KEY (`request_resident`) REFERENCES `tbl_resident` (`resident_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_resident`
 --
 ALTER TABLE `tbl_resident`
   ADD CONSTRAINT `resident_street` FOREIGN KEY (`resident_street`) REFERENCES `tbl_street` (`street_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `tbl_residentuser`
+--
+ALTER TABLE `tbl_residentuser`
+  ADD CONSTRAINT `resident_iduser` FOREIGN KEY (`resident_id`) REFERENCES `tbl_resident` (`resident_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `tbl_settlement`
