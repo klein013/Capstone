@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Maintenance | Position</title>
+	<title>Maintenance | Area</title>
 	@include('admin.layout.head');
 	<!-- JQuery DataTable Css -->
     <link href="{{asset('plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css')}}" rel="stylesheet">
@@ -12,7 +12,7 @@
             <!-- User Info -->
             <div class="user-info">
                 <div class="image">
-                    <img src="../{{$return['image']}}" width="48" height="48" alt="User" />
+                    <img src="{{asset($return['image'])}}" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$return['name']}}</div>
@@ -45,6 +45,7 @@
             @elseif($return['position']==7)
                 @include('admin.aside_cashier');
             @endif
+    </aside>
             
 	  <section class="content">
         <div class="container-fluid">
@@ -65,10 +66,11 @@
             </div>
             </div>
             <!-- Basic Table -->
-            <div class="col-lg-offset-11 col-md-offset-2 col-sm-offset-4 col-xs-offset-5">
-                	<a href="javascript:void(0)" data-toggle="tooltip" title="Add Barangay Area"><button type="button" class="btn bg-teal btn-circle-lg waves-effect waves-circle waves-float" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i></button></a>
-                </div>
-            <br>
+            <div class="row clearfix">
+                                    <div class="col-sm-2 col-sm-offset-10">
+                                        <button type="button" class="btn bg-teal btn-lg waves-effect waves-float pull-right" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i>Add area</button>
+                                    </div>
+                                </div>            <br>
             <div class="row">    
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 	<div class="card">
@@ -146,7 +148,6 @@
                         </div>
                         <div class="modal-body">
                             <form id="updatePositionform">
-                                {{ csrf_field() }}
                                 <label for="Position">Area Name</label>
                                 <div class="form-group">
                                     <div class="form-line">
@@ -172,7 +173,7 @@
             var table = $('#PosTable').DataTable({
                 "bSort": false,
                 "ajax" : {
-                    "url": "/maintenance_area/getAreas",
+                    "url": "/maintenance/barangay/area/getAreas",
                     "dataSrc" : function (json) {
                         var return_data = new Array();
                         for(var i=0;i< json.length; i++){
@@ -210,7 +211,7 @@
                 },
                 submitHandler: function(form){
                     $.ajax({
-                    url : '/maintenance_area',
+                    url : '/maintenance/barangay/area',
                     method : 'POST',
                     data : {
                         _token : CSRF_TOKEN,
@@ -271,7 +272,7 @@
                 function(isConfirm) {
                     if (isConfirm){
                         $.ajax({
-                            url : 'maintenance_area',
+                            url : '/maintenance/barangay/area',
                             method : 'POST',
                             data : {
                                 _token : CSRF_TOKEN,
@@ -320,7 +321,7 @@
                 var id = table.row($(this).parents('tr')).data();
                 finid = id.ID;
                 $.ajax({
-                    url: 'maintenance_area/'+id.ID,
+                    url: '/maintenance/barangay/area/'+id.ID,
                     method: 'GET',
                     data: {
                         id : id.ID
@@ -342,7 +343,7 @@
                 },
                 submitHandler: function(form){
                     $.ajax({
-                    url : '/maintenance_area/update',
+                    url : '/maintenance/barangay/area/update',
                     method : 'POST',
                     data : {
                         _token : CSRF_TOKEN,
@@ -374,16 +375,5 @@
             });
         });
     </script>
-    <!-- Jquery DataTable Plugin Js -->
-    
-    <!--<script src="{{asset('plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js')}}"></script>
-    <script src="{{asset('plugins/jquery-datatable/extensions/export/buttons.flash.min.js')}}"></script>
-    <script src="{{asset('plugins/jquery-datatable/extensions/export/jszip.min.js')}}"></script>
-    <script src="{{asset('plugins/jquery-datatable/extensions/export/pdfmake.min.js')}}"></script>
-    <script src="{{asset('plugins/jquery-datatable/extensions/export/vfs_fonts.js')}}"></script>
-    <script src="{{asset('plugins/jquery-datatable/extensions/export/buttons.html5.min.js')}}"></script>
-    <script src="{{asset('plugins/jquery-datatable/extensions/export/buttons.print.min.js')}}"></script>
-    <script src="{{asset('js/pages/tables/jquery-datatable.js')}}"></script>
-    <script src="{{asset('js/pages/tables/jquery-datatable.min.js')}}"></script>-->
 </body>
 </html>

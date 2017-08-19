@@ -12,7 +12,7 @@
             <!-- User Info -->
             <div class="user-info">
                 <div class="image">
-                    <img src="../{{$return['image']}}" width="48" height="48" alt="User" />
+                    <img src="{{asset($return['image'])}}" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$return['name']}}</div>
@@ -186,7 +186,7 @@
             var table = $('#PosTable').DataTable({
                 "bSort": false,
                 "ajax" : {
-                    "url": "/maintenance_requirement/getRequirements",
+                    "url": "/maintenance/clearance/requirement/getRequirements",
                     "dataSrc" : function (json) {
                         var return_data = new Array();
                         for(var i=0;i< json.length; i++){
@@ -230,7 +230,7 @@
                 },
                 submitHandler: function(form){
                     $.ajax({
-                    url : '/maintenance_requirement',
+                    url : '/maintenance/clearance/requirement',
                     method : 'POST',
                     data : {
                         _token : CSRF_TOKEN,
@@ -292,7 +292,7 @@
                 function(isConfirm) {
                     if (isConfirm){
                         $.ajax({
-                            url : 'maintenance_requirement',
+                            url : '/maintenance/clearance/requirement',
                             method : 'POST',
                             data : {
                                 _token : CSRF_TOKEN,
@@ -341,7 +341,7 @@
                 var id = table.row($(this).parents('tr')).data();
                 finid = id.ID;
                 $.ajax({
-                    url: 'maintenance_requirement/'+id.ID,
+                    url: '/maintenance/clearance/requirement/'+id.ID,
                     method: 'GET',
                     data: {
                         id : id.ID
@@ -370,7 +370,7 @@
                 },
                 submitHandler: function(form){
                     $.ajax({
-                    url : '/maintenance_requirement/update',
+                    url : '/maintenance/clearance/requirement/update',
                     method : 'POST',
                     data : {
                         _token : CSRF_TOKEN,
@@ -414,16 +414,5 @@
             });
         });
     </script>
-    <!-- Jquery DataTable Plugin Js -->
-    
-    <!--<script src="{{asset('plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js')}}"></script>
-    <script src="{{asset('plugins/jquery-datatable/extensions/export/buttons.flash.min.js')}}"></script>
-    <script src="{{asset('plugins/jquery-datatable/extensions/export/jszip.min.js')}}"></script>
-    <script src="{{asset('plugins/jquery-datatable/extensions/export/pdfmake.min.js')}}"></script>
-    <script src="{{asset('plugins/jquery-datatable/extensions/export/vfs_fonts.js')}}"></script>
-    <script src="{{asset('plugins/jquery-datatable/extensions/export/buttons.html5.min.js')}}"></script>
-    <script src="{{asset('plugins/jquery-datatable/extensions/export/buttons.print.min.js')}}"></script>
-    <script src="{{asset('js/pages/tables/jquery-datatable.js')}}"></script>
-    <script src="{{asset('js/pages/tables/jquery-datatable.min.js')}}"></script>-->
 </body>
 </html>

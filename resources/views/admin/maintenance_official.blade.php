@@ -4,8 +4,6 @@
 	<title>Maintenance | Officials</title>
 	@include('admin.layout.head');
     <link href="{{asset('plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css')}}" rel="stylesheet">
-    <link href="{{asset('bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css')}}" rel="stylesheet" />
-
 </head>
 <body class="theme-blue-grey">
 	@include('admin.layout.nav');
@@ -13,7 +11,7 @@
             <!-- User Info -->
           <div class="user-info">
                 <div class="image">
-                    <img src="../{{$return['image']}}" width="48" height="48" alt="User" />
+                    <img src="{{asset($return['image'])}}" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$return['name']}}</div>
@@ -66,9 +64,9 @@
             </div>
             </div>
             <!-- Basic Table -->
-            <div class="row clearfix">
-                                    <div class="col-lg-offset-11 col-md-offset-2 col-sm-offset-4 col-xs-offset-5">
-                                        <a href="javacript:void(0);" data-toggle="tooltip" title="Add Barangay Official"><button type="button" class="btn bg-teal btn-circle-lg waves-effect waves-circle waves-float" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i></button></a>
+           <div class="row clearfix">
+                                    <div class="col-sm-2 col-sm-offset-10">
+                                        <button type="button" class="btn bg-teal btn-lg waves-effect waves-float pull-right" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i>Add Official</button>
                                     </div>
                                 </div>
                                 <br>
@@ -403,16 +401,8 @@
                     </div>
                 </div>
     @include('admin.layout.scripts');
-    <!-- Jquery DataTable Plugin Js -->
     <script src="{{asset('plugins/jquery-datatable/jquery.dataTables.js')}}"></script>
     <script src="{{asset('plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js')}}"></script>
-    <!--<script src="{{asset('plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js')}}"></script>
-    <script src="{{asset('plugins/jquery-datatable/extensions/export/buttons.flash.min.js')}}"></script>
-    <script src="{{asset('plugins/jquery-datatable/extensions/export/jszip.min.js')}}"></script>
-    <script src="{{asset('plugins/jquery-datatable/extensions/export/pdfmake.min.js')}}"></script>
-    <script src="{{asset('plugins/jquery-datatable/extensions/export/vfs_fonts.js')}}"></script>
-    <script src="{{asset('plugins/jquery-datatable/extensions/export/buttons.html5.min.js')}}"></script>
-    <script src="{{asset('plugins/jquery-datatable/extensions/export/buttons.print.min.js')}}"></script>-->
     <script>
         $(document).ready(function(){
 
@@ -424,7 +414,7 @@
             var table = $('#OfficialTable').DataTable({
                 "bSort": false,
                 "ajax" : {
-                    "url": "/maintenance_official/get",
+                    "url": "/maintenance/barangay/official/get",
                     "dataSrc" : function (json) {
                         var return_data = new Array();
                         for(var i=0;i< json.length; i++){
@@ -437,7 +427,7 @@
                             }
                             return_data.push({
                             'ID' : json[i].official_id,
-                            'Image'  : '<img src="../' + json[i].resident_image +'" width="40px" height="40px">',
+                            'Image'  : '<img src="../../' + json[i].resident_image +'" width="40px" height="40px">',
                             'Name' : json[i].name,
                             'Bdate' : json[i].resident_bdate,
                             'Gender' : sex,
@@ -579,7 +569,7 @@
                     formData.append('year', $('#year').val());
                     var pos = $('#position option:selected').text();
                     $.ajax({
-                        url : '/maintenance_official',
+                        url : '/maintenance/barangay/official',
                         method : 'POST',
                         data : formData,
                         processData : false,
@@ -634,7 +624,7 @@
                 var id = table.row($(this).parents('tr')).data().ID;    
                 finid = id;
                 $.ajax({
-                    url: 'maintenance_official/'+id,
+                    url: 'maintenance/barangay/official/'+id,
                     method: 'GET',
                     data : {
                         _token : CSRF_TOKEN,
@@ -691,7 +681,7 @@
                 function(isConfirm) {
                     if (isConfirm){
                         $.ajax({
-                            url : 'maintenance_official/'+id,
+                            url : 'maintenance/barangay/official/'+id,
                             method : 'POST',
                             data : {
                                 _token : CSRF_TOKEN,
@@ -805,7 +795,7 @@
                     formData.append('pos', $('#updateposition').val());
                     formData.append('year', $('#updateyear').val());
                     $.ajax({
-                        url : '/maintenance_official/update',
+                        url : '/maintenance/barangay/official/update',
                         method : 'POST',
                         data : formData,
                         processData : false,

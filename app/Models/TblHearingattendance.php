@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 17 Aug 2017 13:05:57 +0000.
+ * Date: Sat, 19 Aug 2017 06:24:38 +0000.
  */
 
 namespace App\Models;
@@ -13,7 +13,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * Class TblHearingattendance
  * 
  * @property int $ha_hearing
- * @property int $ha_personinvolve
+ * @property string $ha_personinvolve
  * @property bool $ha_attented
  * 
  * @property \App\Models\TblHearing $tbl_hearing
@@ -29,7 +29,6 @@ class TblHearingattendance extends Eloquent
 
 	protected $casts = [
 		'ha_hearing' => 'int',
-		'ha_personinvolve' => 'int',
 		'ha_attented' => 'bool'
 	];
 

@@ -10,7 +10,7 @@
             <!-- User Info -->
             <div class="user-info">
                 <div class="image">
-                    <img src="../{{$return['image']}}" width="48" height="48" alt="User" />
+                    <img src="{{asset($return['image'])}}" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$return['name']}}</div>
@@ -64,10 +64,18 @@
             </div>
             
             <div class="row clearfix">
+                
                                     <div class="col-sm-2 col-sm-offset-10">
                                         <button type="button" class="btn bg-teal btn-lg waves-effect waves-float pull-right" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i>Add incident</button>
                                     </div>
                                 </div>
+            <div class="row clearfix">
+                <div class="col-sm-12" style="display: none;" id="btndisp">
+                <span>
+                    <button type="button" class="btn bg-teal btn-lg waves-effect waves-float pull-left" id="newinc"><i class="material-icons">refresh</i>New Incidents Found</button>
+                </span>
+                </div>
+            </div>
                                 <br>
             <!-- Basic Table -->
             <div class="row">    
@@ -303,16 +311,25 @@
                 maxDate: moment()
         });
 
+        var tblctr = 0; 
         var table = $('#incTable').DataTable({
             bSort: false,
             "ajax" : {
                     "url": "/getIncident",
                     "dataSrc" : function (json) {
                         var return_data = new Array();
+                        tblctr = json.length;
                         for(var i=0;i< json.length; i++){
                             var notes = json[i].incident_notes;
                             if(notes==null){
                                 notes="";
+                            }
+                            var button = "";
+                            if(json[i].incident_status=="Pending"){
+                                button = "<button type = 'button' class = 'approve btn btn-space bg-orange waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Approve Record'><i class='material-icons'>done</i></button><button type = 'button' class = 'view btn btn-space bg-green waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='View Record'><i class='material-icons'>view_module</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button>"
+                            }
+                            else{
+                                button = "<button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'view btn btn-space bg-green waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='View Record'><i class='material-icons'>view_module</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button>"
                             }
                             return_data.push({
                             'ID' : json[i].incident_id,
@@ -321,7 +338,7 @@
                             'Desc' : json[i].incidentcat_name,
                             'Status': json[i].incident_status,
                             'Notes': notes,
-                            'Button': "<button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'view btn btn-space bg-green waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='View Record'><i class='material-icons'>view_module</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button>"
+                            'Button': button
                             });
                         }     
                         return return_data;
@@ -340,13 +357,13 @@
 
         var finid;
 
-        $.validator.addMethod("alpha", function(value, element) {
-                return this.optional(element) || value.trim() == value.match(/^[a-zA-Z .,]*$/);
-            },"Letters, spaces, period and comma only");
+            $.validator.addMethod("alpha", function(value, element) {
+                    return this.optional(element) || value.trim() == value.match(/^[a-zA-Z .,]*$/);
+                },"Letters, spaces, period and comma only");
 
-            $.validator.addMethod("letterwithbasicpunc", function(value, element) {
-                return this.optional(element) || value.trim() == value.match(/^[a-zA-Z0-9 !()?.,]*$/);
-            },"Letters and numbers with basic punctuations only");            
+                $.validator.addMethod("letterwithbasicpunc", function(value, element) {
+                    return this.optional(element) || value.trim() == value.match(/^[a-zA-Z0-9 !()?.,]*$/);
+                },"Letters and numbers with basic punctuations only");            
 
             $('#incident').validate({
                 rules: {
@@ -357,8 +374,7 @@
                         required: true
                     },
                     datetime:{
-                        required: true,
-                        dateISOF: true
+                        required: true
                     },
                     cat:{
                         required: true
@@ -384,6 +400,7 @@
                     dataType : 'json',
                     success : function(response){
                         $('#defaultModal').modal('toggle');
+                        tblctr++;
                         var newRow = "<tr><td>"+response[0].incident_id+"</td><td>"+response[0].place+"</td><td>"+response[0].incident_datetime+"</td><td>"+response[0].incidentcat_name+"</td><td>"+response[0].incident_status+"</td><td>"+response[0].incident_notes+"</td><td><button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'view btn btn-space bg-green waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='View Record'><i class='material-icons'>view_module</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button></td></tr>";
                         table.row.add($(newRow)).draw();
                         swal({
@@ -507,6 +524,25 @@
                 }
             })
          });
+
+        function checkTasks(){
+            setTimeout(checkTasks, 10000);
+            $.ajax({
+                url: '/countincident',
+                method: 'GET',
+                success: function(response){
+                    if(response!=tblctr){
+                        tblctr = response;
+                        $('#btndisp').toggle();
+                    }
+                }
+            })
+        }
+        checkTasks();
+
+        $('#newinc').on('click', function(){
+            table.ajax.reload();
+        })
 
     });
 </script>

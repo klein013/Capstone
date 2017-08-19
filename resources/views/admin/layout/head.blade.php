@@ -48,9 +48,9 @@ img.avatar {
    src: url(iconfont/MaterialIcons-Regular.eot); /* For IE6-8 */
    src: local('Material Icons'),
         local('MaterialIcons-Regular'),
-        url(iconfont/MaterialIcons-Regular.woff2) format('woff2'),
-        url(iconfont/MaterialIcons-Regular.woff) format('woff'),
-        url(iconfont/MaterialIcons-Regular.ttf) format('truetype');
+        url({{asset('iconfont/MaterialIcons-Regular.woff2')}}) format('woff2'),
+        url({{asset('iconfont/MaterialIcons-Regular.woff')}}) format('woff'),
+        url({{asset('iconfont/MaterialIcons-Regular.woff2')}}) format('truetype');
 }
 
 .material-icons {

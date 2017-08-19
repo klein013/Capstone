@@ -111,13 +111,13 @@ class ClearanceController extends Controller
 
     public function show($id)
     {
-        $details = DB::select('select c.clearance_type, c.clearance_desc, group_concat(r.requirement_id separator ",") as clearance_requirements, p.price_amt as clearance_price from tbl_clearance c join tbl_price p on p.price_id = c.clearance_price join tbl_clearancerequirement cr on c.clearance_id = cr.cr_clearance  join tbl_requirement r on cr.cr_requirement = r.requirement_id where c.clearance_exists = 1 and c.clearance_id = '.$id.' group by c.clearance_id union all select c.clearance_type, c.clearance_desc, null as clearance_requirements, p.price_amt as clearance_price from tbl_clearance c join tbl_price p on p.price_id = c.clearance_price where c.clearance_exists = 1 and c.clearance_id not in(select cr_clearance from tbl_clearancerequirement) and c.clearance_id = '.$id.' group by c.clearance_id');
+        $details = DB::select('select c.clearance_type, c.clearance_desc, group_concat(distinct(r.requirement_id) separator ",") as clearance_requirements, p.price_amt as clearance_price from tbl_clearance c join tbl_price p on p.price_id = c.clearance_price left join tbl_clearancerequirement cr on c.clearance_id = cr.cr_clearance left join tbl_requirement r on cr.cr_requirement = r.requirement_id where c.clearance_exists = 1 and c.clearance_id = '.$id.' group by c.clearance_id');
 
         return response()->json($details);
     }
 
     public function getClearances(){
-        $clearances = DB::select('select c.clearance_id, c.clearance_type, group_concat(r.requirement_name separator "<br>") as clearance_requirements, p.price_amt as clearance_price from tbl_clearance c join tbl_price p on p.price_id = c.clearance_price join tbl_clearancerequirement cr on c.clearance_id = cr.cr_clearance  join tbl_requirement r on cr.cr_requirement = r.requirement_id where c.clearance_exists = 1 group by c.clearance_id union all select c.clearance_id, c.clearance_type, null as clearance_requirements, p.price_amt as clearance_price from tbl_clearance c join tbl_price p on p.price_id = c.clearance_price where c.clearance_exists = 1 and c.clearance_id not in(select cr_clearance from tbl_clearancerequirement) group by c.clearance_id');
+        $clearances = DB::select('select c.clearance_id, c.clearance_type, group_concat(distinct(r.requirement_name) separator "<br>") as clearance_requirements, p.price_amt as clearance_price from tbl_clearance c join tbl_price p on p.price_id = c.clearance_price left join tbl_clearancerequirement cr on c.clearance_id = cr.cr_clearance left join tbl_requirement r on cr.cr_requirement = r.requirement_id where c.clearance_exists = 1 group by c.clearance_id');
 
         return response()->json($clearances);
     }

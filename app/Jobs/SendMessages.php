@@ -37,7 +37,7 @@ class SendMessages implements ShouldQueue
             $smsGateway = new SmsGateway('brgypayatassystem@gmail.com', 'payatasquezoncity');
             $numbertosend = $number;
             $message = "There is an incident - ".$this->incidentcontroller["incident"]."  happened near your area. Keep Safe  -Barangay Payatas(Trial) *This message is intended for Barangay Payatas Residents";
-            $deviceID = 56595;
+            $deviceID = 56806;
 
             $result = $smsGateway->sendMessageToNumber($numbertosend, $message, $deviceID);
         }

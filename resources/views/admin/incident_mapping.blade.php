@@ -15,7 +15,7 @@
             <!-- User Info -->
            <div class="user-info">
                 <div class="image">
-                    <img src="../{{$return['image']}}" width="48" height="48" alt="User" />
+                    <img src="{{asset($return['image'])}}" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$return['name']}}</div>
@@ -177,7 +177,7 @@ function initMap() {
         },
         submitHandler: function(form){
             $.ajax({
-                url: '/getIncidentLoc',
+                url: '/blotter/incident/getIncidentLoc',
                 method: 'POST',
                 data: {
                     _token: CSRF_TOKEN,

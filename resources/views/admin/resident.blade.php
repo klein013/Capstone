@@ -11,7 +11,7 @@
             <!-- User Info -->
            <div class="user-info">
                 <div class="image">
-                    <img src="../{{$return['image']}}" width="48" height="48" alt="User" />
+                    <img src="{{asset($return['image'])}}" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$return['name']}}</div>
@@ -114,17 +114,17 @@
                             <form enctype='multipart/form-data' id="resident">
                             	{{ csrf_field() }}
                             	<div class='row'>
-                            		<div class='col-md-4 col-md-offset-4'>
+                            		<div class='col-sm-4 col-sm-offset-4'>
                             		<center><img src='../uploads/human.png' class='img-responsive thumbnail' id="toimage"></center>
                             		</div>
                             	</div>
                             	<br>
                             	<div class="row clearfix">
                             	<div class="form-group">
-                            		<div class="col-md-2">
+                            		<div class="col-sm-2">
                             		<label for='resident_image'>Resident Picture</label>
                             		</div>
-                            		<div class="col-md-6">
+                            		<div class="col-sm-6">
                             		<input type='file' accept="image/*" id='image'>
                             		</div>
                             		<!--<div class="col-md-2">
@@ -137,7 +137,7 @@
                             	</div>
                             	<br>
                                 <div class="row clearfix">
-                                <div class="col-md-4">
+                                <div class="col-sm-4">
                                     <label for="f_name">First Name</label>
                                     <div class="form-group">
                                         <div class="form-line">
@@ -145,7 +145,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-sm-4">
                                     <label for="l_name">Middle Name</label>
                                     <div class="form-group">
                                         <div class="form-line">
@@ -153,7 +153,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-sm-4">
                                     <label for="m_name">Last Name</label>
                                     <div class="form-group">
                                         <div class="form-line">
@@ -164,7 +164,7 @@
                             </div>
 
                              <div class="row clearfix">
-                                <div class="col-md-4">
+                                <div class="col-sm-4">
                                 <label for="date">Birth Date</label>
                                    <div class="form-group">
                                         <div class="form-line">
@@ -173,7 +173,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-sm-4">
                                 <label for="gender">Gender</label>
                                    <div class="form-lin e">
                                                  <select class="form-control show-tick" id="gender">
@@ -185,7 +185,7 @@
                                             </div>
                                 		</div>
                                 
-                                <div class="col-md-4">
+                                <div class="col-sm-4">
                                     <label>Year Stayed in the Brgy</label>
                                     <div class="form-group">
                                     <div class="form-line">
@@ -197,21 +197,21 @@
 
                             <label for="res_address">Address</label>
                             <div class="row">
-                            	<div class="col-md-6">
-                            		<label>House No.</label>	
+                            	<div class="col-sm-6">
+                            		<label>Lot No./Blk No./Phase No./Subdivision</label>	
                             	</div>
-                            	<div class="col-md-6">
+                            	<div class="col-sm-6">
                             		<label>Street</label>
                             	</div>
                             </div>
                             <div class='row'>
                                 <div class="form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-sm-6">
                                     	<div class=" form-line">
                                         <input type="text" id="house" class="form-control" >
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-sm-6">
                                     <select class="form-control show tick" id="street">
                                         <option value="" disabled selected>Choose Street</option>
                                         @foreach($streets as $street)
@@ -223,12 +223,21 @@
                             </div>
                             <br>
                             <div class="row clearfix">
-                                <div class="col-md-6">
+                                <div class="col-sm-6">
                                     <label for="contact_no">Contact No.</label>
                                     <div class="form-group">
                                         <div class="form-line">
                                             <input type="text" class="form-control" id="contact" name="contact">
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Allow Message</label>
+                                    <div class="demo-radio-button">
+                                    <input name="radio" type="radio" value="1" id="radio_yes" class="radio-col-blue-grey" checked disabled/>
+                                    <label for="radio_yes">YES</label>
+                                    <input name="radio" type="radio" value="0" id="radio_no" class="radio-col-blue-grey" disabled/>
+                                    <label for="radio_no">NO</label>
                                     </div>
                                 </div>
                             </div>
@@ -249,10 +258,23 @@
     		
     		var file="";
 
-    		$('#bdate').bootstrapMaterialDatePicker({
-    			time : false,
-    			clearButton : false
+    		$('#bdate').daterangepicker({
+    			singleDatePicker: true,
+                showDropdowns: true,
+                locale: {
+                    format: 'YYYY-MM-DD'
+                },
+                maxDate: moment()
     		});
+
+            $('#contact').keyup(function(){
+                if($('#contact').val().match(/\+639.[0-9]{8}/)){
+                    $('input[name=radio]').attr("disabled",false);
+                }
+                else{
+                    $('input[name=radio]').attr("disabled",true);
+                }
+            });
 
     		var table = $('#residentTable').DataTable({
                 "bSort": false,
@@ -311,13 +333,17 @@
             }, "Please enter a valid date.");
 
             $.validator.addMethod("alpha", function(value, element) {
-                return this.optional(element) || value == value.match(/^[a-zA-Z .,]*$/);
+                return this.optional(element) || value.trim() == value.match(/^[a-zA-Z .,]*$/);
             },"Letters, spaces, period and comma only");
 
 
             $.validator.addMethod("alphanum", function(value, element) {
-                return this.optional(element) || value == value.match(/^[a-zA-Z0-9 .,]*$/);
+                return this.optional(element) || value.trim() == value.match(/^[a-zA-Z0-9 .,]*$/);
             },"Letters, Numbers, spaces, period and comma only");
+
+            $.validator.addMethod("cellno", function(value, element){
+                return this.optional(element) || value.trim() == value.match(/\+639.[0-9]{8}/);
+            }, "Must start +639 and followed by 9 digits");
 
             var date = new Date();
 
@@ -337,17 +363,17 @@
                     },
                     fname: {
                         required: true,
-                        maxlength: 30,
+                        maxlength: 50,
                         alpha: true
                     },
                     mname: {
                         required: false,
-                        maxlength: 30,
+                        maxlength: 50,
                         alpha: true
                     },
                     lname: {
                         required: true,
-                        maxlength: 30,
+                        maxlength: 50,
                         alpha: true
                     },
                     bdate: {
@@ -356,14 +382,13 @@
                     },
                     contact: {
                         required: false,
-                        digits: true,
-                        minlength: 11,
-                        maxlength: 11
+                        cellno: true,
+                        maxlength: 13
                     },
                     house: {
                         required: true,
-                        alpha: true,
-                        maxlength: 6
+                        alphanum: true,
+                        maxlength: 50
                     },
                     street: {
                         required: true
@@ -392,6 +417,7 @@
                     formData.append('gender', $('#gender').val());
                     formData.append('area', $('#area').val());
                     formData.append('year', $('#year').val());
+                    formData.append('allow', $('input[name=radio]:checked').val());
                     $.ajax({
                         url : '/resident',
                         method : 'POST',
@@ -411,7 +437,7 @@
                             }
                             $('#defaultModal').modal('toggle');
 
-                            var newRow = "<tr><td>"+response[0].resident_id+"</td><td><img src='"+response[0].resident_image+"' width='40px;' height='40px;'></td><td>"+response[0].resident_fname+' '+response[0].resident_lname+"</td><td>"+(response[0].resident_bdate).split(' ')[0]+"</td><td>"+sex+"</td><td>"+response[0].resident_add+"</td><td><button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button></td></tr>";
+                            var newRow = "<tr><td>"+response[0].resident_id+"</td><td><img src='"+response[0].resident_image+"' width='40px;' height='40px;'></td><td>"+response[0].resident_fname+' '+response[0].resident_lname+"</td><td>"+response[0].resident_bdate+"</td><td>"+sex+"</td><td>"+response[0].resident_add+"</td><td><button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button></td></tr>";
                             table.row.add($(newRow)).draw();
                             swal({
                                 title : "Record Added",
@@ -419,13 +445,6 @@
                                 timer : 1000,
                                 showConfirmButton : false
                             });
-                            var pos1 = response['position'];
-                            var i;
-                            
-                            for (i = 0; i < pos1.length; ++i) {
-                                $('#position').empty();
-                                $('#position').append($('<option></option>')).attr("value", pos1[i].Pos_ID).text(pos1[i].Pos_Name);
-                            }
                         }
                     });
                 },

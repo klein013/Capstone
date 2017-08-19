@@ -9,7 +9,7 @@
                     </li>
                     
                             <li>
-                                <a href="{{URL('payments')}}">Payments</a>
+                                <a href="{{URL('clearance/payments')}}">Payments</a>
                             </li>
                     
                     </ul>

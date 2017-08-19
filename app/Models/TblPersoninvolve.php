@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 17 Aug 2017 13:05:57 +0000.
+ * Date: Sat, 19 Aug 2017 06:24:39 +0000.
  */
 
 namespace App\Models;
@@ -12,7 +12,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
 /**
  * Class TblPersoninvolve
  * 
- * @property int $personinvolve_resident
+ * @property string $personinvolve_resident
  * @property int $personinvolve_case
  * @property string $personinvolve_type
  * 
@@ -30,7 +30,6 @@ class TblPersoninvolve extends Eloquent
 	public $timestamps = false;
 
 	protected $casts = [
-		'personinvolve_resident' => 'int',
 		'personinvolve_case' => 'int'
 	];
 

@@ -87,7 +87,7 @@ class IncidentController extends Controller
 
     public function getIncident(){
 
-        $incidents = DB::select('select lpad(i.incident_id,8,"0") as incident_id, concat(s.street_name,", ",a.area_name) as place, i.incident_datetime, c.incidentcat_name, i.incident_status, i.incident_notes from tbl_incident i join tbl_incidentcat c on c.incidentcat_id = i.incident_cat join tbl_street s on s.street_id = i.incident_street join tbl_area a on s.street_area = a.area_id where i.incident_exists = 1');
+        $incidents = DB::select('select lpad(i.incident_id,8,"0") as incident_id, concat(s.street_name,", ",a.area_name) as place, i.incident_datetime, c.incidentcat_name, i.incident_status, i.incident_notes from tbl_incident i join tbl_incidentcat c on c.incidentcat_id = i.incident_cat join tbl_street s on s.street_id = i.incident_street join tbl_area a on s.street_area = a.area_id where i.incident_exists = 1 order by field(i.incident_status,"Pending","On-going","Done")');
 
        return response()->json($incidents);
     }
@@ -96,5 +96,11 @@ class IncidentController extends Controller
 
         DB::table('tbl_incident')->where('incident_id',$request->id)->update(['incident_exists' => 0]);
         return response("success");
+    }
+
+    public function count(){
+
+        $count = DB::select('select count(*) as count from tbl_incident where incident_exists = 1');
+        return response($count[0]->count);
     }
 }

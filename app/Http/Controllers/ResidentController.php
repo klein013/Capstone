@@ -38,7 +38,7 @@ class ResidentController extends Controller
 
     public function getResidents()
     {
-        $resident = DB::select("select resident_id, resident_fname, resident_lname, resident_image, resident_hno, street_name, area_name from tbl_resident join tbl_street on tbl_resident.resident_street=tbl_street.street_id join tbl_area on tbl_street.street_area=tbl_area.area_id");
+        $resident = DB::select("select resident_id, resident_fname, resident_lname, resident_image, resident_hno, street_name, area_name from tbl_resident join tbl_street on tbl_resident.resident_street=tbl_street.street_id join tbl_area on tbl_street.street_area=tbl_area.area_id where resident_exists = 1 and resident_id != '0' order by resident_id asc");
 
         return response()->json($resident);
     }
@@ -70,61 +70,20 @@ class ResidentController extends Controller
         $residents->resident_street = $request->street;
         $residents->resident_gender = $request->gender;
         $residents->resident_exists = 1;
+        $residents->resident_allowmessage = $request->allow;
         $residents->resident_yearstayed = $request->year;
         $residents->resident_contact = $request->contact;
 
         $residents->save();
 
-        $resident = DB::select("select r.resident_id, r.resident_image,r.resident_gender, r.resident_fname, r.resident_lname, r.resident_bdate, r.resident_bdate, concat(r.resident_hno,'',s.street_name,' ',a.area_name) as resident_add from tbl_resident r join tbl_street s on s.street_id = r.resident_street join tbl_area a on a.area_id = s.street_area where r.resident_id = ".$residents->resident_id);
+        $resident = DB::select("select r.resident_id, r.resident_image ,r.resident_gender, r.resident_fname, r.resident_lname, r.resident_bdate, concat(r.resident_hno,' ',s.street_name,' ',a.area_name) as resident_add from tbl_resident r join tbl_street s on s.street_id = r.resident_street join tbl_area a on a.area_id = s.street_area where r.resident_id = ".$residents->resident_id);
 
         return response()->json($resident);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $id)
     {
-        $resident = TblResident::findOrFail($id);
-        $resident->delete();
-
-        return null;
+        DB::table('tbl_resident')->where('resident_id',$request->id)->update(['resident_exists' => 0]);
+        return response("success");
     }
 }

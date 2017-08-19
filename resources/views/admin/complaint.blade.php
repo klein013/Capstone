@@ -5,12 +5,12 @@
 	@include('admin.layout.head')
 </head>
 <body class="theme-blue-grey">
-@include('admin.layout.nav');
+@include('admin.layout.nav')
         <aside id="leftsidebar" class="sidebar">
             <!-- User Info -->
           <div class="user-info">
                 <div class="image">
-                    <img src="{{$return['image']}}" width="48" height="48" alt="User" />
+                    <img src="{{asset($return['image'])}}" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$return['name']}}</div>
@@ -66,31 +66,31 @@
             </div>
         </div>
   	</div>
-    <div class="col-lg-9 col-md-4 col-sm-12 col-xs-12 col-md-offset-2">
+    <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="card">
             <div class="body">
                 <form  id="complaint">
                     <br>
                    	<div class="row clearfix">
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <a href="javascript:void(0)" data-toggle="tooltip" title="Add Complainant"><button type="button" class="btn bg-teal btn-circle waves-effect waves-circle waves-float" id="combtn" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i></button></a>
                        		<label>Complainant/s </label>
                         </div>
-                        <div class="col-md-8" id='comcon' style="border-style:solid; border-color:#b3cccc; border-width:1px; border-radius: 3px;height: 75px;">
+                        <div class="col-md-10" id='comcon' style="border-style:solid; border-color:#b3cccc; border-width:1px; border-radius: 3px;height: 75px;">
                         </div>
                     </div>
                     <div class="row clearfix">
-                        <div class="col-md-4"><button type="button" class="btn bg-teal btn-circle waves-effect waves-circle waves-float" id="resbtn" data-toggle="modal" data-target="#defaultModal2"><i class="material-icons">add</i></button></a>
+                        <div class="col-md-2"><button type="button" class="btn bg-teal btn-circle waves-effect waves-circle waves-float" id="resbtn" data-toggle="modal" data-target="#defaultModal2"><i class="material-icons">add</i></button></a>
                             <label>Respondent/s </label>
                         </div>
-                        <div class="col-md-8" id="rescon" style="border-style:solid; border-color:#b3cccc; border-width: 1px; border-radius: 3px; height: 75px;">
+                        <div class="col-md-10" id="rescon" style="border-style:solid; border-color:#b3cccc; border-width: 1px; border-radius: 3px; height: 75px;">
                         </div>
                     </div>
                     <div class="row clearfix">
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <label>Nature of Complaint</label>
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                             <div class="form-group">
                                 <div class="form-line">
                                     <select class="form-control show-tick" id="case">
@@ -104,10 +104,10 @@
                         </div>
                     </div>
                     <div class="row clearfix">
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <label>Brief Statement of Complaint</label>
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                             <div class="form-group">
                                 <div class="form-line">
                                     <textarea rows="10" id="statement" class="form-control no-resize" placeholder="Please type the details" required></textarea>
@@ -117,10 +117,10 @@
                     </div>
 
                     <div class="row clearfix">
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                             <label>Turnover to</label>
                         </div>
-                    <div class="col-md-8">
+                    <div class="col-md-10">
                     <div class="form-group">
                     <div class="form-line">
                         <select class="form-control show-tick" id="turnover">
@@ -133,7 +133,7 @@
                 </div>
                 </div>
                     <div class="row clearfix">
-                        <div class="col-md-2 col-md-offset-10">
+                        <div class="col-md-1 col-md-offset-11">
                             <button type="submit" data-color="teal" class="btn bg-teal waves-effect">SUBMIT</button>
                         </div>
                     </div>
@@ -144,7 +144,7 @@
 </section>
 
 <div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="row clearfix">
@@ -162,7 +162,7 @@
             	<div class="card">
                     <div class="row clearfix">
                         <div class="col-md-12">
-                            <table class="table dataTable" id="restable1">
+                            <table class="table dataTable" width="100%" id="restable1">
                                 <thead class="bg-blue-grey">
                                     <tr>
                                         <td>ID</td>
@@ -184,7 +184,7 @@
 </div>
 
 <div class="modal fade" id="defaultModal2" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
 	    <div class="modal-content">
             <div class="modal-header">
                 <div class="row clearfix">
@@ -202,7 +202,7 @@
                 <div class="card">
                     <div class="row clearfix">
                         <div class="col-md-12">
-                            <table class="table dataTable" id="restable">
+                            <table class="table dataTable" width="100%" id="restable">
                                 <thead class="bg-blue-grey">
                                     <tr>
                                         <td>ID</td>
@@ -220,20 +220,20 @@
     </div>
 </div>
 
-@include('admin.layout.scripts');
+@include('admin.layout.scripts')
 
     <script src="{{asset('plugins/jquery-datatable/jquery.dataTables.js')}}"></script>
     <script src="{{asset('plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js')}}"></script>
 <script>
 	$(document).ready(function(){
 		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-		$('#dt').bootstrapMaterialDatePicker({
+		$('#dt').daterangepicker({
     			time : true,
     			format : 'YYYY-MM-DD HH:mm',
     			clearButton : false
     	});
 
-        var used = [{{$return['position']}}];
+        var used = ['"'+{{$return['official']}}+'"'];
         var com = [];
         var res = [];
         var table1 = $("#restable1").DataTable();
@@ -245,7 +245,7 @@
             table1 = $('#restable1').DataTable({
             bSort: false,
             "ajax": {
-                "url" : '/complaint_res',
+                "url" : '/blotter/barangay/complaint_res',
                 "dataType" : "json",
                 "data" : {
                     used : used.join()
@@ -279,7 +279,7 @@
             table = $('#restable').DataTable({
             bSort: false,
             "ajax": {
-                "url" : '/complaint_res',
+                "url" : '/blotter/barangay/complaint_res',
                 "dataType" : "json",
                 "data" : {
                     used : used.join()
@@ -312,20 +312,20 @@
             var $input = $('<button type="button" value='+data['resident_id']+' class="removecom btn btn-success waves-effect "><span>'+data['name']+'</span>  <i class="material-icons">remove</i></button>');
             $input.appendTo($("#comcon"));
             $('#defaultModal').modal('toggle');
-            used.push(data['resident_id']);
-            com.push(data['resident_id']);
+            used.push('"'+data['resident_id']+'"');
+            com.push('"'+data['resident_id']+'"');
         } );
         
 		
         $(document).on("click", "button.removecom", function(){
             $(this).remove();
             for(var i = used.length; i--;) {
-                if(used[i] == $(this).val()) {
+                if(used[i] == '"'+$(this).val()+'"') {
                     used.splice(i, 1);
                 }
             }
             for(var i = com.length; i--;) {
-                if(com[i] == $(this).val()) {
+                if(com[i] == '"'+$(this).val()+'"') {
                     com.splice(i, 1);
                 }
             }
@@ -337,20 +337,20 @@
             var $input = $('<button type="button" value='+data['resident_id']+' class="removeres btn btn-success waves-effect "><span>'+data['name']+'</span>  <i class="material-icons">remove</i></button>');
             $input.appendTo($("#rescon"));
             $('#defaultModal2').modal('toggle');
-            used.push(data['resident_id']);
-            res.push(data['resident_id']);
+            used.push('"'+data['resident_id']+'"');
+            res.push('"'+data['resident_id']+'"');
         } );
         
         
         $(document).on("click", "button.removeres", function(){
             $(this).remove();
             for(var i = used.length; i--;) {
-                if(used[i] == $(this).val()) {
+                if(used[i] == '"'+$(this).val()+'"') {
                     used.splice(i, 1);
                 }
             }
             for(var i = com.length; i--;) {
-                if(res[i] == $(this).val()) {
+                if(res[i] == '"'+$(this).val()+'"') {
                     res.splice(i, 1);
                 }
             }
@@ -376,7 +376,7 @@
                     formData.append('case', $('#case').val());
                     formData.append('turnover', $('#turnover').val());
                     $.ajax({
-                        url : '/complaint_process',
+                        url : '/barangay/blotter/complaint_process',
                         method : 'POST',
                         data : formData,
                         processData : false,

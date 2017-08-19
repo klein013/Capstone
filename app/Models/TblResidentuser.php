@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 17 Aug 2017 13:05:58 +0000.
+ * Date: Sat, 19 Aug 2017 06:24:40 +0000.
  */
 
 namespace App\Models;
@@ -17,7 +17,9 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property \Carbon\Carbon $resident_login
  * @property float $resident_long
  * @property float $resident_lat
- * @property int $resident_id
+ * @property string $resident_id
+ * 
+ * @property \App\Models\TblResident $tbl_resident
  *
  * @package App\Models
  */
@@ -30,8 +32,7 @@ class TblResidentuser extends Eloquent
 
 	protected $casts = [
 		'resident_long' => 'float',
-		'resident_lat' => 'float',
-		'resident_id' => 'int'
+		'resident_lat' => 'float'
 	];
 
 	protected $dates = [
@@ -49,4 +50,9 @@ class TblResidentuser extends Eloquent
 		'resident_lat',
 		'resident_id'
 	];
+
+	public function tbl_resident()
+	{
+		return $this->belongsTo(\App\Models\TblResident::class, 'resident_id');
+	}
 }

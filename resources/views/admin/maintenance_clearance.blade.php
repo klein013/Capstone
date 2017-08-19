@@ -12,7 +12,7 @@
             <!-- User Info -->
          <div class="user-info">
                 <div class="image">
-                    <img src="../{{$return['image']}}" width="48" height="48" alt="User" />
+                    <img src="{{asset($return['image'])}}" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$return['name']}}</div>
@@ -189,6 +189,7 @@
                 </div>
             </div>
             <div class="modal-body">
+            <form>
                     <div class="row clearfix">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -249,12 +250,17 @@
                             <h4 class="modal-title" id="largeModalLabel">Create Content of Clearance</h4>
                         </div>
                         <div class="modal-body">
-                            <textarea id="myTextarea"></textarea>
+                            <div class="form-group">
+                            <div class="form-line">
+                            <textarea id="myTextarea" class="form-control" name="myTextarea"></textarea>
+                            </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn bg-teal btn-lg waves-effect">SAVE</button>
                             <button type="button" class="btn bg-teal btn-lg waves-effect" data-dismiss="modal">CLOSE</button>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -290,7 +296,7 @@
 		var table = $('#clearanceTable').DataTable({
             "bSort": false,
             "ajax": {
-                "url" : "/maintenance_clearance/getClearances",
+                "url" : "/maintenance/clearance/clearance/getClearances",
                 "dataSrc": function (json) {
                         var return_data = new Array();
                         for(var i=0;i< json.length; i++){
@@ -320,7 +326,7 @@
             id = table.row($(this).parents('tr')).data().ID;
             $('input:checkbox').removeAttr('checked');
             $.ajax({
-                url: '/maintenance_clearance/'+id,
+                url: '/maintenance/clearance/clearance/'+id,
                 method: 'POST',
                 data: {
                     _token : CSRF_TOKEN,
@@ -360,7 +366,7 @@
                 function(isConfirm) {
                     if (isConfirm){
                         $.ajax({
-                            url: '/maintenance_clearance/'+id,
+                            url: '/maintenance/clearance/clearance/'+id,
                             method: 'POST',
                             data: {
                                 _token : CSRF_TOKEN,
@@ -416,7 +422,7 @@
             },
             submitHandler: function(form){
                 $.ajax({
-                    url: '/maintenance_clearance/update/up',
+                    url: '/maintenance/clearance/clearance/update/up',
                     method: 'POST',
                     data: {
                         _token : CSRF_TOKEN,
@@ -475,11 +481,14 @@
                     number: true,
                     min: 0,
                     maxlength: 10
+                },
+                myTextarea: {
+                    required: true
                 }
             },
             submitHandler: function(form){
                 $.ajax({
-                    url: '/maintenance_clearance',
+                    url: '/maintenance/clearance/clearance',
                     method: 'POST',
                     data: {
                         _token : CSRF_TOKEN,

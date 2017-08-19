@@ -15,8 +15,7 @@ class ScheduleController extends Controller
 
    	public function view(){
 
-   		$scheds = DB::select('select concat("Hearing ID: ",h.hearing_id) as "id", concat("Case : ",h.hearing_case," ",kp.caseskp_name)as "case", h.hearing_sched from tbl_hearing h join tbl_caseallocation c on c.caseallocation_case = h.hearing_case join tbl_caseskp kp on kp.caseskp_id = c.caseallocation_case where c.caseallocation_official = '.Session::get('official'));
-
+   		$scheds = DB::select('select distinct(concat("Hearing ID: ",h.hearing_id)) as "id", concat("Case : ",h.hearing_case," ",kp.caseskp_name)as "case", h.hearing_sched from tbl_hearing h join tbl_caseallocation c on c.caseallocation_case = h.hearing_case join tbl_caseskp kp on kp.caseskp_id = c.caseallocation_case where c.caseallocation_official = '.Session::get('official'));
 
    		return response()->json($scheds);
 

@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 17 Aug 2017 13:05:57 +0000.
+ * Date: Sat, 19 Aug 2017 06:24:39 +0000.
  */
 
 namespace App\Models;
@@ -13,7 +13,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * Class TblOfficial
  * 
  * @property int $official_id
- * @property int $resident_id
+ * @property string $resident_id
  * @property int $position_id
  * @property bool $official_exists
  * 
@@ -31,7 +31,6 @@ class TblOfficial extends Eloquent
 	public $timestamps = false;
 
 	protected $casts = [
-		'resident_id' => 'int',
 		'position_id' => 'int',
 		'official_exists' => 'bool'
 	];

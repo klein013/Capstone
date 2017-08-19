@@ -23,100 +23,105 @@ Route::group(['middleware'=>'Login'], function(){
 
 Route::get('/index', 'LoginController@signin');
 Route::get('/indexcheck', 'LoginController@checkuser');
+
+//Resident
+
 Route::get('/resident', 'ResidentController@create');
 Route::get('/resident/getResidents', 'ResidentController@getResidents');
 Route::post('/resident', 'ResidentController@store');
 Route::delete('/resident', 'ResidentController@destroy');
 Route::patch('/resident', 'ResidentController@update');
 
-Route::get('/maintenance_info', 'InfoController@create');
-Route::post('/maintenance_info', 'InfoController@store');
+//Resident
 
-Route::get('/maintenance_pos', 'PositionController@create');
-Route::get('/maintenance_pos/getPositions', 'PositionController@getPositions');
-Route::get('/maintenance_pos/{id}', 'PositionController@getdetails');
-Route::post('/maintenance_pos/update', 'PositionController@update');
-Route::post('/maintenance_pos', 'PositionController@store');
-Route::delete('/maintenance_pos', 'PositionController@destroy');
+//Maintenance
 
-Route::get('/maintenance_official', 'OfficialController@create');
-Route::get('/maintenance_official/get', 'OfficialController@getOfficials');
-Route::post('/maintenance_official', 'OfficialController@store');
-Route::delete('/maintenance_official/{id}', 'OfficialController@destroy');
-Route::get('/maintenance_official/{id}', 'OfficialController@getdetails');
-Route::post('/maintenance_official/update', 'OfficialController@update');
+Route::get('/maintenance/barangay/official', 'OfficialController@create');
+Route::get('/maintenance/barangay/official/get', 'OfficialController@getOfficials');
+Route::post('/maintenance/barangay/official', 'OfficialController@store');
+Route::delete('/maintenance/barangay/official/{id}', 'OfficialController@destroy');
+Route::get('/maintenance/barangay/official/{id}', 'OfficialController@getdetails');
+Route::post('/maintenance/barangay/official/update', 'OfficialController@update');
 
-Route::get('/maintenance_luponsched', 'LuponSchedController@create');
+Route::get('/maintenance/barangay/street', 'StreetController@create');
+Route::post('/maintenance/barangay/street', 'StreetController@store');
+Route::get('/maintenance/barangay/street/getStreets', 'StreetController@getStreets');
+Route::delete('/maintenance/barangay/street', 'StreetController@destroy');
+Route::get('/maintenance/barangay/street/{id}', 'StreetController@getdetails');
+Route::post('/maintenance/barangay/street/update', 'StreetController@update');
 
-Route::get('/maintenance_street', 'StreetController@create');
-Route::post('/maintenance_street', 'StreetController@store');
-Route::get('/maintenance_street/getStreets', 'StreetController@getStreets');
-Route::delete('/maintenance_street', 'StreetController@destroy');
-Route::get('/maintenance_street/{id}', 'StreetController@getdetails');
-Route::post('/maintenance_street/update', 'StreetController@update');
+Route::get('/maintenance/barangay/area', 'AreaController@create');
+Route::get('/maintenance/barangay/area/getAreas', 'AreaController@getAreas');
+Route::post('/maintenance/barangay/area', 'AreaController@store');
+Route::delete('/maintenance/barangay/area', 'AreaController@destroy');
+Route::get('/maintenance/barangay/area/{id}', 'AreaController@getdetails');
+Route::post('/maintenance/barangay/area/update', 'AreaController@update');
 
-Route::get('/maintenance_area', 'AreaController@create');
-Route::get('/maintenance_area/getAreas', 'AreaController@getAreas');
-Route::post('/maintenance_area', 'AreaController@store');
-Route::delete('/maintenance_area', 'AreaController@destroy');
-Route::get('/maintenance_area/{id}', 'AreaController@getdetails');
-Route::post('/maintenance_area/update', 'AreaController@update');
+Route::get('/maintenance/blotter/cases', 'CaseController@create');
+Route::post('/maintenance/blotter/cases', 'CaseController@store');
+Route::delete('/maintenance/blotter/cases/{id}', 'CaseController@destroy');
+Route::get('/maintenance/blotter/cases/get/{id}', 'CaseController@getdetails');
+Route::get('/maintenance/blotter/cases/getCases', 'CaseController@getCases');
+Route::post('/maintenance/blotter/cases/updated', 'CaseController@updated');
 
-Route::get('/maintenance_requirement', 'RequirementController@create');
-Route::get('/maintenance_requirement/getRequirements', 'RequirementController@getRequirements');
-Route::post('/maintenance_requirement', 'RequirementController@store');
-Route::delete('/maintenance_requirement', 'RequirementController@destroy');
-Route::get('/maintenance_requirement/{id}', 'RequirementController@getdetails');
-Route::post('/maintenance_requirement/update', 'RequirementController@update');
+Route::get('/maintenance/blotter/incident', 'IncidentcatController@create');
+Route::post('/maintenance/blotter/incident', 'IncidentcatController@store');
+Route::delete('/maintenance/blotter/incident/{id}', 'IncidentcatController@destroy');
+Route::get('/maintenance/blotter/incident/get/{id}', 'IncidentcatController@getdetails');
+Route::get('/maintenance/blotter/incident/getincident', 'IncidentcatController@getCases');
+Route::post('/maintenance/blotter/incident/updated', 'IncidentcatController@updated');
 
-Route::get('/maintenance_cases', 'CaseController@create');
-Route::post('/maintenance_cases', 'CaseController@store');
-Route::delete('/maintenance_cases/{id}', 'CaseController@destroy');
-Route::get('/maintenance_cases/get/{id}', 'CaseController@getdetails');
-Route::get('/maintenance_cases/getCases', 'CaseController@getCases');
-Route::post('/maintenance_cases/updated', 'CaseController@updated');
+Route::get('/maintenance/clearance/requirement', 'RequirementController@create');
+Route::get('/maintenance/clearance/requirement/getRequirements','RequirementController@getRequirements');
+Route::post('/maintenance/clearance/requirement', 'RequirementController@store');
+Route::delete('/maintenance/clearance/requirement', 'RequirementController@destroy');
+Route::get('/maintenance/clearance/requirement/{id}', 'RequirementController@getdetails');
+Route::post('/maintenance/clearance/requirement/update', 'RequirementController@update');
 
-Route::get('/maintenance_incident', 'IncidentcatController@create');
-Route::post('/maintenance_incident', 'IncidentcatController@store');
-Route::delete('/maintenance_incident/{id}', 'IncidentcatController@destroy');
-Route::get('/maintenance_incident/get/{id}', 'IncidentcatController@getdetails');
-Route::get('/maintenance_incident/getincident', 'IncidentcatController@getCases');
-Route::post('/maintenance_incident/updated', 'IncidentcatController@updated');
+Route::get('/maintenance/clearance/clearance', 'ClearanceController@create');
+Route::post('/maintenance/clearance/clearance/{id}', 'ClearanceController@show');
+Route::post('/maintenance/clearance/clearance/update/up', 'ClearanceController@update');
+Route::post('/maintenance/clearance/clearance', 'ClearanceController@add');
+Route::delete('/maintenance/clearance/clearance/{id}', 'ClearanceController@delete');
+Route::get('/maintenance/clearance/clearance/getClearances', 'ClearanceController@getClearances');
 
-Route::get('/maintenance_clearance', 'ClearanceController@create');
-Route::post('/maintenance_clearance/{id}', 'ClearanceController@show');
-Route::post('/maintenance_clearance/update/up', 'ClearanceController@update');
-Route::post('/maintenance_clearance', 'ClearanceController@add');
-Route::delete('/maintenance_clearance/{id}', 'ClearanceController@delete');
-Route::get('/maintenance_clearance/getClearances', 'ClearanceController@getClearances');
+//Maintenance
 
-Route::get('/maintenance_branch', 'BranchController@create');
-Route::post('/maintenance_branch', 'BranchController@store');
-Route::delete('/maintenance_branch', 'BranchController@destroy');
+// Clearance
+Route::get('/clearance/clearance', 'ClearanceReqController@create');
+Route::get('/clearance/getResidents/{id}', 'ClearanceReqController@getResidents');
+Route::post('/clearance/storeClearance', 'ClearanceReqController@storeClearance');
+// Clearance
 
-Route::get('/maintenance_access', 'AccessController@create');
+//Blotter
 
-Route::get('/complaint', 'ComplaintController@create');
-Route::get('/complaint_res', 'ComplaintController@com');
-Route::post('/complaint_process', 'ComplaintController@process');
+//Barangay Blotter
+Route::get('/blotter/barangay/complaint', 'ComplaintController@create');
+Route::get('/blotter/barangay/complaint_res', 'ComplaintController@com');
+Route::post('/blotter/barangay/complaint_process', 'ComplaintController@process');
 
-Route::get('/schedule', 'ScheduleController@create');
+Route::get('/blotter/barangay/schedule', 'ScheduleController@create');
 Route::get('/getSchedule', 'ScheduleController@view');
 
-Route::get('/record', 'RecordController@create');
-Route::get('/records', 'RecordController@show');
+Route::get('/blotter/barangay/record', 'RecordController@create');
+Route::get('/blotter/barangay/records', 'RecordController@show');
+//Barangay Blotter
 
-Route::get('/clearance', 'ClearanceReqController@create');
-Route::get('/getResidents', 'ClearanceReqController@getResidents');
-
-Route::get('/incident', 'IncidentController@createIncident');
+// Incident Blotter
+Route::get('/blotter/incident/incident', 'IncidentController@createIncident');
 Route::get('/getIncident', 'IncidentController@getIncident');
 Route::post('/storeIncident', 'IncidentController@storeIncident');
 Route::post('/deleteIncident', 'IncidentController@deleteIncident');
+Route::get('/countincident', 'IncidentController@count');
 Route::get('/sendMessages', 'IncidentController@sendMessages');
 
-Route::get('/incident_mapping', 'MapController@createMap');
-Route::post('/getIncidentLoc', 'MapController@getIncidentLoc');
+Route::get('/blotter/incident/incident_mapping', 'MapController@createMap');
+Route::post('/blotter/incident/getIncidentLoc', 'MapController@getIncidentLoc');
+// Incident Blotter
+
+//Blotter
+
+//Reports
 
 Route::get('/reports_incident', 'ReportController@incident');
 Route::get('/reports_barangay', 'ReportController@barangay');
@@ -125,16 +130,16 @@ Route::get('/reports_clearance/get', 'ReportController@get');
 Route::get('/reports_incident/get', 'ReportController@getIncident');
 Route::get('/reports_barangay/get', 'ReportController@getBarangay');
 
+//Reports
+
+//Queries
+
 Route::get('/queries', 'QueriesController@index');
+
+//Queries
 
 Route::get('/payments', 'PaymentController@index');
 
-Route::get('/maintenance_luponsched', 'LuponSchedController@create');
-Route::get('/maintenance_luponsched/nosched', 'LuponSchedController@nosched');
-Route::get('/maintenance_luponsched/add', 'LuponSchedController@add');
-Route::get('/maintenance_luponsched/subtract', 'LuponSchedController@subtract');
-
-Route::get('/maintenance_holidays', 'HolidayController@create');
 
 Route::get('/profile', 'ProfileController@index');
 

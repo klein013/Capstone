@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 17 Aug 2017 13:05:58 +0000.
+ * Date: Sat, 19 Aug 2017 06:24:39 +0000.
  */
 
 namespace App\Models;
@@ -13,7 +13,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * Class TblRequest
  * 
  * @property int $request_id
- * @property int $request_resident
+ * @property string $request_resident
  * @property int $request_clearance
  * @property string $request_purpose
  * @property \Carbon\Carbon $request_date
@@ -30,12 +30,9 @@ class TblRequest extends Eloquent
 {
 	protected $table = 'tbl_request';
 	protected $primaryKey = 'request_id';
-	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [
-		'request_id' => 'int',
-		'request_resident' => 'int',
 		'request_clearance' => 'int'
 	];
 
