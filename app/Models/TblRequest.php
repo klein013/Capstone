@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Sat, 19 Aug 2017 06:24:39 +0000.
+ * Date: Wed, 23 Aug 2017 05:52:23 +0000.
  */
 
 namespace App\Models;
@@ -16,13 +16,15 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $request_resident
  * @property int $request_clearance
  * @property string $request_purpose
- * @property \Carbon\Carbon $request_date
  * @property \Carbon\Carbon $request_expiry
  * @property string $request_status
  * @property string $request_doc
+ * @property int $request_transaction
  * 
  * @property \App\Models\TblClearance $tbl_clearance
  * @property \App\Models\TblResident $tbl_resident
+ * @property \App\Models\TblTran $tbl_tran
+ * @property \App\Models\TblSubmittedrequirement $tbl_submittedrequirement
  *
  * @package App\Models
  */
@@ -33,11 +35,11 @@ class TblRequest extends Eloquent
 	public $timestamps = false;
 
 	protected $casts = [
-		'request_clearance' => 'int'
+		'request_clearance' => 'int',
+		'request_transaction' => 'int'
 	];
 
 	protected $dates = [
-		'request_date',
 		'request_expiry'
 	];
 
@@ -45,10 +47,10 @@ class TblRequest extends Eloquent
 		'request_resident',
 		'request_clearance',
 		'request_purpose',
-		'request_date',
 		'request_expiry',
 		'request_status',
-		'request_doc'
+		'request_doc',
+		'request_transaction'
 	];
 
 	public function tbl_clearance()
@@ -59,5 +61,15 @@ class TblRequest extends Eloquent
 	public function tbl_resident()
 	{
 		return $this->belongsTo(\App\Models\TblResident::class, 'request_resident');
+	}
+
+	public function tbl_tran()
+	{
+		return $this->belongsTo(\App\Models\TblTran::class, 'request_transaction');
+	}
+
+	public function tbl_submittedrequirement()
+	{
+		return $this->hasOne(\App\Models\TblSubmittedrequirement::class, 'sr_request');
 	}
 }

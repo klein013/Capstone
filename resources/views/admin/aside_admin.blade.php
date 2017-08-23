@@ -58,7 +58,10 @@
                                 <a href="{{URL('clearance/clearance')}}">Requests</a>
                             </li>
                             <li class="{{Request::is('clearance/payments') ? 'active' : '' }}">
-                                <a href="{{URL('clearance/payments')}}">Payments</a>
+                                <a href="{{URL('clearance/payments')}}">Cashier</a>
+                            </li>
+                            <li class="{{Request::is('clearance/release') ? 'active' : '' }}">
+                                <a href="{{URL('clearance/release')}}">Release</a>
                             </li>
                         </ul>
                     </li>

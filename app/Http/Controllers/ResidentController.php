@@ -76,9 +76,7 @@ class ResidentController extends Controller
 
         $residents->save();
 
-        $resident = DB::select("select r.resident_id, r.resident_image ,r.resident_gender, r.resident_fname, r.resident_lname, r.resident_bdate, concat(r.resident_hno,' ',s.street_name,' ',a.area_name) as resident_add from tbl_resident r join tbl_street s on s.street_id = r.resident_street join tbl_area a on a.area_id = s.street_area where r.resident_id = ".$residents->resident_id);
-
-        return response()->json($resident);
+        return response("success");
     }
 
     public function destroy(Request $id)

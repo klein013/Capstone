@@ -4,9 +4,9 @@
     <title>Login</title>
     @include('admin.layout.head');
 </head>
-<body class="login-page" style="background-image: url('../../images/bg1.jpg'); background-size: cover; height: auto; "> 
+<body class="login-page" style="background-image: url('../../images/bg1.jpg'); background-size: cover; height: 100%; "> 
     <div class="imgcontainer" style="text-align: center;margin: 0px;color:black;">
-        <img src="{{asset('images/payatas.png')}}" alt="Avatar" class="avatar" style="width: 40%; border-radius: 50%;">
+        <img src="{{asset('images/payatas.png')}}" alt="Avatar" class="avatar" style="width: 40%;">
         <h1>BARANGAY PAYATAS</h1>
         <h4>Blotter and Clearance Management System</h4>
         <hr>
@@ -21,26 +21,20 @@
                         <span class="input-group-addon">
                             <i class="material-icons">person</i>
                         </span>
-                        <div class="form-group">
                         <div class="form-line">
                             <input type="text" class="form-control" id="username" name="username" placeholder="Username" required autofocus>
-                        </div>
                         </div>
                     </div>
                     <div class="input-group">
                         <span class="input-group-addon">
                             <i class="material-icons">lock</i>
                         </span>
-                        <div class="form-group">
                         <div class="form-line">
                             <input type="password" class="form-control" id="password" name= "password" placeholder="Password" required>
                         </div>
-                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12" style="display:none;">
+                    <div class="row" style="display:none;" id="error1">
                             <center><span><h5 style="color:red;" id="error">Incorrect username or password</h5></span></center>
-                        </div>
                     </div>
                     <br>
                     <div class="row">
@@ -87,7 +81,8 @@
                                 window.location.href = "/indexcheck";
                             }
                             else{
-                                alert(response);
+                                $('#error1').show();
+                                $('#error').val(response);
                             }
                         }
                     });

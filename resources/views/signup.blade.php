@@ -8,7 +8,7 @@
     <div class="imgcontainer" style="text-align: center;margin: 0px;color:black;">
         <img src="{{asset('images/payatas.png')}}" alt="Avatar" class="avatar" style="width: 40%; border-radius: 50%;">
         <h1>BARANGAY PAYATAS</h1>
-        <h4>Blotter and Clearance Management Sytem</h4>
+        <h4>Blotter and Clearance Management System</h4>
         <hr>
       </div>
     <div class="signup-box">
@@ -20,10 +20,8 @@
                         <span class="input-group-addon">
                             <i class="material-icons">account_circle</i>
                         </span>
-                        <div class="form-group">
                         <div class="form-line">
                             <input type="text" class="form-control" id="officialid" name="officialid" placeholder="Official ID" required autofocus>
-                        </div>
                         </div>
                     </div>
                     
@@ -31,10 +29,8 @@
                         <span class="input-group-addon">
                             <i class="material-icons">person</i>
                         </span>
-                        <div class="form-group">
                         <div class="form-line">
                             <input type="text" class="form-control" name="user" id="user" placeholder="Username" required autofocus>
-                        </div>
                         </div>
                     </div>
             
@@ -42,20 +38,16 @@
                         <span class="input-group-addon">
                             <i class="material-icons">lock</i>
                         </span>
-                        <div class="form-group">
                         <div class="form-line">
                             <input type="password" class="form-control" id="password1" name="password1" minlength="6" placeholder="Password" required>
-                        </div>
                         </div>
                     </div>
                     <div class="input-group">
                         <span class="input-group-addon">
                             <i class="material-icons">lock</i>
                         </span>
-                        <div class="form-group">
                         <div class="form-line">
                             <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirm Password" required>
-                        </div>
                         </div>
                     </div>
                     <div class="row clearfix">

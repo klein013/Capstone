@@ -13,21 +13,6 @@ use Session;
 
 class ComplaintController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $cases = DB::select("select caseskp_id, caseskp_name from tbl_caseskp where caseskp_exists = 1 order by caseskp_name");
@@ -87,7 +72,6 @@ class ComplaintController extends Controller
           $comp->save();
         
         }
-      
 
         $involvenames = DB::select('select r.resident_mname, r.resident_lname, r.resident_street from tbl_resident r join tbl_personinvolve p on p.personinvolve_resident = r.resident_id join tbl_case c on c.case_id = p.personinvolve_case where c.case_id = '.$case->case_id);
 
@@ -267,7 +251,7 @@ class ComplaintController extends Controller
       else if($request->turnover=="PS6"){
 
       }
-      else if($reques->turnover=="VAWC"){
+      else if($request->turnover=="VAWC"){
 
       }
       else{

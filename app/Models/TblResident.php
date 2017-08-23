@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Sat, 19 Aug 2017 06:24:39 +0000.
+ * Date: Wed, 23 Aug 2017 05:52:23 +0000.
  */
 
 namespace App\Models;
@@ -30,6 +30,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property \Illuminate\Database\Eloquent\Collection $tbl_officials
  * @property \App\Models\TblPersoninvolve $tbl_personinvolve
  * @property \Illuminate\Database\Eloquent\Collection $tbl_requests
+ * @property \App\Models\TblResidentreportedincident $tbl_residentreportedincident
  * @property \Illuminate\Database\Eloquent\Collection $tbl_residentusers
  *
  * @package App\Models
@@ -85,6 +86,11 @@ class TblResident extends Eloquent
 	public function tbl_requests()
 	{
 		return $this->hasMany(\App\Models\TblRequest::class, 'request_resident');
+	}
+
+	public function tbl_residentreportedincident()
+	{
+		return $this->hasOne(\App\Models\TblResidentreportedincident::class, 'resident_id');
 	}
 
 	public function tbl_residentusers()

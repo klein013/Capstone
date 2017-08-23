@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Sat, 19 Aug 2017 06:24:38 +0000.
+ * Date: Wed, 23 Aug 2017 05:52:23 +0000.
  */
 
 namespace App\Models;
@@ -26,6 +26,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * 
  * @property \App\Models\TblIncidentcat $tbl_incidentcat
  * @property \App\Models\TblStreet $tbl_street
+ * @property \App\Models\TblResidentreportedincident $tbl_residentreportedincident
  *
  * @package App\Models
  */
@@ -69,5 +70,10 @@ class TblIncident extends Eloquent
 	public function tbl_street()
 	{
 		return $this->belongsTo(\App\Models\TblStreet::class, 'incident_street');
+	}
+
+	public function tbl_residentreportedincident()
+	{
+		return $this->hasOne(\App\Models\TblResidentreportedincident::class, 'incident_id');
 	}
 }

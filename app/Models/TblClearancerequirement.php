@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Sat, 19 Aug 2017 06:24:38 +0000.
+ * Date: Wed, 23 Aug 2017 05:52:23 +0000.
  */
 
 namespace App\Models;
@@ -17,6 +17,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * 
  * @property \App\Models\TblClearance $tbl_clearance
  * @property \App\Models\TblRequirement $tbl_requirement
+ * @property \App\Models\TblSubmittedrequirement $tbl_submittedrequirement
  *
  * @package App\Models
  */
@@ -44,5 +45,10 @@ class TblClearancerequirement extends Eloquent
 	public function tbl_requirement()
 	{
 		return $this->belongsTo(\App\Models\TblRequirement::class, 'cr_requirement');
+	}
+
+	public function tbl_submittedrequirement()
+	{
+		return $this->hasOne(\App\Models\TblSubmittedrequirement::class, 'sr_cr', 'cr_requirement');
 	}
 }

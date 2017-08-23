@@ -429,16 +429,7 @@
                             'X-CSRF-TOKEN' : CSRF_TOKEN
                         },
                         success : function(response){
-                            if(response[0].resident_gender=='M'){
-                                var sex = "Male";
-                            }
-                            else{
-                                var sex = "Female";
-                            }
-                            $('#defaultModal').modal('toggle');
-
-                            var newRow = "<tr><td>"+response[0].resident_id+"</td><td><img src='"+response[0].resident_image+"' width='40px;' height='40px;'></td><td>"+response[0].resident_fname+' '+response[0].resident_lname+"</td><td>"+response[0].resident_bdate+"</td><td>"+sex+"</td><td>"+response[0].resident_add+"</td><td><button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button></td></tr>";
-                            table.row.add($(newRow)).draw();
+                            table.ajax.reload();
                             swal({
                                 title : "Record Added",
                                 type : "success",

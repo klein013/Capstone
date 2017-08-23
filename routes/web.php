@@ -19,6 +19,8 @@ Route::get('/', 'LoginController@index');
 Route::post('/login', 'LoginController@check');
 Route::get('/logout', 'LoginController@logout');
 
+Route::get('/trial', 'WebController@test');
+
 Route::group(['middleware'=>'Login'], function(){
 
 Route::get('/index', 'LoginController@signin');
@@ -138,7 +140,7 @@ Route::get('/queries', 'QueriesController@index');
 
 //Queries
 
-Route::get('/payments', 'PaymentController@index');
+Route::get('/clearance/payments', 'PaymentController@index');
 
 
 Route::get('/profile', 'ProfileController@index');
