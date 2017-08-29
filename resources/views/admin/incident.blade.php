@@ -182,7 +182,17 @@
                                     </div>
                                 </div>
                             </div>
-                        
+
+                            <div class="row clearfix">
+                                <div class="col-md-12">
+                                <label>Notes</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <textarea rows="4" class="form-control no-resize" id="notes" name="notes" placeholder="Please type a note"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                            
                         <div class="modal-footer">
                             <button type="submit" class="btn bg-teal btn-lg waves-effect">ADD</button>
                             <button type="button" class="btn bg-teal btn-lg waves-effect" data-dismiss="modal">CANCEL</button>
@@ -192,6 +202,119 @@
                 </div>
             </div>
         </div>
+
+<div class="modal fade" tabindex="-1" id="view" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <h2>Incident Details</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row clearfix">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <label>Incident ID</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <p id="vid"></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <label>Datetime</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <p id="vdt"></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <label>Statement</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <p id="vdesc"></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <label>Street</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <p id="vst"></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <label>Latitude</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <p id="vlat"></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <label>Longitude</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <p id="vlong"></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <label>Type</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <p id="vtype"></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <label>Status</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <p id="vstat"></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <label>Notes</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <p id="vnote"></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <label>Date Filed</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <p id="vdf"></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-sm-12">
+                        <div class="col-sm-3 col-sm-offset-9">
+                            <button type="button" class="btn btn-lg bg-teal waves-effect pull-right" id="okbtn">OKAY</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" tabindex="-1" id="update" role="dialog">
     <div class="modal-dialog" role="document">
@@ -204,18 +327,17 @@
                 </div>
             </div>
             <div class="modal-body">
-                <div class="card">
-                    
+               
+                    <form id="updateinc">
                     <div class="row clearfix">
                         <br><br>
                         <div class="form-group">
-                            <div class="col-md-2 col-md-offset-2">
+                            <div class="col-sm-4">
                                 <label>Current Status</label>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-sm-8">
                                 <div class="form-group">
                                         <select class="form-control show tick" id="stat" name="stat">
-                                            <option value="Pending">Pending</option>
                                             <option value="On-going">On-going</option>
                                             <option value="Action Done">Action Done</option>
                                         </select>
@@ -224,14 +346,29 @@
                         </div>
                     </div>
                     <br>
+
+                    <div class="row clearfix">
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <label>Update Note</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="form-line">
+                                    <textarea rows="4" class="form-control no-resize" id="updatedesc" name="updatedesc" placeholder="Please type incident's description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
                         <div class="row clearfix">
                         <div class="col-md-6 col-md-offset-6">
                             <button type="submit" class="btn btn-lg bg-teal waves-effect" id="updatebtn">Update</button>
                             <button type="button" class="btn bg-teal btn-lg waves-effect" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
+                    </form>
                     <br>
-                </div>
             </div>
         </div>
     </div>
@@ -261,6 +398,10 @@
                 }
             });
             }
+        });
+
+        $('#okbtn').on('click', function(){
+            $('#view').modal('toggle');
         });
 
         $('#area').change(function(){
@@ -383,6 +524,11 @@
                         required: true,
                         maxlength: 300,
                         letterwithbasicpunc: true
+                    },
+                    notes:{
+                        required: false,
+                        maxlength: 300,
+                        letterwithbasicpunc: true
                     }
                 },
                 submitHandler: function(form){
@@ -395,7 +541,8 @@
                         street_name: $('#street option:selected').text(),
                         datetime: $('#dt').val(),
                         cat: $('#cat').val(),
-                        desc: $('#desc').val()
+                        desc: $('#desc').val(),
+                        notes: $('#notes').val()
                     },
                     dataType : 'json',
                     success : function(response){
@@ -415,6 +562,7 @@
                         $('#area').selectpicker('refresh');
                         $('#desc').val("");
                         $('#dt').val("");
+                        $('#notes').val("");
                         $.ajax({
                             type: "get",
                             url: "/sendMessages",
@@ -438,12 +586,14 @@
                     $(element).parents('.form-group').append(error);
                 }
             });
+        var updateid = "";
 
          $('#incTable tbody').on('click', 'button.update', function(){
-                var id = table.row($(this).parents('tr')).data().ID;    
+                var id = table.row($(this).parents('tr')).data().ID;   
+                updateid= id; 
                 finid = id;
                 $.ajax({
-                    url: 'incident_getstat/'+id,
+                    url: '/blotter/incident/getstat/'+id,
                     method: 'GET',
                     data : {
                         _token : CSRF_TOKEN,
@@ -451,12 +601,70 @@
                     },
                     dataType : 'json',
                     success : function(response){
-                        $('#stat').val(response[0].Incident_Status).change();
+                        $('#stat').val(response[0].incident_status).change();
+                        $('#updatedesc').val(response[0].incident_notes);
                         $('#update').modal('toggle');
                     }
                 });
                 
                 
+            });
+
+         $('#incTable tbody').on('click', 'button.approve', function(){
+                var id = table.row($(this).parents('tr')).data().ID;    
+                finid = id;
+                $.ajax({
+                    url: '/blotter/incident/updatestat/'+id,
+                    method: 'GET',
+                    data : {
+                        _token : CSRF_TOKEN,
+                        id : id
+                    },
+                    success : function(response){
+                        if(response=="success"){
+                            swal({
+                                    title : "Record Approved!",
+                                    type : "success",
+                                    timer : 1000,
+                                    showConfirmButton : false
+                                });
+                            table.ajax.reload();
+                        }
+                        else{
+                            swal({
+                                    title : "Error",
+                                    type : "error",
+                                    timer : 1000,
+                                    showConfirmButton : false
+                                });
+                        }
+                    }
+                }); 
+            });
+
+         $('#incTable tbody').on('click', 'button.view', function(){
+                var id = table.row($(this).parents('tr')).data().ID;    
+                finid = id;
+                $.ajax({
+                    url: '/blotter/incident/getdetails/'+id,
+                    method: 'GET',
+                    data : {
+                        _token : CSRF_TOKEN
+                    },
+                    success : function(response){
+                        $('#vid').text(response[0].incident_id);
+                        $('#vdt').text(response[0].incident_datetime);
+                        $('#vst').text(response[0].street_name);
+                        $('#vlat').text(response[0].incident_lat);
+                        $('#vlong').text(response[0].incident_long);
+                        $('#vtype').text(response[0].incidentcat_name);
+                        $('#vstat').text(response[0].incident_status);
+                        $('#vdesc').text(response[0].incident_statement);
+                        $('#vnote').text(response[0].incident_notes);
+                        $('#vdf').text(response[0].incident_filed);
+                        $('#view').modal('toggle');
+                    }
+                }); 
             });
 
 
@@ -503,27 +711,59 @@
                 });                
             });
 
-         $('#updatebtn').on('click', function(){
-            $.ajax({
-                url : '/incident_update',
-                method: 'POST',
-                data:{
-                    _token : CSRF_TOKEN,
-                    id : finid,
-                    stat : $('#stat').val()
+        $('#updateinc').validate({
+            rules: {
+                updatedesc:{
+                    required: false,
+                        maxlength: 300,
+                        letterwithbasicpunc: true
                 },
-                success: function(){
-                    swal({
-                            title : "Record Update",
-                            type : "success",
-                            timer : 1000,
-                            showConfirmButton : false
-                        });
-                    table.ajax.reload();
-                    $('#update').modal('toggle');
+                stat: {
+                    required: true
                 }
-            })
-         });
+            },
+            submitHandler : function(form){
+                $.ajax({
+                    url : '/blotter/incident/updateincident',
+                    method: 'POST',
+                    data : {
+                        _token: CSRF_TOKEN,
+                        updateid : updateid,
+                        stat : $('#stat').val(),
+                        desc: $('#updatedesc').val()
+                    },
+                    success: function(response){
+                        if(response=="success"){
+                            swal({
+                                    title : "Record Updated",
+                                    type : "success",
+                                    timer : 1000,
+                                    showConfirmButton : false
+                                });
+                                table.ajax.reload();
+                        }
+                        else{
+                             swal({
+                                        title : "Record is not Updated",
+                                        type : "error",
+                                        timer : 1500,
+                                        showConfirmButton : false
+                                });
+                        }
+                        $('#update').modal('toggle');
+                    }
+                })
+            },
+            highlight: function (input) {
+                $(input).parents('.form-line').addClass('error');
+            },
+            unhighlight: function (input) {
+                $(input).parents('.form-line').removeClass('error');
+            },
+            errorPlacement: function (error, element) {
+                $(element).parents('.form-group').append(error);
+            }
+        })
 
         function checkTasks(){
             setTimeout(checkTasks, 10000);
@@ -542,6 +782,7 @@
 
         $('#newinc').on('click', function(){
             table.ajax.reload();
+            $('#btndisp').toggle();
         })
 
     });

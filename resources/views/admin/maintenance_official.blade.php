@@ -170,7 +170,7 @@
                                     </div>
                                 </div>
                             <div class="col-md-4">
-                                    <label>Year Stayed in the Brgy</label>
+                                    <label>Year of Residency</label>
                                     <div class="form-group">
                                     <div class="form-line">
                                         <input type="number" class="form-control" id="year" name="year">
@@ -184,20 +184,20 @@
                                 </div>
                             </div>
                             <div class="row clearfix">
-                                <div class="col-md-2">
-                                    <label>House No.</label>
+                                <div class="col-md-6">
+                                    <label>Lot No./Blk No./Phase No./Subdivision</label>
                                 </div>
-                                <div class="col-md-10">
-                                    <label>Street</label>
-                                </div>
-                            </div>
-                            <div class="row clearfix">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="form-line">
                                             <input type="text" class="form-control" id="house" name="house">
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-md-6">
+                                    <label>Street</label>
                                 </div>
                                 <div class="col-md-6">
                                     <select class="form-control show tick" id="street">
@@ -323,7 +323,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <label>Year Stayed</label>
+                                    <label>Year of Residency</label>
                                     <div class="form-group">
                                     <div class="form-line">
                                         <input type="number" min="1950" max=date('Y') class="form-control" id="updateyear" name="updateyear">
@@ -338,7 +338,7 @@
 
                             <div class="row clearfix">
                                 <div class="col-md-6">
-                                <label>House No.</label>
+                                <label>Lot No./Blk No./Phase No./Subdivision</label>
                                 </div>
                                 <div class="col-md-6">
                                 <label>Street</label>
@@ -354,7 +354,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <select class="form-control show tick" id="updatestreet">
+                                    <select class="form-control show tick" id="updatestreet" name="updatestreet">
                                         <option value="" disabled selected>Choose Street</option>
                                         @foreach($streets as $street)
                                             <option value="{{ $street->street_id }}">{{ $street->street_name }}, {{ $street->area_name }}</option>
@@ -463,7 +463,27 @@
                     file = event.target.files[0];
             });
 
-            $.validator.addMethod("dateISOF", function (value, element)
+            $('#bdate').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                locale: {
+                    format: 'YYYY-MM-DD'
+                },
+                maxDate: moment().subtract(18, 'years')
+            });
+
+
+
+            $('#contact').keyup(function(){
+                if($('#contact').val().match(/\+639.[0-9]{8}/)){
+                    $('input[name=radio]').attr("disabled",false);
+                }
+                else{
+                    $('input[name=radio]').attr("disabled",true);
+                }
+            });
+
+             $.validator.addMethod("dateISOF", function (value, element)
             {
                 if (this.optional(element))
                 {
@@ -482,13 +502,17 @@
             }, "Please enter a valid date.");
 
             $.validator.addMethod("alpha", function(value, element) {
-                return this.optional(element) || value == value.match(/^[a-zA-Z .,]*$/);
+                return this.optional(element) || value.trim() == value.match(/^[a-zA-Z .,]*$/);
             },"Letters, spaces, period and comma only");
 
 
             $.validator.addMethod("alphanum", function(value, element) {
-                return this.optional(element) || value == value.match(/^[a-zA-Z0-9 .,]*$/);
+                return this.optional(element) || value.trim() == value.match(/^[a-zA-Z0-9 .,]*$/);
             },"Letters, Numbers, spaces, period and comma only");
+
+            $.validator.addMethod("cellno", function(value, element){
+                return this.optional(element) || value.trim() == value.match(/\+639.[0-9]{8}/);
+            }, "Must start +639 and followed by 9 digits");
 
             var date = new Date();
 
@@ -499,7 +523,6 @@
             $('#bdate').focus(function(){
                     $('#year').attr({'min': new Date($('#bdate').val()).getFullYear()});
             });
-
             $('#official').validate({
                 rules: {
                     image1: {
@@ -508,17 +531,17 @@
                     },
                     fname: {
                         required: true,
-                        maxlength: 30,
+                        maxlength: 50,
                         alpha: true
                     },
                     mname: {
                         required: false,
-                        maxlength: 30,
+                        maxlength: 50,
                         alpha: true
                     },
                     lname: {
                         required: true,
-                        maxlength: 30,
+                        maxlength: 50,
                         alpha: true
                     },
                     bdate: {
@@ -527,14 +550,13 @@
                     },
                     contact: {
                         required: false,
-                        digits: true,
-                        minlength: 11,
-                        maxlength: 11
+                        cellno: true,
+                        maxlength: 13
                     },
                     house: {
                         required: true,
-                        alpha: true,
-                        maxlength: 6
+                        alphanum: true,
+                        maxlength: 50
                     },
                     street: {
                         required: true
@@ -579,14 +601,22 @@
                             'X-CSRF-TOKEN' : CSRF_TOKEN
                         },
                         success : function(response){
+                            if(response==null){
+                                swal({
+                                title : "Contact number already used",
+                                type : "error",
+                                timer : 1000,
+                                showConfirmButton : false
+                            });
+                            }
+                            else{
                             if(response['official'][0].Off_Gender=='M'){
                                 var sex = "Male";
                             }
                             else{
                                 var sex = "Female";
                             }
-                            $('#defaultModal').modal('toggle');
-
+                           
                             var newRow = "<tr><td>"+response['official'][0].Off_ID+"</td><td><img src='"+response['official'][0].Off_Image+"' width='40px;' height='40px;'></td><td>"+response['official'][0].Off_Fname+' '+response['official'][0].Off_Lname+"</td><td>"+(response['official'][0].Off_Bdate).split(' ')[0]+"</td><td>"+sex+"</td><td>"+response['official'][0].Off_House+" "+response['official'][0].Off_Street+" "+response['official'][0].Off_Area+"</td><td>"+pos+"</td><td><button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button></td></tr>";
                             table.row.add($(newRow)).draw();
                             swal({
@@ -603,6 +633,9 @@
                                 $('#position').append($('<option></option>')).attr("value", pos1[i].Pos_ID).text(pos1[i].Pos_Name);
                             }
                             $('#position').selectpicker('refresh');
+                            }
+                             $('#defaultModal').modal('toggle');
+
                         }
                     });
                 },
@@ -624,7 +657,7 @@
                 var id = table.row($(this).parents('tr')).data().ID;    
                 finid = id;
                 $.ajax({
-                    url: 'maintenance/barangay/official/'+id,
+                    url: '/maintenance/barangay/official/'+id,
                     method: 'GET',
                     data : {
                         _token : CSRF_TOKEN,
@@ -633,7 +666,7 @@
                     dataType : 'json',
                     success : function(response){
                         posid = response[0].Pos_ID;
-                        $('#updatetoimage').attr('src','../'+response[0].Off_Image);
+                        $('#updatetoimage').attr('src','../../'+response[0].Off_Image);
                         $('#updatefname').val(response[0].Off_Fname);
                         $('#updatemname').val(response[0].Off_Mname);
                         $('#updatelname').val(response[0].Off_Lname);
@@ -681,7 +714,7 @@
                 function(isConfirm) {
                     if (isConfirm){
                         $.ajax({
-                            url : 'maintenance/barangay/official/'+id,
+                            url : '/maintenance/barangay/official/'+id,
                             method : 'POST',
                             data : {
                                 _token : CSRF_TOKEN,
@@ -729,17 +762,17 @@
                     },
                     updatefname: {
                         required: true,
-                        maxlength: 30,
+                        maxlength: 50,
                         alpha: true
                     },
                     updatemname: {
                         required: false,
-                        maxlength: 30,
+                        maxlength: 50,
                         alpha: true
                     },
                     updatelname: {
                         required: true,
-                        maxlength: 30,
+                        maxlength: 50,
                         alpha: true
                     },
                     updatebdate: {
@@ -748,22 +781,15 @@
                     },
                     updatecontact: {
                         required: false,
-                        digits: true,
-                        minlength: 11,
-                        maxlength: 11
+                        cellno: true,
+                        maxlength: 13
                     },
                     updatehouse: {
                         required: true,
-                        alpha: true,
-                        maxlength: 6
+                        alphanum: true,
+                        maxlength: 50
                     },
                     updatestreet: {
-                        required: true,
-                        alphanum: true,
-                        maxlength: 50,
-                        minlength: 5
-                    },
-                    updatearea: {
                         required: true
                     },
                     updategender: {
@@ -804,8 +830,28 @@
                         headers : {
                             'X-CSRF-TOKEN' : CSRF_TOKEN
                         },
-                        success : function(){
-                            table.ajax.reload();                            
+                        success : function(response){
+                            if(response=="success"){
+                                table.ajax.reload();    
+                            }  
+                            else{
+                                swal({
+                                title : "Contact number already used",
+                                type : "error",
+                                timer : 1000,
+                                showConfirmButton : false
+                                });
+                            }
+                            $('#updatefname').val("");
+                            $('#updatemname').val("");
+                            $('#updatelname').val("");
+                            $('#updatebdate').val("");
+                            $('#updatecontact').val("");
+                            $('#updatehouse').val("");
+                            $('#updatestreet').val("");
+                            $('#updategender').val("");
+                            $('#updateposition').val("");
+                            $('#updateyear').val("");                  
                             $('#updatemodal').modal('toggle');
 
                         }

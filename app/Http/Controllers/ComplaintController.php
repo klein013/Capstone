@@ -48,13 +48,12 @@ class ComplaintController extends Controller
         $case->case_exists = 1;
 
         $case->save();
-
         $res = explode(",", $request->res);
 
         foreach($res as $res1){
           $resp = new TblPersoninvolve();
 
-          $resp->personinvolve_resident = $res1;
+          $resp->personinvolve_resident = str_replace('"','',$res1);
           $resp->personinvolve_case = $case->case_id;
           $resp->personinvolve_type = 'R';
           $resp->save();
@@ -66,185 +65,197 @@ class ComplaintController extends Controller
         foreach($com as $com1){
           $comp = new TblPersoninvolve();
 
-          $comp->personinvolve_resident = $com1;
+          $comp->personinvolve_resident = str_replace('"','',$com1);
           $comp->personinvolve_case = $case->case_id;
           $comp->personinvolve_type = 'C';
           $comp->save();
         
         }
 
-        $involvenames = DB::select('select r.resident_mname, r.resident_lname, r.resident_street from tbl_resident r join tbl_personinvolve p on p.personinvolve_resident = r.resident_id join tbl_case c on c.case_id = p.personinvolve_case where c.case_id = '.$case->case_id);
+        $wit = explode(",", $request->wit);
+        foreach($wit as $wit1){
 
-        $mnames = "";
-        $lnames = "";
-        $street = "";
+          $witn = new TblPersoninvolve();
 
-        if(!empty($involvenames)){
-          foreach ($involvenames as $name) {
-            if($name->resident_mname!=null){
-              $mnames .= '"'.$name->resident_mname.'",';
-            }
-          }
-          if($mnames==""){
-            $mnames = rtrim($mnames, ",");
-          }
+          $witn->personinvolve_resident = str_replace('"','',$wit1);
+          $witn->personinvolve_case = $case->case_id;
+          $witn->personinvolve_type = 'W';
+          $witn->save();
 
-          foreach ($involvenames as $name) {
-            if($name->resident_lname!=null){
-              $mnames .= '"'.$name->resident_lname.'",';
-            }
-          }
-          $mnames = rtrim($mnames, ",");
-
-          foreach ($involvenames as $name) {
-            $street .= '"'.$name->resident_street .'",';
-          }
-          $street = rtrim($street, ',');
         }
-        else{
-          $mnames = '""';
-          $lnames = '""';
-          $street = '""';
-        }
+
+        // $involvenames = DB::select('select r.resident_mname, r.resident_lname, r.resident_street from tbl_resident r join tbl_personinvolve p on p.personinvolve_resident = r.resident_id join tbl_case c on c.case_id = p.personinvolve_case where c.case_id = '.$case->case_id);
+
+        // $mnames = "";
+        // $lnames = "";
+        // $street = "";
+
+        // if(!empty($involvenames)){
+        //   foreach ($involvenames as $name) {
+        //     if($name->resident_mname!=null){
+        //       $mnames .= '"'.$name->resident_mname.'",';
+        //     }
+        //   }
+        //   if($mnames==""){
+        //     $mnames = rtrim($mnames, ",");
+        //   }
+
+        //   foreach ($involvenames as $name) {
+        //     if($name->resident_lname!=null){
+        //       $mnames .= '"'.$name->resident_lname.'",';
+        //     }
+        //   }
+        //   $mnames = rtrim($mnames, ",");
+
+        //   foreach ($involvenames as $name) {
+        //     $street .= '"'.$name->resident_street .'",';
+        //   }
+        //   $street = rtrim($street, ',');
+        // }
+        // else{
+        //   $mnames = '""';
+        //   $lnames = '""';
+        //   $street = '""';
+        // }
         
-        if($info[0]->brgyinfo_case=="Lupon"){
-          $luponid = DB::select('select position_id from tbl_position where position_name = "Lupon"');
-          $lupons = DB::select('select o.official_id from tbl_official o join tbl_resident r on r.resident_id = o.resident_id where o.position_id = '.$luponid[0]->position_id. ' and o.official_exists = 1 and (r.resident_mname in ('.$mnames.') or r.resident_lname not in ('.$mnames.') or r.resident_street not in ('.$street.')) ');
-          if(!empty($lupons)){
+        // if($info[0]->brgyinfo_case=="Lupon"){
+        //   $luponid = DB::select('select position_id from tbl_position where position_name = "Lupon"');
+        //   $lupons = DB::select('select o.official_id from tbl_official o join tbl_resident r on r.resident_id = o.resident_id where o.position_id = '.$luponid[0]->position_id. ' and o.official_exists = 1 and (r.resident_mname in ('.$mnames.') or r.resident_lname not in ('.$mnames.') or r.resident_street not in ('.$street.')) ');
+        //   if(!empty($lupons)){
 
-            $newlupons = "";
+        //     $newlupons = "";
 
-            if($lupons > 1){
-              foreach($lupons as $lupon){
-                $newlupons .= $lupon->official_id.",";
-              }
-              $newlupons = rtrim($newlupons, ',');
+        //     if($lupons > 1){
+        //       foreach($lupons as $lupon){
+        //         $newlupons .= $lupon->official_id.",";
+        //       }
+        //       $newlupons = rtrim($newlupons, ',');
 
-              $countcaseallocs = DB::select('select count(caseallocation_case) as number, caseallocation_official from tbl_caseallocation where caseallocation_official in ('.$newlupons.') group by caseallocation_official');
+        //       $countcaseallocs = DB::select('select count(caseallocation_case) as number, caseallocation_official from tbl_caseallocation where caseallocation_official in ('.$newlupons.') group by caseallocation_official');
 
-              if(!empty($countcaseallocs)){
+        //       if(!empty($countcaseallocs)){
                 
-                $array1 = [];
-                $array2 = [];
-                foreach($countcaseallocs as $countcasealloc){
-                  array_push($array1, $countcasealloc->number) ;
-                  array_push($array2, $countcasealloc->caseallocation_official) ;
-                }
+        //         $array1 = [];
+        //         $array2 = [];
+        //         foreach($countcaseallocs as $countcasealloc){
+        //           array_push($array1, $countcasealloc->number) ;
+        //           array_push($array2, $countcasealloc->caseallocation_official) ;
+        //         }
 
-                foreach($lupons as $newlupon){
-                  if(!in_array($newlupon->official_id, $array2)){
-                    array_push($array1, 0) ;
-                    array_push($array2, $newlupon->official_id);
-                    var_dump($newlupon->official_id);
-                  }
-                }
+        //         foreach($lupons as $newlupon){
+        //           if(!in_array($newlupon->official_id, $array2)){
+        //             array_push($array1, 0) ;
+        //             array_push($array2, $newlupon->official_id);
+        //             var_dump($newlupon->official_id);
+        //           }
+        //         }
 
-                $min_value_key=array_keys($array1, min($array1));
+        //         $min_value_key=array_keys($array1, min($array1));
 
-                $casealloc = new TblCaseallocation;
+        //         $casealloc = new TblCaseallocation;
 
-                $casealloc->caseallocation_case = $case->case_id;
-                $casealloc->caseallocation_official = $array2[$min_value_key[0]];
-                $casealloc->save();
-              }
-              else{
-                $casealloc = new TblCaseallocation;
+        //         $casealloc->caseallocation_case = $case->case_id;
+        //         $casealloc->caseallocation_official = $array2[$min_value_key[0]];
+        //         $casealloc->save();
+        //       }
+        //       else{
+        //         $casealloc = new TblCaseallocation;
 
-                $casealloc->caseallocation_case = $case->case_id;
-                $casealloc->caseallocation_official = $lupons[0]->official_id;
-                $casealloc->save();
-              }
+        //         $casealloc->caseallocation_case = $case->case_id;
+        //         $casealloc->caseallocation_official = $lupons[0]->official_id;
+        //         $casealloc->save();
+        //       }
 
-            }
-            else{
+        //     }
+        //     else{
 
-              $casealloc = new TblCaseallocation;
+        //       $casealloc = new TblCaseallocation;
 
-              $casealloc->caseallocation_case = $case->case_id;
-              $casealloc->caseallocation_official = $lupons[0]->official_id;
-              $casealloc->save();
+        //       $casealloc->caseallocation_case = $case->case_id;
+        //       $casealloc->caseallocation_official = $lupons[0]->official_id;
+        //       $casealloc->save();
 
-            }
+        //     }
 
-          }
-          else{
+        //   }
+        //   else{
             
-          }
+        //   }
 
-          $brgytime = DB::select('select brgyinfo_opening, brgyinfo_closing from tbl_brgyinfo limit 1');
+        //   $brgytime = DB::select('select brgyinfo_opening, brgyinfo_closing from tbl_brgyinfo limit 1');
 
-          $open = strtotime($brgytime[0]->brgyinfo_opening);
-          $close = strtotime($brgytime[0]->brgyinfo_closing);
+        //   $open = strtotime($brgytime[0]->brgyinfo_opening);
+        //   $close = strtotime($brgytime[0]->brgyinfo_closing);
 
-          $hearing = DB::select('select h.hearing_sched from tbl_hearing h join tbl_caseallocation c on h.hearing_case = c.caseallocation_case where c.caseallocation_official = '.$casealloc->caseallocation_official.' and h.hearing_sched = curdate() + interval 3 day');
+        //   $hearing = DB::select('select h.hearing_sched from tbl_hearing h join tbl_caseallocation c on h.hearing_case = c.caseallocation_case where c.caseallocation_official = '.$casealloc->caseallocation_official.' and h.hearing_sched = curdate() + interval 3 day');
 
-          if(empty($hearing->hearing_sched)){
+        //   if(empty($hearing->hearing_sched)){
 
-            $newhearing = new TblHearing;
+        //     $newhearing = new TblHearing;
 
-            $heardate = date("Y-m-d", strtotime("+3 days"));
-            $heartime = date("H:i", strtotime('+30 minutes', $open));
-            $newhearing->hearing_case = $case->case_id;
-            $newhearing->hearing_sched = date('Y-m-d H:i:s', strtotime("$heardate $heartime"));
-            $newhearing->hearing_type = 1;
-            $newhearing->save();
+        //     $heardate = date("Y-m-d", strtotime("+3 days"));
+        //     $heartime = date("H:i", strtotime('+30 minutes', $open));
+        //     $newhearing->hearing_case = $case->case_id;
+        //     $newhearing->hearing_sched = date('Y-m-d H:i:s', strtotime("$heardate $heartime"));
+        //     $newhearing->hearing_type = 1;
+        //     $newhearing->save();
 
-          }
-          else{
+        //   }
+        //   else{
 
-            $heartime = "";
-            foreach($hearing as $hear){
-              $heardate = $hearing->hearing_sched;
-              $heardate->format('Y-m-d');
-              $time = $hearing->hearing_sched;
-              $time->format('H:i');
-            }
+        //     $heartime = "";
+        //     foreach($hearing as $hear){
+        //       $heardate = $hearing->hearing_sched;
+        //       $heardate->format('Y-m-d');
+        //       $time = $hearing->hearing_sched;
+        //       $time->format('H:i');
+        //     }
 
-            $newtime = date("H:i", strtotime('+240 minutes'), strtotime($time));
-            if(strtotime($newtime) <= strtotime('09:30')){
+        //     $newtime = date("H:i", strtotime('+240 minutes'), strtotime($time));
+        //     if(strtotime($newtime) <= strtotime('09:30')){
               
-              $newhearing = new TblHearing;
+        //       $newhearing = new TblHearing;
 
-              $newhearing->hearing_case = $case->case_id;
-              $newhearing->hearing_sched = date('Y-m-d H:i:s', strtotime("$heardate $newtime"));
-              $newhearing->hearing_type = 1;
-              $newhearing->save();
-            }
-            else if(strtotime($newtime) <= $close){
+        //       $newhearing->hearing_case = $case->case_id;
+        //       $newhearing->hearing_sched = date('Y-m-d H:i:s', strtotime("$heardate $newtime"));
+        //       $newhearing->hearing_type = 1;
+        //       $newhearing->save();
+        //     }
+        //     else if(strtotime($newtime) <= $close){
               
-              $newhearing = new TblHearing;
+        //       $newhearing = new TblHearing;
 
-              $newhearing->hearing_case = $casealloc->caseallocation_case;
-              $newhearing->hearing_sched = date('Y-m-d H:i:s', strtotime("$heardate $newtime"));
-              $newhearing->hearing_type = 1;
-              $newhearing->save();
-            }
-            else if(strtotime($newtime) > $close){
+        //       $newhearing->hearing_case = $casealloc->caseallocation_case;
+        //       $newhearing->hearing_sched = date('Y-m-d H:i:s', strtotime("$heardate $newtime"));
+        //       $newhearing->hearing_type = 1;
+        //       $newhearing->save();
+        //     }
+        //     else if(strtotime($newtime) > $close){
 
-              $newhearing = new TblHearing;
+        //       $newhearing = new TblHearing;
 
-              $date = date("Y-m-d", strtotime("+3 days"), strtotime($heardate));
-              $heartime = date("H:i", strtotime('+30 minutes', $open));
-              $newhearing->hearing_case = $casealloc->caseallocation_case;
-              $newhearing->hearing_sched = date('Y-m-d H:i:s', strtotime("$date $heartime"));
-              $newhearing->hearing_type = 1;
-              $newhearing->save();
-            }
-            else{
+        //       $date = date("Y-m-d", strtotime("+3 days"), strtotime($heardate));
+        //       $heartime = date("H:i", strtotime('+30 minutes', $open));
+        //       $newhearing->hearing_case = $casealloc->caseallocation_case;
+        //       $newhearing->hearing_sched = date('Y-m-d H:i:s', strtotime("$date $heartime"));
+        //       $newhearing->hearing_type = 1;
+        //       $newhearing->save();
+        //     }
+        //     else{
 
-              $newhearing = new TblHearing;
+        //       $newhearing = new TblHearing;
 
-              $newhearing->hearing_case = $casealloc->caseallocation_case;
-              $newhearing->hearing_sched = date('Y-m-d H:i:s', strtotime("$heardate $newtime"));
-              $newhearing->hearing_type = 1;
-              $newhearing->save();
-            }
-          }
+        //       $newhearing->hearing_case = $casealloc->caseallocation_case;
+        //       $newhearing->hearing_sched = date('Y-m-d H:i:s', strtotime("$heardate $newtime"));
+        //       $newhearing->hearing_type = 1;
+        //       $newhearing->save();
+        //     }
+        //   }
 
-        }
-        else{
+        // }
+        // else{
 
-        }
+        // }
 
         return response("success");
       }

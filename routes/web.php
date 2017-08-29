@@ -91,8 +91,16 @@ Route::get('/maintenance/clearance/clearance/getClearances', 'ClearanceControlle
 
 // Clearance
 Route::get('/clearance/clearance', 'ClearanceReqController@create');
+Route::get('/clearance/clearance/get', 'ClearanceReqController@getClearances');
 Route::get('/clearance/getResidents/{id}', 'ClearanceReqController@getResidents');
 Route::post('/clearance/storeClearance', 'ClearanceReqController@storeClearance');
+Route::get('/clearance/release', 'ReleaseController@create');
+Route::get('/clearance/release/get', 'ReleaseController@getTrans');
+Route::get('/clearance/release/{id}', 'ReleaseController@createdoc');
+Route::get('/clearance/payments/getunpaid', 'PaymentController@getunpaid');
+Route::get('/clearance/payments/getpaid', 'PaymentController@getpaid');
+Route::post('/clearance/payments/pay', 'PaymentController@payment');
+Route::get('/clearance/payments/getreceipt/{id}', 'PaymentController@getreceipt');
 // Clearance
 
 //Blotter
@@ -107,6 +115,21 @@ Route::get('/getSchedule', 'ScheduleController@view');
 
 Route::get('/blotter/barangay/record', 'RecordController@create');
 Route::get('/blotter/barangay/records', 'RecordController@show');
+Route::get('/blotter/barangay/getcasestat', 'RecordController@getcase');
+Route::post('/blotter/barangay/allocatecase', 'RecordController@allocate');
+Route::delete('/blotter/barangay/delete/{id}', 'RecordController@delete');
+
+Route::get('/blotter/barangay/getmed/{id}', 'RecordController@mediation');
+Route::get('/blotter/barangay/getcon/{id}', 'RecordController@concillation');
+Route::get('/blotter/barangay/getarb/{id}', 'RecordController@arbitration');
+
+Route::get('/blotter/barangay/record/mres/{id}', 'RecordController@printmres');
+Route::get('/blotter/barangay/record/mcom/{id}', 'RecordController@printmcom');
+Route::get('/blotter/barangay/record/mwit/{id}', 'RecordController@printmwit');
+
+Route::get('/blotter/barangay/record/cres/{id}', 'RecordController@printcres');
+Route::get('/blotter/barangay/record/ccom/{id}', 'RecordController@printccom');
+Route::get('/blotter/barangay/record/cwit/{id}', 'RecordController@printcwit');
 //Barangay Blotter
 
 // Incident Blotter
@@ -116,6 +139,10 @@ Route::post('/storeIncident', 'IncidentController@storeIncident');
 Route::post('/deleteIncident', 'IncidentController@deleteIncident');
 Route::get('/countincident', 'IncidentController@count');
 Route::get('/sendMessages', 'IncidentController@sendMessages');
+Route::get('/blotter/incident/updatestat/{id}', 'IncidentController@updatestat');
+Route::get('/blotter/incident/getstat/{id}', 'IncidentController@getstat');
+Route::post('/blotter/incident/updateincident', 'IncidentController@updateIncident');
+Route::get('/blotter/incident/getdetails/{id}', 'IncidentController@getdetails');
 
 Route::get('/blotter/incident/incident_mapping', 'MapController@createMap');
 Route::post('/blotter/incident/getIncidentLoc', 'MapController@getIncidentLoc');

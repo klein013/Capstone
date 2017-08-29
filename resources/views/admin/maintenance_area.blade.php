@@ -194,11 +194,11 @@
             });
 
             $.validator.addMethod("alpha", function(value, element) {
-                return this.optional(element) || value == value.match(/^[a-zA-Z .,]*$/);
+                return this.optional(element) || value.trim() == value.match(/^[a-zA-Z .,]*$/);
             },"Letters, spaces, period and comma only");
 
             $.validator.addMethod("letterwithbasicpunc", function(value, element) {
-                return this.optional(element) || value == value.match(/^[a-zA-Z0-9 !()?.,]*$/);
+                return this.optional(element) || value.trim() == value.match(/^[a-zA-Z0-9 !()?.,]*$/);
             },"Letters and numbers with basic punctuations only");            
 
             $('#positionform').validate({
@@ -335,7 +335,7 @@
 
             $('#updatePositionform').validate({
                 rules: {
-                    upname: {
+                    uppos: {
                         required: true,
                         alpha: true,
                         maxlength: 30

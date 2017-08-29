@@ -66,6 +66,7 @@ class IncidentController extends Controller
         $inc->incident_long = $longitude;
         $inc->incident_status = "On-going";
         $inc->incident_cat = $request->cat;
+        $inc->incident_notes = $request->notes;
         $inc->incident_exists = 1;
 
         $inc->save();
@@ -102,5 +103,29 @@ class IncidentController extends Controller
 
         $count = DB::select('select count(*) as count from tbl_incident where incident_exists = 1');
         return response($count[0]->count);
+    }
+
+    public function updatestat($id){
+
+        DB::table('tbl_incident')->where('incident_id',$id)->update(['incident_status' => "On-going"]);
+        return response("success");
+    }
+
+    public function getstat($id){
+
+        $stat = DB::select('select incident_status, incident_notes from tbl_incident where incident_id = '.$id);
+        return response()->json($stat);
+    }
+
+    public function updateIncident(Request $request){
+
+        DB::table('tbl_incident')->where('incident_id',$request->updateid)->update(['incident_status' => $request->stat, 'incident_notes' => $request->desc]);
+        return response("success");
+    }
+
+    public function getdetails($id){
+
+        $all = DB::select('select i.incident_id, i.incident_datetime, i.incident_statement, s.street_name, i.incident_lat, i.incident_long, ic.incidentcat_name, i.incident_status, coalesce(i.incident_notes,"") as incident_notes, i.incident_filed from tbl_incident i join tbl_street s on i.incident_street = s.street_id join tbl_incidentcat ic on ic.incidentcat_id = i.incident_cat where i.incident_id = '.$id);
+        return response()->json($all);
     }
 }

@@ -69,7 +69,7 @@
             <div class="row clearfix">
                 
                                     <div class="col-sm-2 col-sm-offset-10">
-                                        <button type="button" class="btn bg-teal btn-lg waves-effect waves-float pull-right" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i>Add Transaction</button>
+                                        <button type="button" class="btn bg-teal btn-lg waves-effect waves-float pull-right" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i>Add Request</button>
                                     </div>
                                 </div>
                                 <br>
@@ -82,10 +82,8 @@
                                     <tr class="bg-blue-grey">
                                         <th>ID</th>
                                         <th>Resident Name</th>
-                                        <th>Type</th>
-                                        <th>Purpose</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
+                                        <th>Date</th>
+                                        <th>Clearance</th>
                                     </tr>
                                 </thead>
                                <tbody>
@@ -237,6 +235,100 @@
         var pricesid = [];
         var purposes = [];
 
+        var tblreq = $('#requestTable').DataTable({
+            'bSort': false,
+            'ajax': {
+                'url' : '/clearance/clearance/get',
+                'method' : 'GET',
+                'data' : 'json',
+                'dataSrc' : function(json){
+                    console.log(json); 
+                    var return_data = new Array();
+                    var id;
+                    var row = "";
+                    var file = "";
+                        for(var i=0;i< json.length; i++){
+                            if(i==0){
+                                id = json[i].trans_id
+                                row += "<tr><td>" + json[i].clearance_type + "</td><td>" + json[i].request_status + "</td><td><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                if(i==json.length-1){
+                                    return_data.push({
+                                        'ID' : json[i].trans_id,
+                                        'Name' : json[i].name,
+                                        'RDate' : json[i].trans_date,
+                                        'Type': "<table width='100%;'>"+row+"</table>"
+                                        });
+                                }
+                            }
+                            else if(i==json.length-1){
+                                console.log(json.length-1);
+                                    if(id!=json[i].trans_id){
+                                        return_data.push({
+                                        'ID' : json[i-1].trans_id,
+                                        'Name' : json[i-1].name,
+                                        'RDate' : json[i-1].trans_date,
+                                        'Type': "<table width='100%;'>"+row+"</table>"
+                                        });
+                                        console.log("he");
+                                        id = json[i].trans_id;
+                                        row="";
+                                        row +=  "<tr><td>" + json[i].clearance_type + "</td><td>" + json[i].request_status + "</td><td><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                        return_data.push({
+                                        'ID' : json[i].trans_id,
+                                        'Name' : json[i].name,
+                                        'RDate' : json[i].trans_date,
+                                        'Type': "<table width='100%;'>"+row+"</table>"
+                                        });
+                                    }
+                                    else{
+                                        id = json[i].trans_id;
+                                        row +=  "<tr><td>" + json[i].clearance_type + "</td><td>" + json[i].request_status + "</td><td><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                        return_data.push({
+                                        'ID' : json[i].trans_id,
+                                        'Name' : json[i].name,
+                                        'RDate' : json[i].trans_date,
+                                        'Type': "<table width='100%;'>"+row+"</table>"
+                                        });
+                                    }
+                                }
+                            else{
+                                if(id!=json[i].trans_id){
+                                    return_data.push({
+                                        'ID' : json[i-1].trans_id,
+                                        'Name' : json[i-1].name,
+                                        'RDate' : json[i-1].trans_date,
+                                        'Type': "<table width='100%;'>"+row+"</table>"
+                                    });
+                                    id = json[i].trans_id;
+                                    row =  "<tr><td>" + json[i].clearance_type + "</td><td>" + json[i].request_status + "</td><td><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                }
+                                else{
+                                    row += "<tr><td>   " + json[i].clearance_type + "</td><td>" + json[i].request_status + "</td><td><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                }
+                                if(i==json.length-1){
+                                    return_data.push({
+                                        'ID' : json[i].trans_id,
+                                        'Name' : json[i].name,
+                                        'RDate' : json[i].trans_date,
+                                        'Type': "<table width='100%;'>"+row+"</table>"
+                                        });
+                                }
+                                   
+                            }
+                        }
+                          
+                    return return_data;
+                }
+            },
+            'columns': [
+                {'data' : 'ID'},
+                {'data' : 'Name'},
+                {'data' : 'RDate'},
+                {'data' : 'Type'}            ]
+
+
+        });
+
         $('#addthis').on('click', function(){
             if($('#purpose').val()==""){
                 $('#purpose').valid();
@@ -386,8 +478,35 @@
                         resid: $('#resID').val(),
                         clearance: tosend,
                     },
-                    success: function(){
-                        
+                    success: function(response){
+                        if(response=="success"){
+                            swal({
+                                title : "Success!", 
+                                text : "Request Added",
+                                type :  "success",
+                                showConfirmButton : false,
+                                timer : 1000
+                            });
+                        }
+                        else{
+                            swal({
+                                title : "Request Failed!", 
+                                text : response,
+                                type :  "success",
+                                showConfirmButton : false,
+                                timer : 1000
+                            });
+                        }
+                        $('#resID').val("");
+                        $('#ctype').val("");
+                        $('#purpose').val();
+                        pricesid=[];
+                        selected=[null];
+                        prices=[];
+                        purposes=[];
+                        $('#tbl tr').remove();
+                        $('#defaultModal').modal('toggle');
+                        tblreq.ajax.reload();
                     }   
                 });
             }

@@ -87,6 +87,13 @@
                         </div>
                     </div>
                     <div class="row clearfix">
+                        <div class="col-md-2"><button type="button" class="btn bg-teal btn-circle waves-effect waves-circle waves-float" id="witbtn" data-toggle="modal" data-target="#defaultModal3"><i class="material-icons">add</i></button></a>
+                            <label>Witness/es </label>
+                        </div>
+                        <div class="col-md-10" id="witcon" style="border-style:solid; border-color:#b3cccc; border-width: 1px; border-radius: 3px; height: 75px;">
+                        </div>
+                    </div>
+                    <div class="row clearfix">
                         <div class="col-md-2">
                             <label>Nature of Complaint</label>
                         </div>
@@ -161,7 +168,7 @@
             <div class="modal-body">
             	<div class="card">
                     <div class="row clearfix">
-                        <div class="col-md-12">
+                        <div class="col-sm-12">
                             <table class="table dataTable" width="100%" id="restable1">
                                 <thead class="bg-blue-grey">
                                     <tr>
@@ -177,7 +184,12 @@
                             </table>
                         </div>
                     </div>
-                </div>
+                    <!-- <div class="row clearfix"> 
+                        <div class="col-sm-3 col-sm-offset-9">
+                            <button class="btn btn-lg bg-teal pull-right" type="button" id="pickcom">PICK</button>
+                        </div>
+                    </div>
+ -->                </div>
             </div>
         </div>
     </div>
@@ -201,7 +213,7 @@
             <div class="modal-body">
                 <div class="card">
                     <div class="row clearfix">
-                        <div class="col-md-12">
+                        <div class="col-sm-12">
                             <table class="table dataTable" width="100%" id="restable">
                                 <thead class="bg-blue-grey">
                                     <tr>
@@ -214,6 +226,53 @@
                             </table>
                         </div>
                     </div>
+                    <!-- <div class="row clearfix"> 
+                        <div class="col-sm-3 col-sm-offset-9">
+                            <button class="btn btn-lg bg-teal pull-right" type="button" id="pickres">PICK</button>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="defaultModal3" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row clearfix">
+                    <div class="col-lg-8 col-md-3 col-sm-6 col-xs-12">
+                        <div class="info-box bg-teal">
+                            <div class="icon"><i class="material-icons">person_add</i></div>
+                            <div class="content">
+                                <div class="text"><h3>PICK WITNESS</h3></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <table class="table dataTable" width="100%" id="restable2">
+                                <thead class="bg-blue-grey">
+                                    <tr>
+                                        <td>ID</td>
+                                        <td>Resident Name</td>
+                                        <td>Birthdate</td>
+                                        <td>Address</td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- <div class="row clearfix"> 
+                        <div class="col-sm-3 col-sm-offset-9">
+                            <button class="btn btn-lg bg-teal pull-right" type="button" id="pickres">PICK</button>
+                        </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -236,8 +295,44 @@
         var used = ['"'+{{$return['official']}}+'"'];
         var com = [];
         var res = [];
+        var wit = [];
         var table1 = $("#restable1").DataTable();
         var table = $("#restable").DataTable();
+        var table2 = $("#restable2").DataTable();
+
+        $('#witbtn').on('click', function(){
+            var return_data = new Array();
+            table2.destroy();
+            table2 = $('#restable2').DataTable({
+            bSort: false,
+            "ajax": {
+                "url" : '/blotter/barangay/complaint_res',
+                "dataType" : "json",
+                "data" : {
+                    used : used.join()
+                },
+                "dataSrc" : function (json) {
+                        var return_data = new Array();
+                        for(var i=0;i< json.length; i++){
+                            return_data.push({
+                            'resident_id' : json[i].resident_id,
+                            'name' : json[i].name,
+                            'resident_bdate' : json[i].resident_bdate,
+                            'address' : json[i].address
+                            });
+                        } 
+                        return return_data;
+                }
+            },
+            "columns": [
+                    { "data": 'resident_id' },
+                    { "data": 'name' },
+                    { "data": 'resident_bdate' },
+                    { "data": 'address' },
+            ]
+            });
+
+        });
 
         $('#combtn').on('click', function(){
             var return_data = new Array();
@@ -315,6 +410,15 @@
             used.push('"'+data['resident_id']+'"');
             com.push('"'+data['resident_id']+'"');
         } );
+
+        $('#restable2 tbody').on('dblclick', 'tr', function () {
+            var data = table2.row( this ).data();
+            var $input = $('<button type="button" value='+data['resident_id']+' class="removewit btn btn-success waves-effect "><span>'+data['name']+'</span>  <i class="material-icons">remove</i></button>');
+            $input.appendTo($("#witcon"));
+            $('#defaultModal3').modal('toggle');
+            used.push('"'+data['resident_id']+'"');
+            wit.push('"'+data['resident_id']+'"');
+        } );
         
 		
         $(document).on("click", "button.removecom", function(){
@@ -331,6 +435,22 @@
             }
             
         });	
+
+        $(document).on("click", "button.removewit", function(){
+            $(this).remove();
+            for(var i = used.length; i--;) {
+                if(used[i] == '"'+$(this).val()+'"') {
+                    used.splice(i, 1);
+                }
+            }
+            for(var i = com.length; i--;) {
+                if(wit[i] == '"'+$(this).val()+'"') {
+                    wit.splice(i, 1);
+                }
+            }
+            
+        }); 
+
 
         $('#restable tbody').on('dblclick', 'tr', function () {
             var data = table.row( this ).data();
@@ -372,11 +492,12 @@
                     var formData = new FormData();
                     formData.append('res', res.join());
                     formData.append('com', com.join());
+                    formData.append('wit', wit.join());
                     formData.append('statement', $('#statement').val());
                     formData.append('case', $('#case').val());
                     formData.append('turnover', $('#turnover').val());
                     $.ajax({
-                        url : '/barangay/blotter/complaint_process',
+                        url : '/blotter/barangay/complaint_process',
                         method : 'POST',
                         data : formData,
                         processData : false,
@@ -395,8 +516,10 @@
                             });
                             $('#comcon').empty();
                             $('#rescon').empty();
+                            $('#witcon').empty();
                             com = [];
                             res = [];
+                            wit = [];
                             used = [];
                             $('#statement').val()="";
                             }

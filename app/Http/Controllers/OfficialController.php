@@ -17,6 +17,10 @@ class OfficialController extends Controller
     
     public function update(Request $request)
     {
+        $contact = DB::select('select r.resident_id from tbl_resident r join tbl_official o on o.resident_id = r.resident_id where r.resident_contact = "'.$request->contact.'" and o.official_id != '.$request->id);
+
+        if(empty($contact)){
+
         $resid = DB::select('select resident_id from tbl_official where official_id = '.$request->id);
 
         if($request->hasFile('file')){
@@ -37,7 +41,11 @@ class OfficialController extends Controller
 
             DB::table('tbl_official')->where('official_id',$request->id)->update(['position_id'=>$request->pos]);
 
-        return response()->json(null);
+        return response("success");
+        }
+        else{
+            return response("failed");
+        }
     }
 
     public function create()
@@ -53,6 +61,9 @@ class OfficialController extends Controller
 
     public function store(Request $request)
     {
+        $contact = DB::select("select resident_id from tbl_resident where resident_contact = '".$request->contact."' and resident_exists = 1");
+
+        if(empty($contact)){
         $resident = new TblResident;
 
         if(!$request->hasFile('file')){
@@ -74,19 +85,22 @@ class OfficialController extends Controller
         $resident->resident_exists = 1;
         $resident->resident_yearstayed = $request->year;
         $resident->resident_contact = $request->contact;
+        $resident->resident_allowmessage= 1;
 
         $resident->save();
 
+        $resid = DB::select('select resident_id from tbl_resident order by resident_id desc limit 1 ');
+
         $official = new TblOfficial;
 
-        $official->resident_id = $resident->resident_id;
+        $official->resident_id = $resid[0]->resident_id;
         $official->position_id = $request->pos;
         $official->official_exists = 1;
 
         $official->save();
 
 
-        $official1 = DB::select('select o.official_id as Off_ID, r.resident_image as Off_Image, r.resident_fname as Off_Fname, r.resident_mname as Off_Mname, r.resident_lname as Off_Lname, r.resident_bdate as Off_Bdate, r.resident_hno as Off_House, s.street_name as Off_Street, a.area_name as Off_Area from tbl_official o join tbl_resident r on o.resident_id = r.resident_id join tbl_street s on s.street_id = r.resident_street join tbl_area a on a.area_id = s.street_area where r.resident_id = '.$resident->resident_id);
+        $official1 = DB::select('select o.official_id as Off_ID, r.resident_image as Off_Image, r.resident_fname as Off_Fname, r.resident_mname as Off_Mname, r.resident_lname as Off_Lname, r.resident_bdate as Off_Bdate, r.resident_hno as Off_House, s.street_name as Off_Street, a.area_name as Off_Area from tbl_official o join tbl_resident r on o.resident_id = r.resident_id join tbl_street s on s.street_id = r.resident_street join tbl_area a on a.area_id = s.street_area where r.resident_id = "'.$resid[0]->resident_id.'"');
 
         $return['official'] = $official1;
 
@@ -96,6 +110,10 @@ class OfficialController extends Controller
         $return['position'] = $positions;
 
         return response()->json($return);
+    }
+        else{
+            return response()->json(null);
+        }
     }
 
     public function getdetails($id){
@@ -113,7 +131,7 @@ class OfficialController extends Controller
     }
 
     public function getOfficials(){
-        $officials = DB::select("select lpad(o.official_id,6,'0') as official_id, r.resident_image,p.position_name, concat(r.resident_fname,' ',coalesce(r.resident_mname,''),' ',r.resident_lname) as name, r.resident_bdate, r.resident_contact, r.resident_gender, concat(r.resident_hno,' ',s.street_name,' ',a.area_name) as street from tbl_official o join tbl_resident r on r.resident_id = o.resident_id join tbl_street s on r.resident_street = s.street_id join tbl_area a on s.street_area = a.area_id join tbl_position p on p.position_id = o.position_id where o.official_exists = 1");
+        $officials = DB::select("select lpad(o.official_id,6,'0') as official_id, r.resident_image,p.position_name, concat(r.resident_fname,' ',coalesce(r.resident_mname,''),' ',r.resident_lname) as name, r.resident_bdate, r.resident_contact, r.resident_gender, concat(r.resident_hno,' ',s.street_name,' ',a.area_name) as street from tbl_official o join tbl_resident r on r.resident_id = o.resident_id join tbl_street s on r.resident_street = s.street_id join tbl_area a on s.street_area = a.area_id join tbl_position p on p.position_id = o.position_id where o.official_exists = 1 order by 1");
         return response()->json($officials);
     }
 }

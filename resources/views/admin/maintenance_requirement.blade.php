@@ -66,10 +66,12 @@
             </div>
             </div>
             <!-- Basic Table -->
-            <div class="col-lg-offset-11 col-md-offset-2 col-sm-offset-4 col-xs-offset-5">
-                    <a href="javascript:void(0)" data-toggle="tooltip" title="Add Barangay Area"><button type="button" class="btn bg-teal btn-circle-lg waves-effect waves-circle waves-float" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i></button></a>
-                </div>
-            <br>
+            <div class="row clearfix">
+                                    <div class="col-sm-2 col-sm-offset-10">
+                                        <button type="button" class="btn bg-teal btn-lg waves-effect waves-float pull-right" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i>Add Requirement</button>
+                                    </div>
+                                </div>
+                                <br>
             <div class="row">    
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">

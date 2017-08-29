@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Maintenance | Clearance</title>
 	@include('admin.layout.head');
 	<link href="{{asset('plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css')}}" rel="stylesheet">
     
@@ -67,11 +67,11 @@
             </div>
     
             <div class="row clearfix">
-                <div class="col-lg-offset-11 col-md-offset-2 col-sm-offset-4 col-xs-offset-5">
-                   <a href="javascript:void(0)" data-toggle="tooltip" title="Add a Request"><button type="button" class="btn bg-teal btn-circle-lg waves-effect waves-circle waves-float" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i></button></a>
-                </div>
-            </div>
-            <br>
+                                    <div class="col-sm-2 col-sm-offset-10">
+                                        <button type="button" class="btn bg-teal btn-lg waves-effect waves-float pull-right" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i>Add Clearance</button>
+                                    </div>
+                                </div>
+                                <br>
             <br>
 	
             <!-- Basic Table -->

@@ -127,12 +127,6 @@
                             		<div class="col-sm-6">
                             		<input type='file' accept="image/*" id='image'>
                             		</div>
-                            		<!--<div class="col-md-2">
-                            			<label>OR</label>
-                            		</div>
-                            		<div class="col-md-2">
-                            			<button type='button' class='btn btn-default waves-effect' id="image2" data-toggle='tooltip' data-placement='bottom' title data-original-title='Capture image using webcam'><i class="material-icons">photo_camera</i></button>
-                            		</div>-->
                             	</div>
                             	</div>
                             	<br>
@@ -186,7 +180,7 @@
                                 		</div>
                                 
                                 <div class="col-sm-4">
-                                    <label>Year Stayed in the Brgy</label>
+                                    <label>Year of Residency</label>
                                     <div class="form-group">
                                     <div class="form-line">
                                         <input type="number" class="form-control" id="year" name="year">

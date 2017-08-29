@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Wed, 23 Aug 2017 05:52:23 +0000.
+ * Date: Tue, 29 Aug 2017 07:28:56 +0000.
  */
 
 namespace App\Models;
@@ -18,7 +18,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $request_purpose
  * @property \Carbon\Carbon $request_expiry
  * @property string $request_status
- * @property string $request_doc
+ * @property \Carbon\Carbon $request_paymentdate
  * @property int $request_transaction
  * 
  * @property \App\Models\TblClearance $tbl_clearance
@@ -40,7 +40,8 @@ class TblRequest extends Eloquent
 	];
 
 	protected $dates = [
-		'request_expiry'
+		'request_expiry',
+		'request_paymentdate'
 	];
 
 	protected $fillable = [
@@ -49,7 +50,7 @@ class TblRequest extends Eloquent
 		'request_purpose',
 		'request_expiry',
 		'request_status',
-		'request_doc',
+		'request_paymentdate',
 		'request_transaction'
 	];
 

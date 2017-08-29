@@ -4,6 +4,7 @@
 	<title>Barangay Blotter | Schedule</title>
 	@include('admin.layout.head')
 	<link rel="stylesheet" href="{{asset('js/fullcalendar.min.css')}}">
+    <link rel="stylesheet" href="{{asset('js/scheduler.min.css')}}">
     <link rel="stylesheet" href="{{asset('js/fullcalendar.print.css')}}" media="print">
     <link rel="stylesheet" href="{{asset('dist/css/AdminLTE.min.css')}}">
     <link rel="stylesheet" href="{{asset('dist/css/AdminLTE.css')}}">
@@ -78,191 +79,22 @@
         </div><!-- /.row -->
       </div><!-- /.content-wrapper -->
 
-      <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <div class="card">
-                        <div class="body table-responsive">
-                            <table class="table dataTable js-exportable" id='residentTable'>
-                                <thead>
-                                    <tr class="bg-blue-grey">
-                                        <th>ID</th>
-                                        <th>Complainant</th>
-                                        <th>Respondent</th>
-                                        <th>Case</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                        <td>1</td>
-                                        <td>Erwin Tarun</td>
-                                        <td>Joshua Glenn Maano</td>
-                                        <td>Threat</td>
-                                        <td>Pending</td>
-                                        <td><a href="javascript:void(0)" data-toggle="tooltip" title="Process Schedule"><button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle="modal" data-target="#largeModal"><i class="material-icons">cached</i></button></td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
 
 </section>
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        </div>
-                        <div class="modal-body">
-                        <div class="row clearfix">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="body">
-                            <div id="wizard_horizontal">
-                                <h2>Mediation</h2>
-                                <section>
-                                <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
-                                    <div class="panel-group" id="accordion_11" role="tablist" aria-multiselectable="true">
-                                        <div class="panel panel-col-teal">
-                                            <div class="panel-heading" role="tab" id="headingOne_11">
-                                                <h4 class="panel-title">
-                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_11" href="#collapseOne_11" aria-expanded="true" aria-controls="collapseOne_11">
-                                                        Hearing
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseOne_11" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_11">
-                                                <div class="panel-body">
-                                                    <div class="body table-responsive">
-                                                        <table class="table dataTable js-exportable" id='residentTable'>
-                                                            <thead>
-                                                                <tr class="bg-blue-grey">
-                                                                    <th>Hearing Date</th>
-                                                                    <th>Hearing Type</th>
-                                                                    <th>Complainant</th>
-                                                                    <th>Respondent</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                              <tr>
-                                                                    <td>02/13/17</td>
-                                                                    <td>1st Hearing</td>
-                                                                    <td>Joshua Glenn Maano/Attended</td>
-                                                                    <td>Erwin Tarun/Not Attended</td>
-                                                              </tr>
-                                                            </tbody>
-                                                          </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                </section>
-
-                                <h2>Conciliation</h2>
-                                <section>
-                                    <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
-                                    <div class="panel-group" id="accordion_10" role="tablist" aria-multiselectable="true">
-                                        <div class="panel panel-col-teal">
-                                            <div class="panel-heading" role="tab" id="headingOne_10">
-                                                <h4 class="panel-title">
-                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_10" href="#collapseOne_10" aria-expanded="true" aria-controls="collapseOne_10">
-                                                        Hearing
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseOne_10" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_10">
-                                                <div class="panel-body">
-                                                    <div class="body table-responsive">
-                                                        <table class="table dataTable js-exportable" id='residentTable'>
-                                                            <thead>
-                                                                <tr class="bg-blue-grey">
-                                                                    <th>Hearing Date</th>
-                                                                    <th>Hearing Type</th>
-                                                                    <th>Complainant</th>
-                                                                    <th>Respondent</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                              <tr>
-                                                                    <td>02/13/17</td>
-                                                                    <td>1st Hearing</td>
-                                                                    <td>Joshua Glenn Maano/Attended</td>
-                                                                    <td>Erwin Tarun/Not Attended</td>
-                                                              </tr>
-                                                            </tbody>
-                                                          </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                </section>
-
-                                <h2>Arbitration</h2>
-                                <section>
-                                 <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
-                                    <div class="panel-group" id="accordion_12" role="tablist" aria-multiselectable="true">
-                                        <div class="panel panel-col-teal">
-                                            <div class="panel-heading" role="tab" id="headingOne_12">
-                                                <h4 class="panel-title">
-                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_12" href="#collapseOne_12" aria-expanded="true" aria-controls="collapseOne_12">
-                                                        Hearing
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseOne_12" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_12">
-                                                <div class="panel-body">
-                                                    <div class="body table-responsive">
-                                                        <table class="table dataTable js-exportable" id='residentTable'>
-                                                            <thead>
-                                                                <tr class="bg-blue-grey">
-                                                                    <th>Hearing Date</th>
-                                                                    <th>Hearing Type</th>
-                                                                    <th>Complainant</th>
-                                                                    <th>Respondent</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                              <tr>
-                                                                    <td>02/13/17</td>
-                                                                    <td>1st Hearing</td>
-                                                                    <td>Joshua Glenn Maano/Attended</td>
-                                                                    <td>Erwin Tarun/Not Attended</td>
-                                                              </tr>
-                                                            </tbody>
-                                                          </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </section>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 @include('admin.layout.scripts');
 <script src="{{asset('js/moment.min.js')}}"></script>
 <script src="{{asset('js/fullcalendar.min.js')}}"></script>
+<script src="{{asset('js/scheduler.min.js')}}"></script>
 <script src="{{asset('plugins/jquery-steps/jquery.steps.js')}}"></script>
 <script>
 
 $(document).ready(function(){
     var calendar = $('#calendar').fullCalendar({
+        defaultView: 'agendaDay',
         header : {
             center: 'title',
-            left: 'month,basicWeek, basicDay'
+            left: 'month,basicWeek, agendaDay'
         },
         selectable: true,
         selectHelper: true
@@ -276,7 +108,7 @@ $(document).ready(function(){
             var events = [];
             $.each(response,function(index,value){
                 events.push({
-                    title : value.id+"/n"+value.case,
+                    title : value.id+"\n"+value.case,
                     start : moment(value.hearing_sched).format('YYYY-MM-DD hh:mm:ss'),
                     end :  moment(value.hearing_sched).add(240, 'm'),
                 });
