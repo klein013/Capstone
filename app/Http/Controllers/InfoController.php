@@ -9,6 +9,7 @@ use App\Http\Requests;
 use Response;
 use Illuminate\Support\Facedes\Input;
 use Session;
+use Exception;
 
 class InfoController extends Controller
 {
@@ -30,8 +31,7 @@ class InfoController extends Controller
     public function create()
     {
         $info = DB::table('tbl_brgyinfo')->first();
-          $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official')];
-
+          $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official'),'admin'=>Session::get('admin')];
         return view('admin.maintenance_info')->with(['info'=>$info,'return'=>$return]);
         
     }
@@ -44,22 +44,29 @@ class InfoController extends Controller
      */
     public function store(Request $request)
     {
-        $info = new TblBrgyinfo;
-        if(!$request->hasFile('file')){
-            $info->BrgyInfo_Image = "";
-        }
-        else{
-            $file = $request->file('file');
-            $file->move('uploads', $file->getClientOriginalName());
-            $info->BrgyInfo_Image = "uploads/".$file->getClientOriginalName();
-        }
-        $info->BrgyInfo_Name = $request->input('name');
-        $info->BrgyInfo_Web = $request->input('web');
-        $info->BrgyInfo_Email = $request->input('email');
+      
+        try{
+            if(!empty($request->file('cityfile'))){
+                $cityfile = $request->file('cityfile');
+                $cityfile->move('uploads', $cityfile->getClientOriginalName());
+                $city = 'uploads/'.$cityfile->getClientOriginalName();
 
-        $info->save();
+                DB::table('tbl_brgyinfo')->update(['brgyinfo_citylogo'=>$city]);
+            }
+            if(!empty($request->file('brgyfile'))){
+                $brgyfile = $request->file('brgyfile');
+                $brgyfile->move('uploads', $brgyfile->getClientOriginalName());
+                $brgy = 'uploads/'.$brgyfile->getClientOriginalName();
 
-        return view('admin.maintenance_info', '@InfoController/create');
+                DB::table('tbl_brgyinfo')->update(['brgyinfo_logo'=>$brgy]);
+            }   
+
+            DB::table('tbl_brgyinfo')->update(['brgyinfo_name'=>$request->name, 'brgyinfo_email'=>$request->email, 'brgyinfo_city'=>$request->city, 'brgyinfo_region'=>$request->region, 'brgyinfo_website'=>$request->web, 'brgyinfo_fb'=>$request->fb]);
+
+            return response("success");
+        }catch(Exception $e){
+            return response("file exceed");
+        }
     }
 
     /**

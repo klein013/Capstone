@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 <head>
 	<title>Maintenance | Cases Under KP Law</title>
@@ -72,13 +71,14 @@
                                         <button type="button" class="btn bg-teal btn-lg waves-effect waves-float pull-right" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i>Add Cases Under KP Law</button>
                                     </div>
                                 </div>
-            </div>
+            
             <br>
-            <div class="card">
+
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="body table-responsive" id="table">
-                            <table class="table dataTable" id="CaseTable">
+            <div class="card">
+                        <div class="body table-responsive">
+                            <table class="table table-bordered table-condensed table-striped table-hover  " id="CaseTable">
                                 <thead>
                                     <tr class="bg-blue-grey">
                                         <th>ID</th>
@@ -380,8 +380,8 @@
                     desc : $('#uptxtdesc').val()
                 },
                 success : function(response){
-                    table.ajax.reload();
-                    $('#updateModal').modal('toggle');
+                    
+                    
                     if(response=="success"){
                         swal({
                             title : "Success!", 
@@ -400,6 +400,8 @@
                             timer : 1000
                         });
                     }
+                    table.ajax.reload();
+                    $('#updateModal').modal('toggle');
                 }
                 });
             },

@@ -70,87 +70,141 @@
              <div class="col-lg-2 col-md-4 col-sm-12 col-xs-10">
                
                 </div>
-                <div class="col-lg-9 col-md-4 col-sm-12 col-xs-12">
+                <div class="col-sm-12">
                     <div class="card">
                         <div class="body">
                              <form class="form-horizontal" enctype="multipart/form-data" id="infoform">
                              {{ csrf_field() }}
+                             <br>
+                             <br>
                                 <div class="row clearfix">
-                                    <div>
+                                    <div class='col-sm-4 col-sm-offset-1'>
                                     @if(empty($info))
-                                        <img class="img-responsive centered" src="" name="brgylogo" style="width:20%; height:20%; margin: 0 auto;" id="oldimage">
+                                        <img class="img-responsive centered" src="" name="brgylogo" style="width:200px; height:200px; margin: 0 auto;" id="oldimagebrgy"></br>
+                                        <center><h4>Barangay Logo</h4></center>
                                     @else
-                                        <img class="img-responsive centered" src="{{ $info->BrgyInfo_Image }}" id="oldimage" name="brgylogo" style="width:20%; height:20%; margin: 0 auto;">
+                                        <img class="img-responsive centered" src="../{{ $info->brgyinfo_logo }}" id="oldimagebrgy" name="brgylogo" style="width:200px; height:200px; margin: 0 auto;"></br>
+                                        <center><h4>Barangay Logo</h4></center>
                                     @endif
-                                    </div> 
-                                    <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                        <label>Barangay Logo</label>
                                     </div>
-                                    <div class="col-lg-8 col-md-10 col-sm-8 col-xs-7">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="file" class="form-control" id="image" accept="image/jpg,image/jpeg,image/png" required>
-                                        </div>
+                                    <div class='col-sm-4 col-sm-offset-2'>
+                                    @if(empty($info))
+                                        <img class="img-responsive centered" src="" name="citylogo" style="width:200px; height:200px; margin: 0 auto;" id="oldimagecity">
+                                        </br>
+                                        <center><h4>City Logo</h4></center>
+                                    @else
+                                        <img class="img-responsive centered" src="../{{ $info->brgyinfo_citylogo }}" id="oldimagecity" name="citylogo" style="width:200px; height:200px; margin: 0 auto;">
+                                        </br>
+                                        <center><h4>City Logo</h4></center>
+                                    @endif
                                     </div>
-                                    </div>
-                                </div>
-
-                                <div class="row clearfix">                    
-                                <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                        <label>Barangay Name</label>
-                                </div>
-                                <div class="col-lg-8 col-md-10 col-sm-8 col-xs-7">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            @if(!empty($info))
-                                            <input type="text" class="form-control" value="{{ $info->BrgyInfo_Name }}" id="oldname"  required>
-                                            @else
-                                            <input type="text" class="form-control" value="p" id="oldname" required>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                                </div>
-
-                                <div class="row clearfix">                                
-                                 <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                        <label>Website</label>
-                                </div>
-                                <div class="col-lg-8 col-md-10 col-sm-8 col-xs-7">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            @if(!empty($info))
-                                            <input type="text" class="form-control" value="{{ $info->BrgyInfo_Web  }}" id="oldweb" required>
-                                            @else
-                                            <input type="text" class="form-control" value="" id="oldweb" required>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                                </div>
-
-                                <div class="row clearfix">
-                                 <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                        <label>Email</label>
-                                </div>
-                                <div class="col-lg-8 col-md-10 col-sm-8 col-xs-7">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            @if(!empty($info))
-                                            <input type="text" class="form-control" value="{{ $info->BrgyInfo_Email }}" id="oldemail" required>
-                                            @else
-                                            <input type="text" class="form-control" value="" id="oldemail" required>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
                                 </div>
                                 <br>
-                                <div class="row clearfix">
-                                    <div class="col-lg-offset-10 col-md-offset-2 col-sm-offset-4 col-xs-offset-5">
-                                        <input type="submit" data-color="teal" class="btn bg-teal waves-effect" id="save" data-toggle="modal" data-target="#smallModal" value="SAVE">
+                                <br>
+                                        <div class="row clearfix">
+                                            <div class="col-sm-4">
+                                                <label class="pull-right">Barangay Logo</label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <input type="file" class="form-control" id="imagebrgy" accept="image/jpg,image/jpeg,image/png" >
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row clearfix">
+                                            <div class="col-sm-4">
+                                                <label class="pull-right">City Logo</label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <input type="file" class="form-control" id="imagecity" accept="image/jpg,image/jpeg,image/png" >
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row clearfix">
+                                            <div class="col-sm-4">
+                                                <label class="pull-right">Barangay Name</label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <input type="text" class="form-control" id="name" name="name" value="{{$info->brgyinfo_name}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row clearfix">
+                                            <div class="col-sm-4">
+                                                <label class="pull-right">City</label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <input type="text" class="form-control" id="city" name="city" value="{{$info->brgyinfo_city}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row clearfix">
+                                            <div class="col-sm-4">
+                                                <label class="pull-right">Region</label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <input type="text" class="form-control" id="region" name="region" value="{{$info->brgyinfo_region}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row clearfix">
+                                            <div class="col-sm-4">
+                                                <label class="pull-right">Website</label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <input type="text" class="form-control" id="web" name="web" value="{{$info->brgyinfo_website}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row clearfix">
+                                            <div class="col-sm-4">
+                                                <label class="pull-right">Facebook</label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <input type="text" class="form-control" id="fb" name="fb" value="{{$info->brgyinfo_fb}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row clearfix">
+                                            <div class="col-sm-4">
+                                                <label class="pull-right">Email</label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <input type="text" class="form-control" id="email" name="email" value="{{$info->brgyinfo_email}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="row clearfix">
+                                        <div class="col-sm-4 col-sm-offset-8">
+                                            <button type="submit" class="btn btn-lg bg-teal waves-effect" id="save" name="save">SAVE</button>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <br>
 
                             </form>
                         </div>
@@ -163,31 +217,113 @@
     <script>
         $(document).ready(function (){
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-            var file="";
-            $('#image').change(function (event){
-                $("#oldimage").fadeIn("fast").attr('src',URL.createObjectURL(event.target.files[0]));
-                    file = event.target.files[0];
+            var cityfile=null;
+            var brgyfile=null;
+
+            $('#imagebrgy').change(function (event){
+                $("#oldimagebrgy").fadeIn("fast").attr('src',URL.createObjectURL(event.target.files[0]));
+                    brgyfile = event.target.files[0];
             });
 
-            $('#save').on('click', function(){
-                var formData = new FormData();
-                formData.append('file', file);
-                formData.append('name', $('#oldname').val());
-                formData.append('web', $('#oldweb').val());
-                formData.append('email', $('#oldemail').val());
-                $.ajax({
-                    url : '/maintenance_info',
-                    method : 'POST',
-                    data : formData,
-                    contentType : false,
-                    cache : false,
-                    processData : false,
-                    headers : {
-                        'X-CSRF-TOKEN' : CSRF_TOKEN
+            $('#imagecity').change(function (event){
+                $("#oldimagecity").fadeIn("fast").attr('src',URL.createObjectURL(event.target.files[0]));
+                    cityfile = event.target.files[0];
+            });
+
+            
+            $.validator.addMethod("alpha", function(value, element) {
+                return this.optional(element) || value.trim() == value.match(/^[a-zA-Z .,]*$/);
+            },"Letters, spaces, period and comma only");
+
+
+            $.validator.addMethod("alphanum", function(value, element) {
+                return this.optional(element) || value.trim() == value.match(/^[a-zA-Z0-9 .,]*$/);
+            },"Letters, Numbers, spaces, period and comma only");
+
+            $.validator.addMethod("cellno", function(value, element){
+                return this.optional(element) || value.trim() == value.match(/\+639.[0-9]{8}/);
+            }, "Must start +639 and followed by 9 digits");
+
+
+            $('#infoform').validate({
+                rules: {
+                    name:{
+                        required: true,
+                        alphanum: true,
+                        maxlength: 50,
+                    },
+                    city: {
+                        required: true,
+                        alphanum: true,
+                        maxlength : 50
+                    },
+                    region: {
+                        required: false,
+                        maxlength: 50,
+                        alpha: true
+                    },
+                    web: {
+                        required: true,
+                        maxlength : 100
+                    },
+                    fb: {
+                        required: true,
+                        maxlength : 100
+                    },
+                    email: {
+                        required: true,
+                        maxlength : 100  
                     }
-                });
+                },
+                submitHandler: function(form) { // for demo
+                    var formData = new FormData();
+                    formData.append('cityfile', cityfile);
+                    formData.append('brgyfile', brgyfile);
+                    formData.append('name', $('#name').val());
+                    formData.append('web', $('#web').val());
+                    formData.append('email', $('#email').val());
+                    formData.append('fb', $('#fb').val());
+                    formData.append('city', $('#city').val());
+                    formData.append('region', $('#region').val());
+                    $.ajax({
+                        url : '/utilities/info/store',
+                        method : 'POST',
+                        data : formData,
+                        processData : false,
+                        contentType : false,
+                        cache : false,
+                        headers : {
+                            'X-CSRF-TOKEN' : CSRF_TOKEN
+                        },
+                        success : function(response){
+                            if(response=="success"){
+                                swal({
+                                title : "Barangay Information Updated",
+                                type : "success",
+                                showConfirmButton : true
+                                });
+                            }else{
+                                swal({
+                                title : "File exceeded the size limit of 2mb",
+                                type : "error",
+                                showConfirmButton : true
+                                });
+                            }
+                        }
+                    });
+                },
+                highlight: function (input) {
+                    $(input).parents('.form-line').addClass('error');
+                },
+                unhighlight: function (input) {
+                    $(input).parents('.form-line').removeClass('error');
+                },
+                errorPlacement: function (error, element) {
+                    $(element).parents('.form-group').append(error);
+                }
             });
         });
     </script>
 </body>
 </html>
+

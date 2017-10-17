@@ -72,8 +72,15 @@
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 	<div class="card">
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-3 col-sm-offset-9">
+                                <span><h4><span class="label label-primary" id="release">Released</span> <span class="label label-warning" id="forrelease">For Release</span> <span class="label label-info" id="all">All</span></h4></span>
+                            </div>
+                        </div>
+                        <br>
                         <div class="body table-responsive">
-                            <table class="table dataTable" width="100%" id="releaseTable">
+                            <table class="table dataTable table-bordered table-hover table-condensed table-striped" width="100%" id="releaseTable">
                                 <thead>
                                     <tr class="bg-blue-grey">
                                         <th></th>
@@ -91,15 +98,331 @@
             </div>
             <!-- #END# With Material Design Colors -->
         </div>
+
+        <div class="modal fade" id="reqmodal" tabindex="-2" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="row clearfix">
+                                <div class="col-lg-7 col-md-3 col-sm-6 col-xs-12">
+                                    <h4>Deficient Requirement/s</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row clearfix">
+                                <div class="col-sm-12" id="reqcont">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row clearfix">
+                                <div class="col-sm-3 col-sm-offset-9">
+                                    <button type="button" class="btn btn-lg waves-effect bg-teal" id="reqproc">OK</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </div>
+
+
     </section>
    
 
-@include('admin.layout.scripts');
+@include('admin.layout.scripts')
 <script src="{{asset('plugins/jquery-datatable/jquery.dataTables.js')}}"></script>
 <script src="{{asset('plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js')}}"></script>
 <script>
     $(document).ready(function(){
         var csrf_token = $('meta[name="csrf-token"]').attr('content');
+
+        $('#release').on('click', function(){
+            table.destroy();
+                        table = $('#releaseTable').DataTable({
+                'bSort': false,
+            'ajax': {
+                'url' : '/clearance/release/getRelease',
+                'method' : 'GET',
+                'data' : 'json',
+                'dataSrc' : function(json){
+                    console.log(json); 
+                    var return_data = new Array();
+                    var id;
+                    var row = "";
+                    var file = "";
+                        for(var i=0;i< json.length; i++){
+                            if(i==0){
+                                id = json[i].trans_id
+                                row += "<tr style='width:50%;'><td>" + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button  type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                if(i==json.length-1){
+                                    return_data.push({
+                                        'ID' : json[i].trans_id,
+                                        'Name' : json[i].name,
+                                        'RDate' : json[i].trans_date,
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
+                                        });
+                                }
+                            }
+                            else if(i==json.length-1){
+                                console.log(json.length-1);
+                                    if(id!=json[i].trans_id){
+                                        return_data.push({
+                                        'ID' : json[i-1].trans_id,
+                                        'Name' : json[i-1].name,
+                                        'RDate' : json[i-1].trans_date,
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
+                                        });
+                                        console.log("he");
+                                        id = json[i].trans_id;
+                                        row="";
+                                        row +=  "<tr><td style='width:50%;'>" + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                        return_data.push({
+                                        'ID' : json[i].trans_id,
+                                        'Name' : json[i].name,
+                                        'RDate' : json[i].trans_date,
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
+                                        });
+                                    }
+                                    else{
+                                        id = json[i].trans_id;
+                                        row +=  "<tr><td style='width:50%;'>" + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                        return_data.push({
+                                        'ID' : json[i].trans_id,
+                                        'Name' : json[i].name,
+                                        'RDate' : json[i].trans_date,
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
+                                        });
+                                    }
+                                }
+                            else{
+                                if(id!=json[i].trans_id){
+                                    return_data.push({
+                                        'ID' : json[i-1].trans_id,
+                                        'Name' : json[i-1].name,
+                                        'RDate' : json[i-1].trans_date,
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
+                                    });
+                                    id = json[i].trans_id;
+                                    row =  "<tr><td style='width:50%;'>" + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                }
+                                else{
+                                    row += "<tr><td style='width:50%;'>   " + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                }
+                                if(i==json.length-1){
+                                    return_data.push({
+                                        'ID' : json[i].trans_id,
+                                        'Name' : json[i].name,
+                                        'RDate' : json[i].trans_date,
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
+                                        });
+                                }
+                                   
+                            }
+                        }
+                          
+                    return return_data;
+                }
+            },
+            'columns': [
+                {'data' : 'ID'},
+                {'data' : 'Name'},
+                {'data' : 'RDate'},
+                {'data' : 'Type'}            ]
+
+            });
+        })
+
+        $('#forrelease').on('click', function(){
+            table.destroy();
+            table = $('#releaseTable').DataTable({
+                'bSort': false,
+            'ajax': {
+                'url' : '/clearance/release/getForRelease',
+                'method' : 'GET',
+                'data' : 'json',
+                'dataSrc' : function(json){
+                    console.log(json); 
+                    var return_data = new Array();
+                    var id;
+                    var row = "";
+                    var file = "";
+                        for(var i=0;i< json.length; i++){
+                            if(i==0){
+                                id = json[i].trans_id
+                                row += "<tr><td style='width:50%;'>" + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                if(i==json.length-1){
+                                    return_data.push({
+                                        'ID' : json[i].trans_id,
+                                        'Name' : json[i].name,
+                                        'RDate' : json[i].trans_date,
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
+                                        });
+                                }
+                            }
+                            else if(i==json.length-1){
+                                console.log(json.length-1);
+                                    if(id!=json[i].trans_id){
+                                        return_data.push({
+                                        'ID' : json[i-1].trans_id,
+                                        'Name' : json[i-1].name,
+                                        'RDate' : json[i-1].trans_date,
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
+                                        });
+                                        console.log("he");
+                                        id = json[i].trans_id;
+                                        row="";
+                                        row +=  "<tr><td style='width:50%;'>" + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                        return_data.push({
+                                        'ID' : json[i].trans_id,
+                                        'Name' : json[i].name,
+                                        'RDate' : json[i].trans_date,
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
+                                        });
+                                    }
+                                    else{
+                                        id = json[i].trans_id;
+                                        row +=  "<tr><td style='width:50%;'>" + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                        return_data.push({
+                                        'ID' : json[i].trans_id,
+                                        'Name' : json[i].name,
+                                        'RDate' : json[i].trans_date,
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
+                                        });
+                                    }
+                                }
+                            else{
+                                if(id!=json[i].trans_id){
+                                    return_data.push({
+                                        'ID' : json[i-1].trans_id,
+                                        'Name' : json[i-1].name,
+                                        'RDate' : json[i-1].trans_date,
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
+                                    });
+                                    id = json[i].trans_id;
+                                    row =  "<tr><td style='width:50%;'>" + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                }
+                                else{
+                                    row += "<tr><td style='width:50%;'>   " + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                }
+                                if(i==json.length-1){
+                                    return_data.push({
+                                        'ID' : json[i].trans_id,
+                                        'Name' : json[i].name,
+                                        'RDate' : json[i].trans_date,
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
+                                        });
+                                }
+                                   
+                            }
+                        }
+                          
+                    return return_data;
+                }
+            },
+            'columns': [
+                {'data' : 'ID'},
+                {'data' : 'Name'},
+                {'data' : 'RDate'},
+                {'data' : 'Type'}            ]
+
+            });
+        })
+
+        $('#all').on('click', function(){
+            table.destroy();
+            table = $('#releaseTable').DataTable({
+                'bSort': false,
+            'ajax': {
+                'url' : '/clearance/release/get',
+                'method' : 'GET',
+                'data' : 'json',
+                'dataSrc' : function(json){
+                    console.log(json); 
+                    var return_data = new Array();
+                    var id;
+                    var row = "";
+                    var file = "";
+                        for(var i=0;i< json.length; i++){
+                            if(i==0){
+                                id = json[i].trans_id
+                                row += "<tr><td style='width:50%;'>" + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                if(i==json.length-1){
+                                    return_data.push({
+                                        'ID' : json[i].trans_id,
+                                        'Name' : json[i].name,
+                                        'RDate' : json[i].trans_date,
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
+                                        });
+                                }
+                            }
+                            else if(i==json.length-1){
+                                console.log(json.length-1);
+                                    if(id!=json[i].trans_id){
+                                        return_data.push({
+                                        'ID' : json[i-1].trans_id,
+                                        'Name' : json[i-1].name,
+                                        'RDate' : json[i-1].trans_date,
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
+                                        });
+                                        console.log("he");
+                                        id = json[i].trans_id;
+                                        row="";
+                                        row +=  "<tr><td style='width:50%;'>" + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                        return_data.push({
+                                        'ID' : json[i].trans_id,
+                                        'Name' : json[i].name,
+                                        'RDate' : json[i].trans_date,
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
+                                        });
+                                    }
+                                    else{
+                                        id = json[i].trans_id;
+                                        row +=  "<tr><td style='width:50%;'>" + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                        return_data.push({
+                                        'ID' : json[i].trans_id,
+                                        'Name' : json[i].name,
+                                        'RDate' : json[i].trans_date,
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
+                                        });
+                                    }
+                                }
+                            else{
+                                if(id!=json[i].trans_id){
+                                    return_data.push({
+                                        'ID' : json[i-1].trans_id,
+                                        'Name' : json[i-1].name,
+                                        'RDate' : json[i-1].trans_date,
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
+                                    });
+                                    id = json[i].trans_id;
+                                    row =  "<tr><td style='width:50%;'>" + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                }
+                                else{
+                                    row += "<tr><td style='width:50%;'>   " + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                }
+                                if(i==json.length-1){
+                                    return_data.push({
+                                        'ID' : json[i].trans_id,
+                                        'Name' : json[i].name,
+                                        'RDate' : json[i].trans_date,
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
+                                        });
+                                }
+                                   
+                            }
+                        }
+                          
+                    return return_data;
+                }
+            },
+            'columns': [
+                {'data' : 'ID'},
+                {'data' : 'Name'},
+                {'data' : 'RDate'},
+                {'data' : 'Type'}            ]
+
+            })
+        })
 
         var table = $('#releaseTable').DataTable({
             'bSort': false,
@@ -116,13 +439,13 @@
                         for(var i=0;i< json.length; i++){
                             if(i==0){
                                 id = json[i].trans_id
-                                row += "<tr><td>" + json[i].clearance_type + "</td><td>" + json[i].request_status + "</td><td><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                row += "<tr><td style='width:50%;'>" + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
                                 if(i==json.length-1){
                                     return_data.push({
                                         'ID' : json[i].trans_id,
                                         'Name' : json[i].name,
                                         'RDate' : json[i].trans_date,
-                                        'Type': "<table width='100%;'>"+row+"</table>"
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
                                         });
                                 }
                             }
@@ -133,27 +456,27 @@
                                         'ID' : json[i-1].trans_id,
                                         'Name' : json[i-1].name,
                                         'RDate' : json[i-1].trans_date,
-                                        'Type': "<table width='100%;'>"+row+"</table>"
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
                                         });
                                         console.log("he");
                                         id = json[i].trans_id;
                                         row="";
-                                        row +=  "<tr><td>" + json[i].clearance_type + "</td><td>" + json[i].request_status + "</td><td><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                        row +=  "<tr><td style='width:50%;'>" + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
                                         return_data.push({
                                         'ID' : json[i].trans_id,
                                         'Name' : json[i].name,
                                         'RDate' : json[i].trans_date,
-                                        'Type': "<table width='100%;'>"+row+"</table>"
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
                                         });
                                     }
                                     else{
                                         id = json[i].trans_id;
-                                        row +=  "<tr><td>" + json[i].clearance_type + "</td><td>" + json[i].request_status + "</td><td><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                        row +=  "<tr><td style='width:50%;'>" + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
                                         return_data.push({
                                         'ID' : json[i].trans_id,
                                         'Name' : json[i].name,
                                         'RDate' : json[i].trans_date,
-                                        'Type': "<table width='100%;'>"+row+"</table>"
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
                                         });
                                     }
                                 }
@@ -163,20 +486,20 @@
                                         'ID' : json[i-1].trans_id,
                                         'Name' : json[i-1].name,
                                         'RDate' : json[i-1].trans_date,
-                                        'Type': "<table width='100%;'>"+row+"</table>"
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
                                     });
                                     id = json[i].trans_id;
-                                    row =  "<tr><td>" + json[i].clearance_type + "</td><td>" + json[i].request_status + "</td><td><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                    row =  "<tr><td style='width:50%;'>" + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
                                 }
                                 else{
-                                    row += "<tr><td>   " + json[i].clearance_type + "</td><td>" + json[i].request_status + "</td><td><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
+                                    row += "<tr><td style='width:50%;'>   " + json[i].clearance_type + "</td><td style='width:30%;'>" + json[i].request_status + "</td><td style='width:10%;'><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
                                 }
                                 if(i==json.length-1){
                                     return_data.push({
                                         'ID' : json[i].trans_id,
                                         'Name' : json[i].name,
                                         'RDate' : json[i].trans_date,
-                                        'Type': "<table width='100%;'>"+row+"</table>"
+                                        'Type': "<table class='table-bordered table-hover table-condensed table-striped' width='100%;'>"+row+"</table>"
                                         });
                                 }
                                    
@@ -194,9 +517,75 @@
 
         });
 
+        var requestid = null;
         $('#releaseTable tbody').on('click', 'button.download', function(){
-            window.open(window.location.href+"/"+$(this).val(),'_blank');
-            return false;
+            var id = $(this).val();
+            requestid = id;
+            $.ajax({
+                url: '/clearance/release/check/'+$(this).val(),
+                method: 'GET',
+                success: function(response){
+                    table.ajax.reload();
+                    if(response[0]==null){
+
+                        window.open(window.location.href+"/"+id);
+                        return false;
+                    }
+                    else{
+                         $('#reqcont').empty();
+                        console.log(response);
+                        for(var i=0;i< response.length;i++){
+                            $('#reqcont').append('<input type="checkbox" class="req" value="'+id+','+response[i].requirement_id+'" id="'+id+','+response[i].requirement_id+'" class="cbreq"/><label for="'+id+','+response[i].requirement_id+'">'+response[i].requirement_name+'</label><br>');
+                        }
+                        $('#reqmodal').modal('toggle');
+                    }
+                }
+            });
+            
+        });
+
+        var sr = [];
+
+        $('#reqproc').on('click', function(){
+            $('#reqmodal').modal('toggle');
+
+            var sThisVal = "";
+            $('input:checkbox.req').each(function () {
+                if($(this).is(":Checked")){
+                    sr.push((($(this).val()).replace(',','|'))+"|1");
+                }
+                else{
+                    sr.push((($(this).val()).replace(',','|'))+"|0");
+                }
+                
+            });
+
+            console.log(sr);
+            $.ajax({
+                url : '/clearance/release/req',
+                method: 'POST',
+                data: {
+                    _token : csrf_token,
+                    sr : sr,
+                    id : requestid
+                },
+                success: function(response){
+                    table.ajax.reload();
+                    if(response=="success"){
+                        window.open(window.location.href+"/"+requestid);
+                        return false;
+                    }
+                    else{
+                        
+                        swal({
+                                title : "Failed!", 
+                                text : "Please complete all requirements needed",
+                                type :  "error",
+                                showConfirmButton : true
+                            });
+                    }
+                }
+            });
         });
 
     });

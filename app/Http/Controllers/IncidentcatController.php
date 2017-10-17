@@ -15,7 +15,7 @@ class IncidentcatController extends Controller
 {
     public function create()
     {
-          $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official')];
+          $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official'),'admin'=>Session::get('admin')];
         return view('admin.maintenance_incidentcat', compact('return'));
     }
 

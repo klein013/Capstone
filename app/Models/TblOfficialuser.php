@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 29 Aug 2017 07:28:56 +0000.
+ * Date: Mon, 16 Oct 2017 19:28:36 +0800.
  */
 
 namespace App\Models;
@@ -15,6 +15,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $official_id
  * @property string $official_username
  * @property string $official_password
+ * @property bool $official_admin
  * @property \Carbon\Carbon $last_log
  * 
  * @property \App\Models\TblOfficial $tbl_official
@@ -29,7 +30,8 @@ class TblOfficialuser extends Eloquent
 	public $timestamps = false;
 
 	protected $casts = [
-		'official_id' => 'int'
+		'official_id' => 'int',
+		'official_admin' => 'bool'
 	];
 
 	protected $dates = [
@@ -43,6 +45,7 @@ class TblOfficialuser extends Eloquent
 	protected $fillable = [
 		'official_id',
 		'official_password',
+		'official_admin',
 		'last_log'
 	];
 

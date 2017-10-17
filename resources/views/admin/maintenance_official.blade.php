@@ -11,11 +11,11 @@
             <!-- User Info -->
           <div class="user-info">
                 <div class="image">
-                    <img src="{{asset($return['image'])}}" width="48" height="48" alt="User" />
+                    <img src="{{asset($return['image'])}}" width="48" height="48" alt="User" id="userimage"/>
                 </div>
                 <div class="info-container">
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$return['name']}}</div>
-                    <div class="email">Official ID: <strong id="sessionpos">{{$return['official']}}</strong></div>
+                    <div class="name" data-toggle="dropdown" aria-haspopup="true" id="userfullname" aria-expanded="false">{{$return['name']}}</div>
+                    <div class="email">Official ID: <strong id="userofficial">{{$return['official']}}</strong></div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
@@ -74,7 +74,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 	<div class="card">
                         <div class="body table-responsive">
-                            <table class="table table-hover dataTable js-exportable" id="OfficialTable">
+                            <table class="table table-hover table-bordered table-condensed table-striped dataTable js-exportable" id="OfficialTable">
                                 <thead>
                                     <tr class="bg-blue-grey">
                                         <th>ID</th>
@@ -609,6 +609,13 @@
                                 showConfirmButton : false
                             });
                             }
+                            else if(response=="exceed"){
+                                swal({
+                                    title : "File Size must be less than 2mb",
+                                    type : "error",
+                                    showConfirmButton : true
+                                });
+                            }
                             else{
                             if(response['official'][0].Off_Gender=='M'){
                                 var sex = "Male";
@@ -820,6 +827,7 @@
                     formData.append('gender', $('#updategender').val());
                     formData.append('pos', $('#updateposition').val());
                     formData.append('year', $('#updateyear').val());
+                    console.log(updatefile);
                     $.ajax({
                         url : '/maintenance/barangay/official/update',
                         method : 'POST',
@@ -831,10 +839,7 @@
                             'X-CSRF-TOKEN' : CSRF_TOKEN
                         },
                         success : function(response){
-                            if(response=="success"){
-                                table.ajax.reload();    
-                            }  
-                            else{
+                            if(response=="failed"){
                                 swal({
                                 title : "Contact number already used",
                                 type : "error",
@@ -842,6 +847,27 @@
                                 showConfirmButton : false
                                 });
                             }
+                            else if(response=="file exceed"){
+                                swal({
+                                title : "File Size must be less than 2mb",
+                                type : "error",
+                                timer : 1000,
+                                showConfirmButton : false
+                                });
+                            }
+                            else{
+                                swal({
+                                    title : "Updated!", 
+                                    text : "Record has been updated",
+                                    type :  "success",
+                                    showConfirmButton : false,
+                                    timer : 1000
+                                });
+                                $('#userimage').attr('src', '/'+response[0].resident_image);
+                                $('#userfullname').text(response[0].name);
+                                $('#userofficial').text(response[0].official);
+                                table.ajax.reload();    
+                            }  
                             $('#updatefname').val("");
                             $('#updatemname').val("");
                             $('#updatelname').val("");

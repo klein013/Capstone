@@ -26,9 +26,10 @@
                     </div>
                 </div>
             </div>
+            </div>
 
 
-            @if($return['position']==0)
+          @if($return['position']==0)
                 @include('admin.aside_admin');
             @elseif($return['position']==1)
                 @include('admin.aside_pb');
@@ -75,7 +76,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 	<div class="card">
                         <div class="body table-responsive">
-                            <table class="table table-hover dataTable js-exportable" id="PosTable">
+                            <table class="table table-bordered table-condensed table-striped table-hover dataTable js-exportable" id="PosTable">
                                 <thead>
                                     <tr class="bg-blue-grey">
                                         <th>ID</th>

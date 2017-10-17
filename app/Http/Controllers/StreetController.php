@@ -16,7 +16,7 @@ class StreetController extends Controller
 
         $areas = DB::select('select area_id, area_name from tbl_area where area_exists=1');
 
-        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official')];
+        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official'),'admin'=>Session::get('admin')];
     	return view('admin.maintenance_street')->with(['areas'=>$areas,'return'=>$return]);
     } 
 

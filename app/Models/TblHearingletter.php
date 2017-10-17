@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 29 Aug 2017 07:28:56 +0000.
+ * Date: Mon, 16 Oct 2017 19:28:36 +0800.
  */
 
 namespace App\Models;
@@ -15,6 +15,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $hl_hearing
  * @property string $hl_personinvolve
  * @property string $hl_lettertype
+ * @property \Carbon\Carbon $hl_printdate
  * @property \Carbon\Carbon $hl_datereceive
  * 
  * @property \App\Models\TblHearing $tbl_hearing
@@ -33,6 +34,7 @@ class TblHearingletter extends Eloquent
 	];
 
 	protected $dates = [
+		'hl_printdate',
 		'hl_datereceive'
 	];
 
@@ -40,6 +42,7 @@ class TblHearingletter extends Eloquent
 		'hl_hearing',
 		'hl_personinvolve',
 		'hl_lettertype',
+		'hl_printdate',
 		'hl_datereceive'
 	];
 

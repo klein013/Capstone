@@ -8,7 +8,7 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="{{URL('index')}}">BARANGAY PAYATAS BLOTTER and CLEARANCE MANAGEMENT SYSTEM</a>
+                <a class="navbar-brand" href="{{URL('index')}}">BARANGAY BLOTTER and CLEARANCE MANAGEMENT SYSTEM</a>
 
             </div>
             <!--<div class="collapse navbar-collapse" id="navbar-collapse">

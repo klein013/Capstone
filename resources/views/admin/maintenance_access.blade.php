@@ -27,22 +27,23 @@
             </div>
 
             @if($return['position']==0)
-                @include('admin.aside_admin');
+                @include('admin.aside_admin')
             @elseif($return['position']==1)
-                @include('admin.aside_pb');
+                @include('admin.aside_pb')
             @elseif($return['position']==2)
-                @include('admin.aside_pb');
+                @include('admin.aside_pb')
             @elseif($return['position']==3)
-                @include('admin.aside_admin');
+                @include('admin.aside_admin')
             @elseif($return['position']==4)
-                @include('admin.aside_sec');
+                @include('admin.aside_sec')
             @elseif($return['position']==5)
-                @include('admin.aside_desk');
+                @include('admin.aside_desk')
             @elseif($return['position']==6)
-                @include('admin.aside_bpso');
+                @include('admin.aside_bpso')
             @elseif($return['position']==7)
-                @include('admin.aside_cashier');
+                @include('admin.aside_cashier')
             @endif
+    </aside>
 	<section class="content">
 	<div class="container-fluid">
         <div class="block-header">
@@ -63,7 +64,7 @@
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 	<div class="body table-responsive">
-                		<table class="table dataTable" id="accessTable">
+                		<table class="table table-bordered table-condensed table-striped table-hover dataTable" id="accessTable">
                 			<thead>
                 				<tr class='bg-blue-grey'>
                 					<td>ID</td>
@@ -73,24 +74,12 @@
                 				</tr>
                 			</thead>
                 			<tbody>
-                				@foreach($officials as $official)
-                					<tr>
-                						<td>{{ $official->ID }}</td>
-                						<td>{{ $official->Name }}</td>
-                						<td>{{ $official->Pos }}</td>
-                						@if($official->Access == "non-admin")
-                							<td><select class="access form-control show-tick"><option value="non-admin" selected>non-admin</option><option value="admin">admin</option></select></td>
-                						@else
-                							<td><select class="access form-control show-tick"><option value="admin" selected>admin</option><option value="non-admin">non-admin</option></select></td>
-                						@endif
-                					</tr>
-                				@endforeach
                 			</tbody>
                 		</table>
                 	</div>
                 	<div class="row clearfix">
                 		<div class="col-md-2 col-md-offset-10">
-                			<button type="submit" class="btn bg-teal btn-lg waves-effect" id="updateall">Update Changes</button>
+                			<center><button type="submit" class="btn bg-teal btn-lg waves-effect" id="updateall">Update Changes</button></center>
                 		</div>
                 	</div>
                 	<br>
@@ -106,9 +95,78 @@
     <script>
     	$(document).ready(function(){
 
+            var arr = [];
+            var csrf_token = $('meta[name="csrf-token"]').attr('content');
+
+            $('#updateall').on('click', function(){
+                $.ajax({
+                    'url': '/utilities/access/update',
+                    'method': 'POST',
+                    'data' : {
+                        _token: csrf_token,
+                        checks : arr
+                    },
+                    'success' : function(response){
+                        if(response=="success"){
+                            swal({
+                                title : "Success!", 
+                                text : "Changes successfully made",
+                                type :  "success",
+                                showConfirmButton : true
+                            });
+                        }
+                    }
+                })
+            });
     		$('#accessTable').dataTable({
-    			bSort : false
-    		});
+    			bSort : false,
+                "ajax": {
+                "url" : "/utilities/access/show",
+                "method": "GET",
+                "data" : "json",
+                "dataSrc": function (json) {
+                        var return_data = new Array();
+                        for(var i=0;i< json.length; i++){
+                            var rre;
+                            if(json[i].official_admin==0){
+                                rre = "<select class='access form-control show-tick'><option value='1|"+json[i].official_id+"' >Admin</option><option value='0|"+json[i].official_id+"' selected>Non-Admin</option></select>";
+                                arr.push([json[i].official_id, 0]);
+                            }
+                            else{
+                                rre = "<select class='access form-control show-tick'><option value='1|"+json[i].official_id+"' selected>Admin</option><option value='0|"+json[i].official_id+"'>Non-Admin</option></select>";
+                                arr.push([json[i].official_id, 1]);
+                            }
+
+                            return_data.push({
+                            'ID' : json[i].official_id,
+                            'Name' : json[i].name,
+                            'Position' : json[i].position_name,
+                            'Access': rre
+                            });
+                        }     
+                        return return_data;
+                    }
+            },
+            "columns" : [
+                {"data" : "ID"},
+                {"data" : "Name"},
+                {"data" : "Position"},
+                {"data" : "Access"}
+            ]
+            });
+
+            $('#accessTable tbody').on('change', 'select.access', function(){
+                    var off = ($(this).val()).split('|')[1];
+                    var admin = ($(this).val()).split('|')[0];
+                    $.each(arr, function(key, value) {
+                        if(value["0"]==off){
+                            value["0"] = off;
+                            value["1"] = admin;
+                        }
+                    });
+
+                    console.log(arr);
+            })
     	});
     </script>
 </body>

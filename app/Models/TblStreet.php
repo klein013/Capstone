@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 29 Aug 2017 07:28:57 +0000.
+ * Date: Mon, 16 Oct 2017 19:28:36 +0800.
  */
 
 namespace App\Models;
@@ -19,7 +19,6 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * 
  * @property \App\Models\TblArea $tbl_area
  * @property \Illuminate\Database\Eloquent\Collection $tbl_incidents
- * @property \Illuminate\Database\Eloquent\Collection $tbl_offices
  * @property \Illuminate\Database\Eloquent\Collection $tbl_residents
  *
  * @package App\Models
@@ -49,11 +48,6 @@ class TblStreet extends Eloquent
 	public function tbl_incidents()
 	{
 		return $this->hasMany(\App\Models\TblIncident::class, 'incident_street');
-	}
-
-	public function tbl_offices()
-	{
-		return $this->hasMany(\App\Models\TblOffice::class, 'office_street');
 	}
 
 	public function tbl_residents()

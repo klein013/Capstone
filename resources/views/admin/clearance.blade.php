@@ -76,14 +76,16 @@
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 	<div class="card">
+                        <br>
                         <div class="body table-responsive">
-                            <table class="table dataTable" width="100%" id="requestTable">
+                            <table class="table dataTable table-condensed table-bordered table-striped table-hover" width="100%" id="requestTable">
                                 <thead>
                                     <tr class="bg-blue-grey">
                                         <th>ID</th>
                                         <th>Resident Name</th>
                                         <th>Date</th>
                                         <th>Clearance</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                <tbody>
@@ -96,6 +98,7 @@
             <!-- #END# With Material Design Colors -->
         </div>
     </section>
+   
 
     <div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-lg" role="document">
@@ -134,7 +137,7 @@
                             </div>
                             <div class="row clearfix" id="lol" style="display:none;">
                                 <div class="body table-responsive">
-                                    <table class="table dataTable" width="100%" id="residentTable">
+                                    <table class="table dataTable table-condensed table-bordered table-striped table-hover" width="100%" id="residentTable">
                                         <thead>
                                             <tr class="bg-blue-grey">
                                                 <th>ID</th>
@@ -181,14 +184,14 @@
                             <div class="row clearfix" id="cl" style="display:none;">
                                 <div class="col-sm-12">
                                 <label>Added Clearances</label>
-                                    <div class="table-responsive">
-                                        <table id="tbl" class="table">
+                                    <div class="col-sm-12">
+                                        <table id="tbl" class="table table-responsive table-bordered table-condensed table-hover table-striped">
                                             <thead>
                                                 <tr class="bg-teal">
-                                                    <th>Clearance ID</th>
-                                                    <th>Clearance Name</th>
-                                                    <th>Purpose</th>
-                                                    <th>Price</th>
+                                                    <th><label>Clearance ID</label></th>
+                                                    <th><label>Clearance Name</label></th>
+                                                    <th><label>Purpose</label></th>
+                                                    <th><label>Price</label></th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -221,7 +224,69 @@
                 </div>
             </div>
 
-   
+    <div class="modal fade" id="reqmodal" tabindex="-2" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="row clearfix">
+                                <div class="col-lg-7 col-md-3 col-sm-6 col-xs-12">
+                                    <h4>Requirement/s</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row clearfix">
+                                <div class="col-sm-12" id="reqcont">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row clearfix">
+                                <div class="col-sm-3 col-sm-offset-9">
+                                    <button type="button" class="btn btn-lg waves-effect bg-teal" id="reqproc">OK</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </div>
+
+    <div class="modal fade" id="updatemodal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row clearfix">
+                                <div class="col-lg-7 col-md-3 col-sm-6 col-xs-12">
+                                    <h4>Update Request</h4>
+                                </div>
+                            </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row clearfix">
+                        <div class="col-sm-4">
+                            <label id="name"></label>
+                            <br>
+                            <label id="transaction"></label>
+                        </div>
+                        <br>
+                        <div class="col-sm-12">
+                            <table class="table table-responsive table-bordered table-condensed table-hover table-striped" id="editTable">
+                                <thead>
+                                    <tr class="bg-teal">
+                                        <td><label>Clearance ID</label></td>
+                                        <td><label>Clearance Name</label></td>
+                                        <td><label>Price</label></td>
+                                        <td></td>
+                                    </tr>
+                                </thead>
+                                <tbody id="editTablebody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @include('admin.layout.scripts');
 <script>
@@ -230,10 +295,12 @@
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
         var id= {{$return['official']}};
-        var selected = [null];
+        var selected = [];
         var prices = [];
         var pricesid = [];
         var purposes = [];
+        var sr = [];
+
 
         var tblreq = $('#requestTable').DataTable({
             'bSort': false,
@@ -242,93 +309,177 @@
                 'method' : 'GET',
                 'data' : 'json',
                 'dataSrc' : function(json){
-                    console.log(json); 
-                    var return_data = new Array();
-                    var id;
-                    var row = "";
-                    var file = "";
+                     var return_data = new Array();
                         for(var i=0;i< json.length; i++){
-                            if(i==0){
-                                id = json[i].trans_id
-                                row += "<tr><td>" + json[i].clearance_type + "</td><td>" + json[i].request_status + "</td><td><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
-                                if(i==json.length-1){
-                                    return_data.push({
-                                        'ID' : json[i].trans_id,
-                                        'Name' : json[i].name,
-                                        'RDate' : json[i].trans_date,
-                                        'Type': "<table width='100%;'>"+row+"</table>"
-                                        });
-                                }
-                            }
-                            else if(i==json.length-1){
-                                console.log(json.length-1);
-                                    if(id!=json[i].trans_id){
-                                        return_data.push({
-                                        'ID' : json[i-1].trans_id,
-                                        'Name' : json[i-1].name,
-                                        'RDate' : json[i-1].trans_date,
-                                        'Type': "<table width='100%;'>"+row+"</table>"
-                                        });
-                                        console.log("he");
-                                        id = json[i].trans_id;
-                                        row="";
-                                        row +=  "<tr><td>" + json[i].clearance_type + "</td><td>" + json[i].request_status + "</td><td><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
-                                        return_data.push({
-                                        'ID' : json[i].trans_id,
-                                        'Name' : json[i].name,
-                                        'RDate' : json[i].trans_date,
-                                        'Type': "<table width='100%;'>"+row+"</table>"
-                                        });
-                                    }
-                                    else{
-                                        id = json[i].trans_id;
-                                        row +=  "<tr><td>" + json[i].clearance_type + "</td><td>" + json[i].request_status + "</td><td><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
-                                        return_data.push({
-                                        'ID' : json[i].trans_id,
-                                        'Name' : json[i].name,
-                                        'RDate' : json[i].trans_date,
-                                        'Type': "<table width='100%;'>"+row+"</table>"
-                                        });
-                                    }
-                                }
-                            else{
-                                if(id!=json[i].trans_id){
-                                    return_data.push({
-                                        'ID' : json[i-1].trans_id,
-                                        'Name' : json[i-1].name,
-                                        'RDate' : json[i-1].trans_date,
-                                        'Type': "<table width='100%;'>"+row+"</table>"
-                                    });
-                                    id = json[i].trans_id;
-                                    row =  "<tr><td>" + json[i].clearance_type + "</td><td>" + json[i].request_status + "</td><td><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
-                                }
-                                else{
-                                    row += "<tr><td>   " + json[i].clearance_type + "</td><td>" + json[i].request_status + "</td><td><button type = 'button' class = 'download btn btn-space bg-black waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Download Document' value='"+json[i].request_id+"'><i class='material-icons'>file_download</i></button></td></tr>";
-                                }
-                                if(i==json.length-1){
-                                    return_data.push({
-                                        'ID' : json[i].trans_id,
-                                        'Name' : json[i].name,
-                                        'RDate' : json[i].trans_date,
-                                        'Type': "<table width='100%;'>"+row+"</table>"
-                                        });
-                                }
-                                   
-                            }
+                            if(json[i].trans_id!=null){
+                            return_data.push({
+                            'ID' : json[i].trans_id,
+                            'Name' : json[i].name,
+                            'RDate' : json[i].trans_date,
+                            'Type': json[i].clearance_type,
+                            'Buttons': '<button type="button" value="'+json[i].trans_id+'" class="update btn btn-lg btn-space bg-blue waves-effect"><i class="material-icons">create</i></button><button type="button" value="'+json[i].trans_id+'"  class="delete btn btn-lg bg-red waves-effect"><i class="material-icons">delete</i></button>'
+                            });
                         }
-                          
-                    return return_data;
+                        }     
+                        return return_data;
+
                 }
             },
             'columns': [
                 {'data' : 'ID'},
                 {'data' : 'Name'},
                 {'data' : 'RDate'},
-                {'data' : 'Type'}            ]
+                {'data' : 'Type'},
+                {'data' : 'Buttons'}            ]
 
 
         });
 
+        $('#requestTable').on('click', 'button.update', function(){
+            $.ajax({
+                url : '/clearance/clearance/clearancedetails/'+$(this).val(),
+                method: 'GET',
+                data: {
+                    _token : CSRF_TOKEN
+                },
+                dataType: 'json',
+                success: function(response){
+                    console.log(response);
+                    var text = "";
+                    for (var i = 0; i < response.length; i++) {
+                        text += "<tr id='"+response[i].request_id+"row'><td>"+response[i].clearance_id+"</td><td>"+response[i].clearance_name+"</td><td>"+response[i].price_amt+"</td><td><button type='button' value='"+response[i].request_id+"'  class='delete1 btn btn-lg bg-red waves-effect pull-right'><i class='material-icons'>delete</i></button></td></tr>";
+                    }
+                    $('#editTablebody').empty();
+                    $('#editTablebody').append(text);
+
+                }
+            });
+            $('#updatemodal').modal('toggle');
+        });
+
+        $('#editTablebody').on('click','button.delete1', function(){
+
+            var id = $(this).val();
+            swal({
+                    title: "Are you sure?",
+                    text: "You will not be able to recover this record!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Delete",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },  
+                function(isConfirm) {
+                    if (isConfirm){
+                        $.ajax({
+                            url : '/clearance/clearance/removerequest/'+id,
+                            method : 'DELETE',
+                            data : {
+                                _token : CSRF_TOKEN,
+                                _method: 'DELETE'
+                            },
+                            success : function(response){
+                                if(response=="success"){
+                                $('#'+id+'row').remove();
+                                 swal({
+                                    title : "Deleted!", 
+                                    text : "Record has been deleted",
+                                    type :  "success",
+                                    showConfirmButton : false,
+                                    timer : 1000
+                                });
+                                 tblreq.ajax.reload();
+                             }
+                             else{
+                                $('#'+id+'row').remove();
+                                 swal({
+                                    title : "Deleted!", 
+                                    text : "Record has been deleted",
+                                    type :  "success",
+                                    showConfirmButton : false,
+                                    timer : 1000
+                                });
+                                 tblreq.ajax.reload();
+                             }
+                            }
+                        });
+                    } 
+                    else {
+                        swal({
+                            title : "Cancelled", 
+                            text : "Record is not deleted",
+                            type :  "error",
+                            showConfirmButton : false,
+                            timer : 1000
+                        });
+                    }
+            });
+        });
+
+
+        $('#requestTable').on('click', 'button.delete', function(){
+            var id = $(this).val();
+            swal({
+                    title: "Are you sure?",
+                    text: "You will not be able to recover this record!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Delete",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },  
+                function(isConfirm) {
+                    if (isConfirm){
+                        $.ajax({
+                            url : '/clearance/clearance/removetrans/'+id,
+                            method : 'DELETE',
+                            data : {
+                                _token : CSRF_TOKEN,
+                                _method: 'DELETE'
+                            },
+                            success : function(response){
+                                if(response=="success"){
+                                $('#'+id+'row').remove();
+                                 swal({
+                                    title : "Deleted!", 
+                                    text : "Record has been deleted",
+                                    type :  "success",
+                                    showConfirmButton : false,
+                                    timer : 1000
+                                });
+                                 tblreq.ajax.reload();
+                             }
+                             else{
+                                $('#'+id+'row').remove();
+                                 swal({
+                                    title : "Deleted!", 
+                                    text : "Record has been deleted",
+                                    type :  "success",
+                                    showConfirmButton : false,
+                                    timer : 1000
+                                });
+                                 tblreq.ajax.reload();
+                             }
+                            }
+                        });
+                    } 
+                    else {
+                        swal({
+                            title : "Cancelled", 
+                            text : "Record is not deleted",
+                            type :  "error",
+                            showConfirmButton : false,
+                            timer : 1000
+                        });
+                    }
+            });
+        });
+
+        var caseid="";
         $('#addthis').on('click', function(){
             if($('#purpose').val()==""){
                 $('#purpose').valid();
@@ -336,6 +487,7 @@
             else{
             var dstring= $('#ctype').val()+"";
             var check = false;
+            if(selected[0]!=null){
             $.each(selected, function(index, value){
                 if($('#ctype').val()!=null){
                     if(value==dstring.split(',')[0]){
@@ -359,6 +511,9 @@
                 }
 
             });
+            }else{
+                check = true;
+            }
             if(check){
                 selected.push(dstring.split(',')[0]);
                 var text = "<tr><td>"+dstring.split(',')[0]+"</td><td>"+$('#ctype option:selected').text()+"</td><td>"+$('#purpose').val()+"</td><td>&#8369; "+parseFloat(dstring.split(',')[1], 10).toFixed(2)+"</td><td><button type='button' class='delete1 btn bg-red waves-effect pull-right'><i class='material-icons'>delete</i></button></td></tr>";
@@ -372,11 +527,47 @@
                     sum+=value;
                 });
                 $('#total').html("&#8369; "+sum.toFixed(2));
+                caseid = dstring.split(',')[0];
+                $.ajax({
+                    url: '/clearance/getclearancereq/'+dstring.split(',')[0],
+                    method: 'GET',
+                    data:{
+                        _token: CSRF_TOKEN
+                    },
+                    success: function(response){
+                        if(response.length!=0){
+                            $('#reqcont').empty();
+                            console.log(response);
+                            for(var i=0;i< response.length;i++){
+                                $('#reqcont').append('<input type="checkbox" class="req" value="'+response[i].cr_clearance+','+response[i].requirement_id+'" id="'+response[i].cr_clearance+','+response[i].requirement_id+'" class="cbreq"/><label for="'+response[i].cr_clearance+','+response[i].requirement_id+'">'+response[i].requirement_name+'</label><br>');
+                            }
+                            $('#reqmodal').modal('toggle');
+                            $('#defaultModal').modal('toggle');
+                        }
+                    }
+                });
             }
             $('#purpose').val("");
             $('#ctype').val("");
             }
         });
+
+        $('#reqproc').on('click', function(){
+            $('#reqmodal').modal('toggle');
+            $('#defaultModal').modal('toggle');
+
+            var sThisVal = "";
+            $('input:checkbox.req').each(function () {
+                if($(this).is(":Checked")){
+                    sr.push((($(this).val()).replace(',','|'))+"|1");
+                }
+                else{
+                    sr.push((($(this).val()).replace(',','|'))+"|0");
+                }
+                
+            });
+        });
+
 
         $('#tbl').on('click', '.delete1', function(e){
             var row = $(this).closest('tr');
@@ -465,11 +656,17 @@
                 }
             },
             submitHandler: function(form){
+                console.log(selected);
+                if(selected[0]==null){
+                    $('#defaultModal').modal('toggle');
+                    alert("Please select first a clearance before proceeding");
+                }
+                else{
                 selected = jQuery.grep(selected, function(value) {
-                return value != null;
-            });
-                var tosend = [{"clearance": selected, "price" : pricesid, "purpose" : purposes}] ;
-                console.log(JSON.stringify(tosend));
+                    return value != null;
+                });
+                var tosend = [{"clearance": selected, "price" : pricesid, "purpose" : purposes, "submittedreq" : sr}] ;
+                console.log(tosend);
                 $.ajax({
                     url: '/clearance/storeClearance',
                     method: 'POST',
@@ -484,17 +681,15 @@
                                 title : "Success!", 
                                 text : "Request Added",
                                 type :  "success",
-                                showConfirmButton : false,
-                                timer : 1000
+                                showConfirmButton : true
                             });
                         }
                         else{
                             swal({
                                 title : "Request Failed!", 
                                 text : response,
-                                type :  "success",
-                                showConfirmButton : false,
-                                timer : 1000
+                                type :  "error",
+                                showConfirmButton : true
                             });
                         }
                         $('#resID').val("");
@@ -504,11 +699,12 @@
                         selected=[null];
                         prices=[];
                         purposes=[];
-                        $('#tbl tr').remove();
+                        $('#editTable tbody').remove();
                         $('#defaultModal').modal('toggle');
                         tblreq.ajax.reload();
                     }   
                 });
+            }
             }
         })
 	});

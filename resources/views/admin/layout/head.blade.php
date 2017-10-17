@@ -41,6 +41,9 @@ img.avatar {
     width: 40%;
     border-radius: 50%;
 }
+label{
+  size:16px;
+}
 @font-face {
    font-family: 'Material Icons';
    font-style: normal;
@@ -76,5 +79,26 @@ img.avatar {
 
   /* Support for IE. */
   font-feature-settings: 'liga';
+}
+@media print {  
+       page {
+            size: 13in 8.5in;
+                    
+            margin: .1in, .1in, .1in, .1in;
+        }
+        canvas{
+              transform: scale(1);
+        }
+        /*body{
+          transform: scale(1);
+        }*/
+        table{
+        page-break-after: always;
+        page-break-inside: avoid;
+        break-inside: avoid;
+       }
+        
+
+
 }
 </style>

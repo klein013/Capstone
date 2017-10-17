@@ -11,11 +11,11 @@
             <!-- User Info -->
            <div class="user-info">
                 <div class="image">
-                    <img src="{{asset($return['image'])}}" width="48" height="48" alt="User" />
+                    <img src="{{asset($return['image'])}}" id="userimage" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$return['name']}}</div>
-                    <div class="email">Official ID: <strong id="sessionpos">{{$return['official']}}</strong></div>
+                    <div class="name" data-toggle="dropdown" id="userfullname" aria-haspopup="true" aria-expanded="false">{{$return['name']}}</div>
+                    <div class="email">Official ID: <strong id="userposition">{{$return['official']}}</strong></div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
@@ -64,8 +64,8 @@
             </div>
             <!-- Basic Table -->
             <div class="row clearfix">
-                                    <div class="col-lg-offset-11 col-md-offset-2 col-sm-offset-4 col-xs-offset-5">
-                                        <a href="javascript:void(0)" data-toggle="tooltip" title="Add Resident"><button type="button" class="btn bg-teal btn-circle-lg waves-effect waves-circle waves-float" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i></button></a>
+                                    <div class="col-sm-2 col-sm-offset-10 ">
+                                        <a href="javascript:void(0)" data-toggle="tooltip" title="Add Resident"><button type="button" class="btn pull-right bg-teal btn-space waves-effect waves-float" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i>Add Resident</button></a>
                                     </div>
                                 </div>
                                 <br>
@@ -73,7 +73,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 	<div class="card">
                         <div class="body table-responsive">
-                            <table class="table dataTable js-exportable" id='residentTable'>
+                            <table class="table table-bordered table-hover table-striped table-condensed dataTable js-exportable" id='residentTable'>
                                 <thead>
                                     <tr class="bg-blue-grey">
                                         <th>ID</th>
@@ -244,6 +244,159 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+    <div class="modal fade" id="updateModal" tabindex="-2" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+
+                            <div class="row clearfix">
+                            <div class="col-lg-7 col-md-3 col-sm-6 col-xs-12">
+                            <div class="info-box bg-teal">
+                            <div class="icon">
+                                <i class="material-icons">person_add</i>
+                            </div>
+                            <div class="content">
+                            <div class="text"><h3> UPDATE RESIDENT</h3></div>
+                            </div>
+                    </div>
+                </div>
+               </div>
+                        <div class="modal-body">
+                            <form enctype='multipart/form-data' id="upresident">
+                                {{ csrf_field() }}
+                                <div class='row'>
+                                    <div class='col-sm-4 col-sm-offset-4'>
+                                    <center><img class='img-responsive thumbnail' id="uptoimage"></center>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row clearfix">
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                    <label for='resident_image'>Resident Picture</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                    <input type='file' accept="image/*" id='upimage'>
+                                    </div>
+                                </div>
+                                </div>
+                                <br>
+                                <div class="row clearfix">
+                                <div class="col-sm-4">
+                                    <label for="f_name">First Name</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" id="upfname" disabled name ="upfname" required autofocus>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="l_name">Middle Name</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" id="upmname" name="upmname">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="m_name">Last Name</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" id="uplname" name="uplname" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                             <div class="row clearfix">
+                                <div class="col-sm-4">
+                                <label for="date">Birth Date</label>
+                                   <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" id="upbdate" disabled  name="upbdate">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                <label for="gender">Gender</label>
+                                   <div class="form-lin e">
+                                                 <select class="form-control show-tick" disabled id="upgender" name="upgender">
+                                                    <option value="" disabled selected>Choose gender 
+                                                    </option>
+                                                    <option value="M">Male</option>
+                                                    <option value="F">Female</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                
+                                <div class="col-sm-4">
+                                    <label>Year of Residency</label>
+                                    <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="number" class="form-control" id="upyear" name="upyear">
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <label for="res_address">Address</label>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>Lot No./Blk No./Phase No./Subdivision</label>    
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Street</label>
+                                </div>
+                            </div>
+                            <div class='row'>
+                                <div class="form-group">
+                                    <div class="col-sm-6">
+                                        <div class=" form-line">
+                                        <input type="text" id="uphouse" name="uphouse" class="form-control" >
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                    <select class="form-control show tick" id="upstreet" name="upstreet">
+                                        <option value="" disabled selected>Choose Street</option>
+                                        @foreach($streets as $street)
+                                            <option value="{{ $street->street_id }}">{{ $street->street_name }}, {{ $street->area_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                    <label for="contact_no">Contact No.</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" id="upcontact" name="upcontact">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Allow Message</label>
+                                    <div class="demo-radio-button">
+                                    <input name="upradio" type="radio" value="1" id="upradio_yes" class="radio-col-blue-grey" checked disabled/>
+                                    <label for="upradio_yes">YES</label>
+                                    <input name="upradio" type="radio" value="0" id="upradio_no" class="radio-col-blue-grey" disabled/>
+                                    <label for="radio_no">NO</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn bg-teal btn-lg waves-effect" id='updatebtn'>UPDATE</button>
+                            <button type="button" class="btn bg-teal btn-lg waves-effect" data-dismiss="modal">CANCEL</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         
     @include('admin.layout.scripts');    
     <script>
@@ -267,6 +420,16 @@
                 }
                 else{
                     $('input[name=radio]').attr("disabled",true);
+                }
+            });
+
+
+            $('#upcontact').keyup(function(){
+                if($('#upcontact').val().match(/\+639.[0-9]{8}/)){
+                    $('input[name=upradio]').attr("disabled",false);
+                }
+                else{
+                    $('input[name=upradio]').attr("disabled",true);
                 }
             });
 
@@ -305,6 +468,11 @@
     		
             $('#image').change(function (event){
                 $("#toimage").fadeIn("fast").attr('src',URL.createObjectURL(event.target.files[0]));
+                    file = event.target.files[0];
+            });
+
+             $('#upimage').change(function (event){
+                $("#uptoimage").fadeIn("fast").attr('src',URL.createObjectURL(event.target.files[0]));
                     file = event.target.files[0];
             });
 
@@ -349,6 +517,223 @@
                     $('#year').attr({'min': new Date($('#bdate').val()).getFullYear()});
             });
 
+            $('#upresident').validate({
+                rules: {
+                    upimage: {
+                        required: false,
+                        accept: "image/*"
+                    },
+                    upfname: {
+                        required: true,
+                        maxlength: 50,
+                        alpha: true
+                    },
+                    upmname: {
+                        required: false,
+                        maxlength: 50,
+                        alpha: true
+                    },
+                    uplname: {
+                        required: true,
+                        maxlength: 50,
+                        alpha: true
+                    },
+                    upbdate: {
+                        required: true,
+                        dateISOF: true
+                    },
+                    upcontact: {
+                        required: false,
+                        cellno: true,
+                        maxlength: 13
+                    },
+                    uphouse: {
+                        required: true,
+                        alphanum: true,
+                        maxlength: 50
+                    },
+                    upstreet: {
+                        required: true
+                    },
+                    upgender: {
+                        required: true
+                    },
+                    upyear: {
+                        required: true,
+                        digits: true,
+                        maxlength: 4,
+                        minlength: 4,
+                        max: new Date().getFullYear()
+                    }
+                },
+                submitHandler: function(form) { // for demo
+                    var formData = new FormData();
+                    formData.append('id', finid);
+                    formData.append('file', file);
+                    formData.append('fname', $('#upfname').val());
+                    formData.append('mname', $('#upmname').val());
+                    formData.append('lname', $('#uplname').val());
+                    formData.append('bdate', $('#upbdate').val());
+                    formData.append('contact', $('#upcontact').val());
+                    formData.append('house', $('#uphouse').val());
+                    formData.append('street', $('#upstreet').val());
+                    formData.append('gender', $('#upgender').val());
+                    formData.append('year', $('#upyear').val());
+                    formData.append('allow', $('input[name=upradio]:checked').val());
+                    $.ajax({
+                        url : '/resident/update',
+                        method : 'POST',
+                        data : formData,
+                        processData : false,
+                        contentType : false,
+                        cache : false,
+                        headers : {
+                            'X-CSRF-TOKEN' : CSRF_TOKEN
+                        },
+                        success : function(response){
+                            if(response=="Contact Number already used"){
+                                table.ajax.reload();
+                                swal({
+                                    title : response,
+                                    type : "error",
+                                    showConfirmButton : true
+                                });
+                            }
+                            else if(response=="exceed"){
+                                table.ajax.reload();
+                                swal({
+                                    title : "File Size must be less than 2mb",
+                                    type : "error",
+                                    showConfirmButton : true
+                                });
+                            }
+                            else{
+                                $("#userimage").removeAttr("src").attr("src", response[0].resident_image);
+                                $('#userfullname').text(response[0].name);
+                                table.ajax.reload();
+                                swal({
+                                    title : "Record Updated",
+                                    type : "success",
+                                    showConfirmButton : true
+                                });
+                            }
+
+                            $('#updateModal').modal('toggle');
+                            $('#upfname').val("");
+                            $('#upmname').val("");
+                            $('#uplname').val("");
+                            $('#upbdate').val("");
+                            $('#uphouse').val("");
+                            $('#upcontact').val("");
+                            $('#upyear').val("");
+                            file = null;
+                        }
+                    });
+                },
+                highlight: function (input) {
+                    $(input).parents('.form-line').addClass('error');
+                },
+                unhighlight: function (input) {
+                    $(input).parents('.form-line').removeClass('error');
+                },
+                errorPlacement: function (error, element) {
+                    $(element).parents('.form-group').append(error);
+                }
+            });
+
+            var finid;
+            var posid;
+            
+            $('#residentTable tbody').on('click', 'button.update', function(){
+                file = null;
+                var id = table.row($(this).parents('tr')).data().ID;    
+                finid = id;
+                $.ajax({
+                    url: '/resident/update/'+id,
+                    method: 'GET',
+                    dataType : 'json',
+                    success : function(response){
+                        posid = response[0].Pos_ID;
+                        $('#uptoimage').attr('src','../'+response[0].resident_image);
+                        $('#upfname').val(response[0].resident_fname);
+                        $('#upmname').val(response[0].resident_mname);
+                        $('#uplname').val(response[0].resident_lname);
+                        $('#upbdate').val(response[0].resident_bdate);
+                        $('#upcontact').val(response[0].resident_contact);
+                        $('#upyear').val(response[0].resident_yearstayed);
+                        $('#uphouse').val(response[0].resident_hno);
+                        $('#upstreet').val(response[0].resident_street).change();
+                        if(response[0].resident_gender=="M"){
+                            $('#upgender').val("M").change();
+                            $('#upmname').attr('disabled', true);
+                            $('#uplname').attr('disabled', true);
+                        }
+                        else{
+                            $('#upgender').val("F").change();   
+                            $('#upmname').attr('disabled', false);
+                            $('#uplname').attr('disabled', false);
+                        }
+                    }
+                });
+                $('#updateModal').modal('toggle');
+                
+            })
+
+            $('#residentTable tbody').on('click', 'button.delete', function(){
+            var row = table.row($(this).parents('tr')).index();
+            var id = table.row($(this).parents('tr')).data().ID;
+                swal({
+                    title: "Are you sure?",
+                    text: "You will not be able to recover this record!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Delete",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },  
+                function(isConfirm) {
+                    if (isConfirm){
+                        $.ajax({
+                            url : '/resident/delete',
+                            method : 'POST',
+                            data : {
+                                _token : CSRF_TOKEN,
+                                _method : 'DELETE',
+                                id : id
+                            },
+                            success : function(response){
+                                if(response != null){
+                                table.row(row).remove().draw();
+                                 swal({
+                                    title : "Deleted!", 
+                                    text : "Record has been deleted",
+                                    type :  "success",
+                                    showConfirmButton : true
+                                });
+                                
+                                }
+                            }
+                        });
+                    } 
+                    else {
+                        swal({
+                            title : "Cancelled", 
+                            text : "Record is not deleted",
+                            type :  "error",
+                            showConfirmButton : true
+                        });
+                    }
+                });     
+            });
+
+            var updatefile;
+            $('#updateimage').change(function (event){
+                $("#updatetoimage").fadeIn("fast").attr('src',URL.createObjectURL(event.target.files[0]));
+                    updatefile = event.target.files[0];
+            });
+                
             $('#resident').validate({
                 rules: {
                     image1: {
@@ -409,7 +794,6 @@
                     formData.append('house', $('#house').val());
                     formData.append('street', $('#street').val());
                     formData.append('gender', $('#gender').val());
-                    formData.append('area', $('#area').val());
                     formData.append('year', $('#year').val());
                     formData.append('allow', $('input[name=radio]:checked').val());
                     $.ajax({
@@ -423,218 +807,39 @@
                             'X-CSRF-TOKEN' : CSRF_TOKEN
                         },
                         success : function(response){
-                            table.ajax.reload();
-                            swal({
-                                title : "Record Added",
-                                type : "success",
-                                timer : 1000,
-                                showConfirmButton : false
-                            });
-                        }
-                    });
-                },
-                highlight: function (input) {
-                    $(input).parents('.form-line').addClass('error');
-                },
-                unhighlight: function (input) {
-                    $(input).parents('.form-line').removeClass('error');
-                },
-                errorPlacement: function (error, element) {
-                    $(element).parents('.form-group').append(error);
-                }
-            });
-
-            var finid;
-            var posid;
-            
-            $('#residentTable tbody').on('click', 'button.update', function(){
-                var id = table.row($(this).parents('tr')).data().ID;    
-                finid = id;
-                $.ajax({
-                    url: 'maintenance_official/'+id,
-                    method: 'GET',
-                    data : {
-                        _token : CSRF_TOKEN,
-                        id : id
-                    },
-                    dataType : 'json',
-                    success : function(response){
-                        posid = response[0].Pos_ID;
-                        $('#updatetoimage').attr('src','../'+response[0].Off_Image);
-                        $('#updatefname').val(response[0].Off_Fname);
-                        $('#updatemname').val(response[0].Off_Mname);
-                        $('#updatelname').val(response[0].Off_Lname);
-                        $('#updatebdate').val(response[0].Off_Bdate);
-                        $('#updatecontact').val(response[0].Off_Contact);
-                        $('#updateyear').val(response[0].Off_Year);
-                        $('#updatehouse').val(response[0].Off_House);
-                        $('#updatestreet').val(response[0].Off_Street).change();
-                        if($("#updateposition option[value='"+response[0].Pos_ID+"']").length > 0){
-                           $('#updateposition').val(response[0].Pos_ID).change();
-                        }
-                        else{
-                            $('#updateposition').append($('<option>', {
-                                value: response[0].Pos_ID,
-                                text: response[0].Pos_Name   
-                            }));
-                            $('#updateposition').val(response[0].Pos_ID).change();
-                        }
-                        if(response[0].Off_Sex=="M"){
-                            $('#updategender').val("M").change();
-                        }
-                        else{
-                            $('#updategender').val("F").change();   
-                        }
-                    }
-                });
-                $('#updatemodal').modal('toggle');
-                
-            })
-
-            $('#residentTable tbody').on('click', 'button.delete', function(){
-            var row = table.row($(this).parents('tr')).index();
-            var id = table.row($(this).parents('tr')).data().ID;
-                swal({
-                    title: "Are you sure?",
-                    text: "You will not be able to recover this record!",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-danger",
-                    confirmButtonText: "Delete",
-                    cancelButtonText: "Cancel",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },  
-                function(isConfirm) {
-                    if (isConfirm){
-                        $.ajax({
-                            url : 'maintenance_official/'+id,
-                            method : 'POST',
-                            data : {
-                                _token : CSRF_TOKEN,
-                                _method : 'DELETE',
-                            },
-                            success : function(response){
-                                if(response != null){
-                                table.row(row).remove().draw();
-                                 swal({
-                                    title : "Deleted!", 
-                                    text : "Record has been deleted",
-                                    type :  "success",
-                                    showConfirmButton : false,
-                                    timer : 1000
+                            if(response=="success"){
+                                table.ajax.reload();
+                                swal({
+                                    title : "Record Added",
+                                    type : "success",
+                                    showConfirmButton : true
                                 });
-                                
-                                    $('#position option').remove();
-                                }
                             }
-                        });
-                    } 
-                    else {
-                        swal({
-                            title : "Cancelled", 
-                            text : "Record is not deleted",
-                            type :  "error",
-                            showConfirmButton : false,
-                            timer : 1000
-                        });
-                    }
-                });     
-            });
-
-            var updatefile;
-            $('#updateimage').change(function (event){
-                $("#updatetoimage").fadeIn("fast").attr('src',URL.createObjectURL(event.target.files[0]));
-                    updatefile = event.target.files[0];
-            });
-
-            $('#updateofficial').validate({
-                rules: {
-                    updateimage: {
-                        required: false,
-                        accept: "image/*"
-                    },
-                    updatefname: {
-                        required: true,
-                        maxlength: 30,
-                        alpha: true
-                    },
-                    updatemname: {
-                        required: false,
-                        maxlength: 30,
-                        alpha: true
-                    },
-                    updatelname: {
-                        required: true,
-                        maxlength: 30,
-                        alpha: true
-                    },
-                    updatebdate: {
-                        required: true,
-                        dateISOF: true
-                    },
-                    updatecontact: {
-                        required: false,
-                        digits: true,
-                        minlength: 11,
-                        maxlength: 11
-                    },
-                    updatehouse: {
-                        required: true,
-                        alpha: true,
-                        maxlength: 6
-                    },
-                    updatestreet: {
-                        required: true,
-                        alphanum: true,
-                        maxlength: 50,
-                        minlength: 5
-                    },
-                    updatearea: {
-                        required: true
-                    },
-                    updategender: {
-                        required: true
-                    },
-                    updateposition: {
-                        required: true
-                    },
-                    updateyear: {
-                        required: true,
-                        digits: true,
-                        maxlength: 4,
-                        minlength: 4,
-                        max: new Date().getFullYear()
-                    }
-                },
-                submitHandler: function(form) { // for demo
-                    var formData = new FormData();
-                    formData.append('id', finid);
-                    formData.append('file', updatefile);
-                    formData.append('fname', $('#updatefname').val());
-                    formData.append('mname', $('#updatemname').val());
-                    formData.append('lname', $('#updatelname').val());
-                    formData.append('bdate', $('#updatebdate').val());
-                    formData.append('contact', $('#updatecontact').val());
-                    formData.append('house', $('#updatehouse').val());
-                    formData.append('street', $('#updatestreet').val());
-                    formData.append('gender', $('#updategender').val());
-                    formData.append('pos', $('#updateposition').val());
-                    formData.append('year', $('#updateyear').val());
-                    $.ajax({
-                        url : '/maintenance_official/update',
-                        method : 'POST',
-                        data : formData,
-                        processData : false,
-                        contentType : false,
-                        cache : false,
-                        headers : {
-                            'X-CSRF-TOKEN' : CSRF_TOKEN
-                        },
-                        success : function(){
-                            table.ajax.reload();                            
-                            $('#updatemodal').modal('toggle');
-
+                            else if(response=="exceed"){
+                                table.ajax.reload();
+                                swal({
+                                    title : "File Size must be less than 2mb",
+                                    type : "error",
+                                    showConfirmButton : true
+                                });
+                            }
+                            else{
+                                table.ajax.reload();
+                                swal({
+                                    title : response,
+                                    type : "error",
+                                    showConfirmButton : true
+                                });
+                            }
+                            $('#defaultModal').modal('toggle');
+                            $('#fname').val("");
+                            $('#mname').val("");
+                            $('#lname').val("");
+                            $('#bdate').val("");
+                            $('#house').val("");
+                            $('#contact').val("");
+                            $('#year').val("");
+                            file = null;
                         }
                     });
                 },
@@ -648,6 +853,7 @@
                     $(element).parents('.form-group').append(error);
                 }
             });
+
 
     	});
     	

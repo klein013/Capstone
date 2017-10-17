@@ -131,9 +131,10 @@
                     <div class="form-group">
                     <div class="form-line">
                         <select class="form-control show-tick" id="turnover">
-                            <option value="Lupon">Lupon/Barangay Chairman for Hearing</option>
+                            <option value="Lupon">Barangay Chairman for Hearing</option>
                             <option value="PS6">Police Station</option>
                             <option value="VAWC">Violence Against Women and their Children(VAWC)</option>
+                            <option value="Record">For Record Only</option>
                         </select>
                     </div>
                 </div>
@@ -169,7 +170,7 @@
             	<div class="card">
                     <div class="row clearfix">
                         <div class="col-sm-12">
-                            <table class="table dataTable" width="100%" id="restable1">
+                            <table class="table table-responsive table-condensed table-striped table-hover table-bordered dataTable" width="100%" id="restable1">
                                 <thead class="bg-blue-grey">
                                     <tr>
                                         <td>ID</td>
@@ -184,12 +185,12 @@
                             </table>
                         </div>
                     </div>
-                    <!-- <div class="row clearfix"> 
+                   <!--  <div class="row clearfix"> 
                         <div class="col-sm-3 col-sm-offset-9">
                             <button class="btn btn-lg bg-teal pull-right" type="button" id="pickcom">PICK</button>
                         </div>
-                    </div>
- -->                </div>
+                    </div> -->
+                </div>
             </div>
         </div>
     </div>
@@ -214,7 +215,7 @@
                 <div class="card">
                     <div class="row clearfix">
                         <div class="col-sm-12">
-                            <table class="table dataTable" width="100%" id="restable">
+                            <table class="table table-responsive table-condensed table-striped table-hover table-bordered dataTable" width="100%" id="restable">
                                 <thead class="bg-blue-grey">
                                     <tr>
                                         <td>ID</td>
@@ -226,11 +227,11 @@
                             </table>
                         </div>
                     </div>
-                    <!-- <div class="row clearfix"> 
+                    <div class="row clearfix"> 
                         <div class="col-sm-3 col-sm-offset-9">
                             <button class="btn btn-lg bg-teal pull-right" type="button" id="pickres">PICK</button>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -256,7 +257,7 @@
                 <div class="card">
                     <div class="row clearfix">
                         <div class="col-sm-12">
-                            <table class="table dataTable" width="100%" id="restable2">
+                            <table class="table table-responsive table-condensed table-striped table-hover table-bordered dataTable" width="100%" id="restable2">
                                 <thead class="bg-blue-grey">
                                     <tr>
                                         <td>ID</td>
@@ -268,11 +269,11 @@
                             </table>
                         </div>
                     </div>
-                    <!-- <div class="row clearfix"> 
+                    <div class="row clearfix"> 
                         <div class="col-sm-3 col-sm-offset-9">
                             <button class="btn btn-lg bg-teal pull-right" type="button" id="pickres">PICK</button>
                         </div>
-                    </div> -->
+                    </div> 
                 </div>
             </div>
         </div>
@@ -511,8 +512,7 @@
                             swal({
                                 title : "Record Added",
                                 type : "success",
-                                timer : 1000,
-                                showConfirmButton : false
+                                showConfirmButton : true
                             });
                             $('#comcon').empty();
                             $('#rescon').empty();
@@ -521,7 +521,7 @@
                             res = [];
                             wit = [];
                             used = [];
-                            $('#statement').val()="";
+                            $('#statement').val("");
                             }
                         }
                         });

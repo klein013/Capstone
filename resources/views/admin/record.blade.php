@@ -64,8 +64,14 @@
    <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div class="card">
+                    <br>
+    <div class="col-sm-12">
+    <div class="col-sm-4 col-sm-offset-8">
+                                <span><label>Status: </label><h4><span class="label label-success" id="settled">Settled</span> <span class="label bg-blue" id="mediation">Mediation</span> <span class="label bg-light-blue" id="concillation">Concillation</span> <span class="label bg-cyan" id="arbitration">Arbitraion</span> <span class="label bg-teal" id="captain">Captain</span><br><br><span class="label bg-green" id="lupon">Lupon</span> <span class="label bg-light-green" id="pangkat">Pangkat Tagapagkasundo</span> <span class="label bg-red" id="record">Record Only</span> <span class="label bg-pink" id="pending">Pending</span> </h4></span>
+    </div>
+    </div>
                         <div class="body table-responsive">
-                            <table class="table dataTable js-exportable" id='recordtable'>
+                            <table class="table table-hover table-striped table-bordered table-condensed dataTable js-exportable" id='recordtable'>
                                 <thead>
                                     <tr class="bg-blue-grey">
                                         <th>Case ID</th>
@@ -137,6 +143,7 @@
                                                         <th>ID</th>
                                                         <th>Hearing Date</th>
                                                         <th>Hearing Type</th>
+                                                        <th>Hearing Status</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
@@ -158,6 +165,7 @@
                                                         <th>ID</th>
                                                         <th>Hearing Date</th>
                                                         <th>Hearing Type</th>
+                                                        <th>Hearing Status</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
@@ -179,6 +187,7 @@
                                                         <th>ID</th>
                                                         <th>Hearing Date</th>
                                                         <th>Hearing Type</th>
+                                                        <th>Hearing Status</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
@@ -249,7 +258,7 @@ $(document).ready(function(){
                                         button = "<button type='button' class='assign btn btn-space bg-indigo waves-effect' data-toggle='tooltip' data-placement='bottom' title data-original-title='Assign Case'><i class='material-icons'>assignment_ind</i></button><button class='delete btn btn-space bg-red waves-effect'><i class='material-icons'>delete</i></button>";
                                     }
                                     else{
-                                        button = "<button type = 'button' class = 'process btn btn-space bg-blue waves-effect'><i class='material-icons'>cached</i></button>";
+                                        button = "<button type = 'button' value='"+json[i].case_id+"' class = 'process btn btn-space bg-blue waves-effect'><i class='material-icons'>navigate_next</i></button>";
                                     }
                                     return_data.push({
                                         'id' : json[i].case_id,
@@ -264,11 +273,11 @@ $(document).ready(function(){
                             }                                    
                             else{
                                 var button="";
-                                 if((json[i].case_status=="Lupon")||(json[i].case_status=="Captain")||(json[i].cases_status=="Pangkat")){
+                                 if((json[i-1].case_status=="Lupon")||(json[i-1].case_status=="Captain")||(json[i-1].cases_status=="Pangkat")){
                                         button = "<button type='button' class='assign btn btn-space bg-indigo waves-effect' data-toggle='tooltip' data-placement='bottom' title data-original-title='Assign Case'><i class='material-icons'>assignment_ind</i></button><button class='delete btn btn-space bg-red waves-effect'><i class='material-icons'>delete</i></button>";
                                     }
                                     else{
-                                        button = "<button type = 'button' class = 'process btn btn-space bg-blue waves-effect'><i class='material-icons'>cached</i></button>";
+                                        button = "<button type = 'button' value='"+json[i].case_id+"' class = 'process btn btn-space bg-blue waves-effect'><i class='material-icons'>navigate_next</i></button>";
                                     }
                                  return_data.push({
                                         'id' : json[i-1].case_id,
@@ -315,6 +324,7 @@ $(document).ready(function(){
         var row = table.row($(this).parents('tr')).index();
         id = table.row($(this).parents('tr')).data().id;
         var stat = table.row($(this).parents('tr')).data().status;
+        if(stat=="Lupon"){
         $.ajax({
             url : '/blotter/barangay/getcasestat',
             method: 'GET',
@@ -324,6 +334,7 @@ $(document).ready(function(){
             },
             success: function(response){
                 // console.log(response.length);
+                $('#cont').empty();
                 for(var i = 0 ; i < response.length; i++){
                     $('#cont').append('<input type="radio" name="rbtnCount" id="'+response[i].id+'" value="'+response[i].id+'" /><label for="'+response[i].id+'">'+response[i].name+'</label><br>');
                 }
@@ -331,6 +342,39 @@ $(document).ready(function(){
                 table.ajax.reload();
             }
         });
+        }
+        else if(stat=="Captain"){
+            $.ajax({
+                url : '/blotter/barangay/allocatecasecap',
+                method : 'POST',
+                data : {
+                    id : id,
+                    _token : CSRF_TOKEN,
+                    number : 3  
+                },
+                success : function(response){
+                    console.log(response);
+                    if(response[0]=="No Barangay Captain Assigned"){
+                        swal({
+                        title: "Error",
+                        text: response,
+                        type: "error",
+                        showConfirmButton: true
+                        });
+                    }
+                    else{
+                        swal({
+                        title: "Case Allocated!",
+                        text: "Case Number: "+response[0].case+"\nScheduled Date: "+response[0].sched,
+                        type: "success",
+                        showConfirmButton: true
+                    });
+                        table.ajax.reload();
+                    }
+                }
+            });
+        }
+
     });
 
     $('#recordtable tbody').on('click', 'button.delete', function(){
@@ -365,79 +409,10 @@ $(document).ready(function(){
     });
 
     $('#recordtable tbody').on('click', 'button.process', function(){
-        var row = table.row($(this).parents('tr')).index();
-        id = table.row($(this).parents('tr')).data().id;
-        $('#largeModal').modal('toggle');
-        $.ajax({
-            url : '/blotter/barangay/getmed/'+id,
-            method: 'get',
-            data: {
-                _token: CSRF_TOKEN
-            },
-            success: function(response){
-                for(var i=0; i<response.length; i++){
-                    var data = "<tr><td>"+response[i].hearing_id+"</td><td>"+response[i].hearing_sched+"</td><td>"+response[i].type+"</td><td><label>Respondent/s :</label><button type='button' class='printres btn btn-space bg-black waves-effect pull-right' value='"+response[i].hearing_id+"'><i class='material-icons'>print</i></button><br><br><label>Complainant/s</label><button type='button' class='printcom btn btn-space bg-black waves-effect pull-right' value='"+response[i].hearing_id+"'><i class='material-icons'>print</i></button><br><br><label>Witness/es</label><button type='button' class='printwit btn btn-space bg-black waves-effect pull-right' value='"+response[i].hearing_id+"'><i class='material-icons'>print</i></button>";
-                    $('#mtable tbody').append(data);
-                }
 
-            }
-        });
-        $.ajax({
-            url : '/blotter/barangay/getcon/'+id,
-            method: 'get',
-            data: {
-                _token: CSRF_TOKEN
-            },
-            success: function(response){
-                for(var i=0; i<response.length; i++){
-                    var data = "<tr><td>"+response[i].hearing_id+"</td><td>"+response[i].hearing_sched+"</td><td>"+response[i].type+"</td><td><label>Respondent/s :</label><button type='button' class='printres btn btn-space bg-black waves-effect pull-right' value='"+response[i].hearing_id+"'><i class='material-icons'>print</i></button><br><br><label>Complainant/s</label><button type='button' class='printcom btn btn-space bg-black waves-effect pull-right' value='"+response[i].hearing_id+"'><i class='material-icons'>print</i></button><br><br><label>Witness/es</label><button type='button' class='printwit btn btn-space bg-black waves-effect pull-right' value='"+response[i].hearing_id+"'><i class='material-icons'>print</i></button>";
-                    $('#ctable tbody').append(data);
-                }
-            }
-        });
-        $.ajax({
-            url : '/blotter/barangay/getarb/'+id,
-            method: 'get',
-            data: {
-                _token: CSRF_TOKEN
-            },
-            success: function(response){
-                for(var i=0; i<response.length; i++){
-                    var data = "<tr><td>"+response[i].hearing_id+"</td><td>"+response[i].hearing_sched+"</td><td>"+response[i].type+"</td><td><label>Respondent/s :</label><button type='button' class='printres btn btn-space bg-black waves-effect pull-right' value='"+response[i].hearing_id+"'><i class='material-icons'>print</i></button><br><br><label>Complainant/s</label><button type='button' class='printcom btn btn-space bg-black waves-effect pull-right' value='"+response[i].hearing_id+"'><i class='material-icons'>print</i></button><br><br><label>Witness/es</label><button type='button' class='printwit btn btn-space bg-black waves-effect pull-right' value='"+response[i].hearing_id+"'><i class='material-icons'>print</i></button>";
-                    $('#atable tbody').append(data);
-                }
-            }
-        });
-    });
-
-    $('#mtable tbody').on('click', 'button.printres', function(){
-        window.open(window.location.href+'/mres/'+$(this).val(), '_blank');
-        return false;
-    });
-
-    $('#mtable tbody').on('click', 'button.printcom', function(){
-        window.open(window.location.href+'/mcom/'+$(this).val(), '_blank');
-        return false;
-    });
-
-    $('#mtable tbody').on('click', 'button.printwit', function(){
-        window.open(window.location.href+'/mwit/'+$(this).val(), '_blank');
-        return false;
-    });
-
-    $('#ctable tbody').on('click', 'button.printres', function(){
-        window.open(window.location.href+'/cres/'+$(this).val(), '_blank');
-        return false;
-    });
-
-    $('#ctable tbody').on('click', 'button.printcom', function(){
-        window.open(window.location.href+'/ccom/'+$(this).val(), '_blank');
-        return false;
-    });
-
-    $('#ctable tbody').on('click', 'button.printwit', function(){
-        window.open(window.location.href+'/cwit/'+$(this).val(), '_blank');
-        return false;
+        var rowid = $(this).val();
+        $(location).attr('href', '/blotter/barangay/show/'+rowid);
+      
     });
 
     $('#save').on('click', function(){

@@ -22,7 +22,7 @@ Route::get('/logout', 'LoginController@logout');
 Route::get('/trial', 'WebController@test');
 
 Route::group(['middleware'=>'Login'], function(){
-
+ 
 Route::get('/index', 'LoginController@signin');
 Route::get('/indexcheck', 'LoginController@checkuser');
 
@@ -32,7 +32,9 @@ Route::get('/resident', 'ResidentController@create');
 Route::get('/resident/getResidents', 'ResidentController@getResidents');
 Route::post('/resident', 'ResidentController@store');
 Route::delete('/resident', 'ResidentController@destroy');
-Route::patch('/resident', 'ResidentController@update');
+Route::get('/resident/update/{id}', 'ResidentController@showrecord');
+Route::post('/resident/update', 'ResidentController@update');
+Route::delete('/resident/delete', 'ResidentController@destroy');
 
 //Resident
 
@@ -92,15 +94,27 @@ Route::get('/maintenance/clearance/clearance/getClearances', 'ClearanceControlle
 // Clearance
 Route::get('/clearance/clearance', 'ClearanceReqController@create');
 Route::get('/clearance/clearance/get', 'ClearanceReqController@getClearances');
+Route::get('/clearance/clearance/clearancedetails/{id}', 'ClearanceReqController@getClearancesDetails');
+Route::delete('/clearance/clearance/removerequest/{id}', 'ClearanceReqController@removeRequest');
+Route::delete('/clearance/clearance/removetrans/{id}', 'ClearanceReqController@removeTransaction');
+Route::get('/clearance/clearance/getforrelease', 'ClearanceReqController@getClearancesForRelease');
+Route::get('/clearance/clearance/getrelease', 'ClearanceReqController@getClearancesRelease');
+Route::get('/clearance/clearance/getpending', 'ClearanceReqController@getClearancesPending');
+Route::get('/clearance/getclearancereq/{id}', 'ClearanceReqController@getClearanceRequirement');
 Route::get('/clearance/getResidents/{id}', 'ClearanceReqController@getResidents');
 Route::post('/clearance/storeClearance', 'ClearanceReqController@storeClearance');
 Route::get('/clearance/release', 'ReleaseController@create');
 Route::get('/clearance/release/get', 'ReleaseController@getTrans');
+Route::get('/clearance/release/getForRelease', 'ReleaseController@getTransForRelease');
+Route::get('/clearance/release/getRelease', 'ReleaseController@getTransRelease');
 Route::get('/clearance/release/{id}', 'ReleaseController@createdoc');
+Route::get('/clearance/release/check/{id}', 'ReleaseController@checkdeficiency');
+Route::post('/clearance/release/req', 'ReleaseController@deficiency');
 Route::get('/clearance/payments/getunpaid', 'PaymentController@getunpaid');
 Route::get('/clearance/payments/getpaid', 'PaymentController@getpaid');
 Route::post('/clearance/payments/pay', 'PaymentController@payment');
-Route::get('/clearance/payments/getreceipt/{id}', 'PaymentController@getreceipt');
+Route::get('/clearance/payments/makereceipt/{id}', 'PaymentController@makereceipt');
+Route::get('/clearance/payments/payreceipt/{id}', 'PaymentController@getreceipt');
 // Clearance
 
 //Blotter
@@ -116,8 +130,11 @@ Route::get('/getSchedule', 'ScheduleController@view');
 Route::get('/blotter/barangay/record', 'RecordController@create');
 Route::get('/blotter/barangay/records', 'RecordController@show');
 Route::get('/blotter/barangay/getcasestat', 'RecordController@getcase');
+Route::post('/blotter/barangay/allocatecasecap', 'RecordController@allocatecap');
 Route::post('/blotter/barangay/allocatecase', 'RecordController@allocate');
 Route::delete('/blotter/barangay/delete/{id}', 'RecordController@delete');
+Route::post('/blotter/barangay/reschedcap/{id}', 'RecordController@reschedcap');
+Route::post('/blotter/barangay/resched/{id}', 'RecordController@resched');
 
 Route::get('/blotter/barangay/getmed/{id}', 'RecordController@mediation');
 Route::get('/blotter/barangay/getcon/{id}', 'RecordController@concillation');
@@ -130,11 +147,24 @@ Route::get('/blotter/barangay/record/mwit/{id}', 'RecordController@printmwit');
 Route::get('/blotter/barangay/record/cres/{id}', 'RecordController@printcres');
 Route::get('/blotter/barangay/record/ccom/{id}', 'RecordController@printccom');
 Route::get('/blotter/barangay/record/cwit/{id}', 'RecordController@printcwit');
+
+Route::get('/blotter/barangay/schedule/{id}', 'HearingController@processhearing');
+Route::get('/blotter/barangay/getdetails/{id}', 'ScheduleController@getdetails');
+Route::post('/blotter/barangay/hearing', 'HearingController@addminutes');
+Route::post('/blotter/barangay/starthearing', 'HearingController@startminutes');
+
+Route::post('/blotter/barangay/resched', 'ScheduleController@resched');
+
+Route::get('/blotter/barangay/show/{id}', 'RecordController@showblotter');
+Route::get('/blotter/barangay/hearingshow/{id}', 'RecordController@showhearing');
 //Barangay Blotter
 
 // Incident Blotter
 Route::get('/blotter/incident/incident', 'IncidentController@createIncident');
 Route::get('/getIncident', 'IncidentController@getIncident');
+Route::get('/getIncident/actiondone', 'IncidentController@getIncidentDone');
+Route::get('/getIncident/pending', 'IncidentController@getIncidentPending');
+Route::get('/getIncident/ongoing', 'IncidentController@getIncidentOngoing');
 Route::post('/storeIncident', 'IncidentController@storeIncident');
 Route::post('/deleteIncident', 'IncidentController@deleteIncident');
 Route::get('/countincident', 'IncidentController@count');
@@ -159,6 +189,17 @@ Route::get('/reports_clearance/get', 'ReportController@get');
 Route::get('/reports_incident/get', 'ReportController@getIncident');
 Route::get('/reports_barangay/get', 'ReportController@getBarangay');
 
+Route::post('/reports_clearance/daily', 'ReportController@getClearanceDaily');
+Route::post('/reports_clearance/weekly', 'ReportController@getClearanceWeekly');
+Route::post('/reports_clearance/monthly', 'ReportController@getClearanceMonthly');
+Route::post('/reports_clearance/yearly', 'ReportController@getClearanceYearly');
+
+Route::post('/reports_incident/daily', 'ReportController@getIncidentDaily');
+Route::post('/reports_incident/weekly', 'ReportController@getIncidentWeekly');
+Route::post('/reports_incident/monthly', 'ReportController@getIncidentMonthly');
+Route::post('/reports_incident/yearly', 'ReportController@getIncidentYearly');
+
+
 //Reports
 
 //Queries
@@ -170,7 +211,26 @@ Route::get('/queries', 'QueriesController@index');
 Route::get('/clearance/payments', 'PaymentController@index');
 
 
+//Utitlities
+Route::get('/utilities/info', 'InfoController@create');
+Route::post('/utilities/info/store', 'InfoController@store');
+
+Route::get('/utilities/events', 'HolidayController@create');
+Route::get('/utilities/events/show', 'HolidayController@show');
+Route::post('/utilities/events/store', 'HolidayController@store');
+Route::delete('/utilities/events/delete', 'HolidayController@delete');
+Route::post('/utilities/events/update', 'HolidayController@update');
+Route::get('/utilities/events/update/{id}', 'HolidayController@updaterec');
+
+Route::get('/utilities/access', 'AccessController@create');
+Route::get('/utilities/access/show', 'AccessController@showall');
+Route::post('/utilities/access/update', 'AccessController@update');
+
+
 Route::get('/profile', 'ProfileController@index');
 
+
 });
+
+
 

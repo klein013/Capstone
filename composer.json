@@ -8,6 +8,7 @@
         "php": ">=5.6.4",
         "anouar/fpdf": "^2.0",
         "barryvdh/laravel-dompdf": "^0.8.0",
+        "fx3costa/laravelchartjs": "^2.3",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.3.0",

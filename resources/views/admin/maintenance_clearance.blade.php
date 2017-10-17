@@ -87,6 +87,7 @@
                                         <th>Name</th>
                                         <th>Requirements</th>
                                         <th>Price</th>
+                                        <th>Validity</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -122,7 +123,7 @@
             				<div class="form-group">
 	            				<label>Clearance Name</label>
     	        				<div class="form-line">
-        	    					<input type="text" class="form-control" id="upcname" name="upcname" required>
+        	    					<input type="text" disabled class="form-control" id="upcname" name="upcname" required>
             					</div>
             				</div>
             			</div>
@@ -147,6 +148,34 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row clearfix">
+                        <div class="col-md-12">
+                            <label>Clearance Validity</label>
+                            <br>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label class="pull-right">Number</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-line">
+                                        <input type="number" class="form-control" min = "1" step="1" id="upvalidnumber" name ="upvalidnumber" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="pull-right">Unit</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control" id="upunitselect" name = "upunitselect" required>
+                                        <option selected value="Day">Day/s</option>
+                                        <option value="Week">Week/s</option>
+                                        <option value="Month">Month/s</option>
+                                        <option value="Year">Year/s</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
                      <div class="row clearfix">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -162,15 +191,92 @@
                     </div>
             		<div class="row clearfix">
             			<div class="col-md-6 col-md-offset-6">
-            				<button type="submit" class="btn bg-teal btn-lg waves-effect" id='upadd'>UPDATE</button>
+            				<button type="button" class="btn bg-teal btn-lg waves-effect" id='upadd'>NEXT</button>
                             <button type="button" class="btn bg-teal btn-lg waves-effect" data-dismiss="modal">CANCEL</button>
             			</div>
             		</div>
-            	</form>
+            	
             </div>
         </div>
 	</div>
 </div>
+<div class="modal fade" id="updatelargemodal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" style="width:95%;" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="largeModalLabel">Update Content of Clearance</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h5>Legend for using values</h5>
+                            <br>
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                    <table class='table table-bordered'>
+                                        <thead>
+                                            <tr>
+                                                <td>Value</td>
+                                                <td>Corresponding Code</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Resident's Name</td>
+                                                <td>@name</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Resident's Address</td>
+                                                <td>@address</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Resident's Birthdate</td>
+                                                <td>@bdate</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Year of Residency</td>
+                                                <td>@residency</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Purpose</td>
+                                                <td>@purpose</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Current Date</td>
+                                                <td>@date</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Date of Validity</td>
+                                                <td>@validity</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Barangay Name</td>
+                                                <td>@brgyname</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Barangay Address</td>
+                                                <td>@brgyaddress</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <label>*Note: Headers and Footer of the document will be automatically included. You only need to put the body of the document.</label>
+                                </div>
+                                <div class='col-sm-6'>
+                            <div class="form-group">
+                            <div class="form-line">
+                            <textarea id="upmyTextarea" class="form-control" name="upmyTextarea"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn bg-teal btn-lg waves-effect">SAVE</button>
+                            <button type="button" class="btn bg-teal btn-lg waves-effect" data-dismiss="modal">CLOSE</button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+</form>            
 <form id="clearance">
 {{ csrf_field() }}
 <div id="defaultModal" class="modal fade" tabindex="-1" role='dialog'>
@@ -222,6 +328,34 @@
                     </div>
                     <div class="row clearfix">
                         <div class="col-md-12">
+                            <label>Clearance Validity</label>
+                            <br>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label class="pull-right">Number</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-line">
+                                        <input type="number" class="form-control" min = "1" step="1" id="validnumber" name ="validnumber" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="pull-right">Unit</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control" id="unitselect" name = "unitselect" required>
+                                        <option selected value="Day">Day/s</option>
+                                        <option value="Week">Week/s</option>
+                                        <option value="Month">Month/s</option>
+                                        <option value="Year">Year/s</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row clearfix">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label>Clearance Requirement</label>
                                     <div class="demo-checkbox">
@@ -244,17 +378,73 @@
         </div>  
     </div>
     <div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog modal-lg" style="width:95%;" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title" id="largeModalLabel">Create Content of Clearance</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="form-group">
-                            <div class="form-line">
-                            <textarea id="myTextarea" class="form-control" name="myTextarea"></textarea>
+                            <h5>Legend for using values</h5>
+                            <br>
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                    <table class='table table-bordered'>
+                                        <thead>
+                                            <tr>
+                                                <td>Value</td>
+                                                <td>Corresponding Code</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Resident's Name</td>
+                                                <td>@name</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Resident's Address</td>
+                                                <td>@address</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Resident's Birthdate</td>
+                                                <td>@bdate</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Year of Residency</td>
+                                                <td>@residency</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Purpose</td>
+                                                <td>@purpose</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Current Date</td>
+                                                <td>@date</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Date of Validity</td>
+                                                <td>@validity</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Barangay Name</td>
+                                                <td>@brgyname</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Barangay Address</td>
+                                                <td>@brgyaddress</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <label>*Note: Headers and Footer of the document will be automatically included. You only need to put the body of the document.</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <textarea id="myTextarea" class="form-control" name="myTextarea"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            </div>
+                            
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn bg-teal btn-lg waves-effect">SAVE</button>
@@ -290,6 +480,22 @@
             toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
         });
 
+        tinymce.init({
+            selector: '#upmyTextarea',
+            theme: 'modern',
+            menubar: false,
+            resize: false,
+            branding: false,
+            width: 850,
+            height: 500,
+            plugins: [
+                'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+                'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+                'save table contextmenu directionality emoticons template paste textcolor'
+            ],
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
+        });
+
 
         var row;
         var id;
@@ -305,6 +511,7 @@
                             'Name' : json[i].clearance_type,
                             'Req' : json[i].clearance_requirements,
                             'Price': json[i].clearance_price,
+                            'Validity' : json[i].validity,
                             'Button': "<button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button>"
                             });
                         }     
@@ -316,6 +523,7 @@
                 {"data" : "Name"},
                 {"data" : "Req"},
                 {"data" : "Price"},
+                {"data" : "Validity"},
                 {"data" : "Button"}
             ]
 
@@ -344,6 +552,10 @@
                             $(sss).prop('checked', true);
                         });
                     }
+                    $('#upvalidnumber').val(response[0].validity_no);
+                    $('#upunitselect').val(response[0].validity_unit);
+                    $('#upunitselect').change();
+                    tinyMCE.activeEditor.setContent(response[0].clearance_content);
                     $('#updateModal').modal('toggle');
                 }
             });
@@ -396,6 +608,12 @@
                 }); 
        });
 
+       $('#upadd').on('click', function(){
+            $('#updatelargemodal').modal('toggle');
+       });
+
+
+
 
        $.validator.addMethod("alphanum", function(value, element) {
                 return this.optional(element) || value == value.match(/^[a-zA-Z0-9 .,]*$/);
@@ -418,6 +636,17 @@
                     number: true,
                     min: 0,
                     maxlength: 10
+                },
+                upvalidnumber: {
+                    required: true,
+                    min: 1,
+                    max: 999
+                },
+                upunitselect: {
+                    required: true
+                },
+                upmyTextarea:{
+                    required: true
                 }
             },
             submitHandler: function(form){
@@ -430,7 +659,10 @@
                         name : $('#upcname').val(),
                         desc : $('#updesc').val(),
                         price : $('#upprice').val(),
-                        req : $('.cbup:checked').map(function() {return this.value;}).get().join(',')
+                        number : $('#upvalidnumber').val(),
+                        unit : $('#upunitselect').val(),
+                        req : $('.cbup:checked').map(function() {return this.value;}).get().join(','),
+                        cont: tinyMCE.get('upmyTextarea').getContent()
                     },
                     dataType: 'json',
                     success: function(response) {
@@ -449,6 +681,7 @@
                         }
 
                             $('#updateModal').modal('toggle');
+                            $('#updatelargemodal').modal('toggle');
 
                     }
                 });
@@ -484,6 +717,15 @@
                 },
                 myTextarea: {
                     required: true
+                },
+                validnumber: {
+                    required: true,
+                    min: 1,
+                    max: 999,
+                    number: true
+                },
+                unitselect:{
+                    required: true
                 }
             },
             submitHandler: function(form){
@@ -496,6 +738,8 @@
                         desc : $('#desc').val(),
                         price : $('#price').val(),
                         req : $('.cbadd:checked').map(function() {return this.value;}).get().join(','),
+                        number : $('#validnumber').val(),
+                        unit : $('#unitselect').val(),
                         cont: tinyMCE.get('myTextarea').getContent()
                     },
                     dataType: 'json',

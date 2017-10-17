@@ -57,7 +57,48 @@ list-style: none;
 
             <!-- Basic Table -->
             <div class="row clearfix">
-            <div class="col-sm-4">
+           
+                <div class="col-sm-8">
+                <div class="row clearfix">
+                    <div class="card">
+                        <div class="body table-responsive">
+                            <table class="table table-condensed table-hover table-striped table-bordered" id="unpaidTable">
+                                <thead>
+                                    <tr class="bg-blue-grey">
+                                        <th>ID</th>
+                                        <th>Resident Name</th>
+                                        <th>Request Date</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        </div>
+                    </div>
+
+                
+                <div class="row clearfix">
+                    <div class="card">
+                        <div class="body table-responsive">
+                            <table class="table table-condensed table-hover table-striped table-bordered" id="paidTable">
+                                <thead>
+                                    <tr class="bg-blue-grey">
+                                        <th>ID</th>
+                                        <th>Resident Name</th>
+                                        <th>Payment Date</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                        <th>Receipt</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>                    
+                </div>
+                 <div class="col-sm-4">
                     <div class="card" >
                         <br>
                         <br>
@@ -149,46 +190,45 @@ list-style: none;
                         <br>
                     </div>
                 </div>
-                <div class="col-sm-8">
-                <div class="row clearfix">
-                    <div class="card">
-                        <div class="body table-responsive">
-                            <table class="table" id="unpaidTable">
-                                <thead>
-                                    <tr class="bg-blue-grey">
-                                        <th>ID</th>
-                                        <th>Resident Name</th>
-                                        <th>Request Date</th>
-                                        <th>Price</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                        </div>
-                    </div>
-                
-                <div class="row clearfix">
-                    <div class="card">
-                        <div class="body table-responsive">
-                            <table class="table" id="paidTable">
-                                <thead>
-                                    <tr class="bg-blue-grey">
-                                        <th>ID</th>
-                                        <th>Resident Name</th>
-                                        <th>Payment Date</th>
-                                        <th>Price</th>
-                                        <th>Status</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                    </div>
-                </div>                    
-                </div>
                 
             </div>
+        <div class="modal fade" tabindex="-1" role="dialog" id="updatemodal">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row clearfix">
+                                <div class="col-lg-7 col-md-3 col-sm-6 col-xs-12">
+                                    <h4>Update Request</h4>
+                                </div>
+                            </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row clearfix">
+                        <div class="col-sm-4">
+                            <label id="name"></label>
+                            <br>
+                            <label id="transaction"></label>
+                        </div>
+                        <br>
+                        <div class="col-sm-12">
+                            <table class="table table-responsive table-bordered table-condensed table-hover table-striped" id="editTable">
+                                <thead>
+                                    <tr class="bg-teal">
+                                        <td><label>Clearance ID</label></td>
+                                        <td><label>Clearance Name</label></td>
+                                        <td><label>Price</label></td>
+                                        <td></td>
+                                    </tr>
+                                </thead>
+                                <tbody id="editTablebody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
 
 
 @include('admin.layout.scripts');
@@ -213,7 +253,8 @@ list-style: none;
                             'Name' : json[i].name,
                             'Date' : json[i].trans_date,
                             'Price': (json[i].total).toFixed(2),
-                            'Status': json[i].request_status
+                            'Status': json[i].request_status,
+                            'Button' : "<button class='update btn btn-space waves-effect bg-blue' value='"+json[i].request_transaction+"'><i class='material-icons'>create</i></button><button class='delete btn waves-effect bg-red' value='"+json[i].request_transaction+"'><i class='material-icons'>delete</i></button>"
                             });
                         }     
                         return return_data;
@@ -224,7 +265,8 @@ list-style: none;
                 {'data' : 'Name' },
                 {'data' : 'Date' },
                 {'data' : 'Price' },
-                {'data' : 'Status' }
+                {'data' : 'Status' },
+                {'data' : 'Button' }
             ]
             });
 
@@ -259,6 +301,151 @@ list-style: none;
             ]
             });
 
+            $('#unpaidTable').on('click', 'button.delete', function(){
+                tblunpaid.ajax.reload();
+                var id = $(this).val();
+            swal({
+                    title: "Are you sure?",
+                    text: "You will not be able to recover this record!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Delete",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },  
+                function(isConfirm) {
+                    if (isConfirm){
+                        $.ajax({
+                            url : '/clearance/clearance/removetrans/'+id,
+                            method : 'DELETE',
+                            data : {
+                                _token : CSRF_TOKEN,
+                                _method: 'DELETE'
+                            },
+                            success : function(response){
+                                if(response=="success"){
+                                $('#'+id+'row').remove();
+                                 swal({
+                                    title : "Deleted!", 
+                                    text : "Record has been deleted",
+                                    type :  "success",
+                                    showConfirmButton : false,
+                                    timer : 1000
+                                });
+                                 tblunpaid.ajax.reload();
+                             }
+                             else{
+                                $('#'+id+'row').remove();
+                                 swal({
+                                    title : "Deleted!", 
+                                    text : "Record has been deleted",
+                                    type :  "success",
+                                    showConfirmButton : false,
+                                    timer : 1000
+                                });
+                                 tblunpaid.ajax.reload();
+                             }
+                            }
+                        });
+                    } 
+                    else {
+                        swal({
+                            title : "Cancelled", 
+                            text : "Record is not deleted",
+                            type :  "error",
+                            showConfirmButton : false,
+                            timer : 1000
+                        });
+                    }
+            });
+            });
+
+            $('#unpaidTable').on('click', 'button.update', function(){
+                $.ajax({
+                url : '/clearance/clearance/clearancedetails/'+$(this).val(),
+                method: 'GET',
+                data: {
+                    _token : CSRF_TOKEN
+                },
+                dataType: 'json',
+                success: function(response){
+                    console.log(response);
+                    var text = "";
+                    for (var i = 0; i < response.length; i++) {
+                        text += "<tr id='"+response[i].request_id+"row'><td>"+response[i].clearance_id+"</td><td>"+response[i].clearance_name+"</td><td>"+response[i].price_amt+"</td><td><button type='button' value='"+response[i].request_id+"'  class='delete1 btn btn-lg bg-red waves-effect pull-right'><i class='material-icons'>delete</i></button></td></tr>";
+                    }
+                    $('#editTablebody').empty();
+                    $('#editTablebody').append(text);
+
+                }
+            });
+            tblunpaid.ajax.reload();
+            $('#updatemodal').modal('toggle');
+            
+            });
+
+            $('#editTablebody').on('click', 'button.delete1', function(){
+                var id = $(this).val();
+            swal({
+                    title: "Are you sure?",
+                    text: "You will not be able to recover this record!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Delete",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },  
+                function(isConfirm) {
+                    if (isConfirm){
+                        $.ajax({
+                            url : '/clearance/clearance/removerequest/'+id,
+                            method : 'DELETE',
+                            data : {
+                                _token : CSRF_TOKEN,
+                                _method: 'DELETE'
+                            },
+                            success : function(response){
+                                if(response=="success"){
+                                $('#'+id+'row').remove();
+                                 swal({
+                                    title : "Deleted!", 
+                                    text : "Record has been deleted",
+                                    type :  "success",
+                                    showConfirmButton : false,
+                                    timer : 1000
+                                });
+                                 tblunpaid.ajax.reload();
+                             }
+                             else{
+                                $('#'+id+'row').remove();
+                                 swal({
+                                    title : "Deleted!", 
+                                    text : "Record has been deleted",
+                                    type :  "success",
+                                    showConfirmButton : false,
+                                    timer : 1000
+                                });
+                                 tblunpaid.ajax.reload();
+                             }
+                            }
+                        });
+                    } 
+                    else {
+                        swal({
+                            title : "Cancelled", 
+                            text : "Record is not deleted",
+                            type :  "error",
+                            showConfirmButton : false,
+                            timer : 1000
+                        });
+                    }
+            });
+            });
+
             $('#unpaidTable tbody').on('dblclick', 'tr', function(){
 
                 var data = tblunpaid.row( this ).data();
@@ -267,9 +454,14 @@ list-style: none;
                 $('#amtpay').val(data['Price']);
             });
 
+            var amttopay = null;
+
+
             $('#amtten').on('keyup', function(){
+                amttopay = $('#amtpay').val();
                 $('#change').val(($('#amtten').val()-$('#amtpay').val()).toFixed(2));
             });
+
 
             $('#trans').validate({
             rules:{
@@ -288,10 +480,21 @@ list-style: none;
                 amtten: {
                     required: true,
                     number: true,
-                    maxlength: 10
+                    maxlength: 10,
+                },
+                change: {
+                    min : 0,
+                    required: true,
                 }
             },
             submitHandler: function(form){
+                var transnum = "";
+                transnum = $('#tnum').val();
+                var wala = $('#change').val();
+                if(parseFloat(wala)<0){
+                    alert("Please pay correctly");
+                }
+                else{
                 $.ajax({
                     url: '/clearance/payments/pay',
                     method: 'POST',
@@ -302,34 +505,25 @@ list-style: none;
                         amtten : $('#amtten').val()
                     },
                     success: function(response) {
-                       if(response=="success"){
-                            swal({
-                                title : "Success!", 
-                                text : "Transaction Success",
-                                type :  "success",
-                                showConfirmButton : false,
-                                timer : 1000
-                            });
-                            tblunpaid.ajax.reload();
-                            tblpaid.ajax.reload();
-                            
+
+                        if(response=="success"){
                             $('#tnum').val("");
                             $('#rname').val("");
                             $('#amtpay').val("");
                             $('#amtten').val("");
-                            $('#change').val("");
-                       }
-                       else{
-                            swal({
-                                title : "Failed!", 
-                                text : "Transaction Failed",
-                                type :  "error",
-                                showConfirmButton : false,
-                                timer : 1000
-                            });
-                       }
+                            $('#change').val("");                            
+
+                            tblunpaid.ajax.reload();
+                            tblpaid.ajax.reload();
+                        }
+
+                            
+                            
+                      
                     }
                 });
+                window.open(window.location.href+"/makereceipt/"+transnum,'_blank');
+                }
             },
             highlight: function (input) {
                 $(input).parents('.form-line').addClass('error');
@@ -343,10 +537,11 @@ list-style: none;
             });
 
             $('#paidTable tbody').on('click', 'button.print', function(){
-                window.open(window.location.href+"/getreceipt/"+$(this).val(),'_blank');
+                window.open(window.location.href+"/payreceipt/"+$(this).val(),'_blank');
                 return false;
             });
         });
     </script>
 </body>
 </html>
+

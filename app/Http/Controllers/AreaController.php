@@ -13,7 +13,8 @@ class AreaController extends Controller
 {
  
  	public function create(){
-		$return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official')];
+		$return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official'),'admin'=>Session::get('admin')];
+
 	    return view('admin.maintenance_area', compact('return'));
  	}
 
@@ -39,6 +40,8 @@ class AreaController extends Controller
  	public function destroy(Request $id){
 
  		DB::table('tbl_area')->where('area_id',$id->id)->update(['area_exists'=>0]);
+
+ 		DB::table('tbl_street')->where('street_area',$id->id)->update(['street_exists'=>0]);
 
  		return response("success");
  	}

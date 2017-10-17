@@ -30,7 +30,7 @@ class IncidentController extends Controller
      */
     public function createIncident()
     {
-        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official')];
+        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official'),'admin'=>Session::get('admin')];
 
         $street = DB::select('select s.street_name, s.street_id, a.area_id from tbl_street s join tbl_area a on a.area_id = s.street_area where a.area_exists = 1 and s.street_exists = 1;');
 
@@ -89,6 +89,27 @@ class IncidentController extends Controller
     public function getIncident(){
 
         $incidents = DB::select('select lpad(i.incident_id,8,"0") as incident_id, concat(s.street_name,", ",a.area_name) as place, i.incident_datetime, c.incidentcat_name, i.incident_status, i.incident_notes from tbl_incident i join tbl_incidentcat c on c.incidentcat_id = i.incident_cat join tbl_street s on s.street_id = i.incident_street join tbl_area a on s.street_area = a.area_id where i.incident_exists = 1 order by field(i.incident_status,"Pending","On-going","Done")');
+
+       return response()->json($incidents);
+    }
+
+    public function getIncidentDone(){
+
+        $incidents = DB::select('select lpad(i.incident_id,8,"0") as incident_id, concat(s.street_name,", ",a.area_name) as place, i.incident_datetime, c.incidentcat_name, i.incident_status, i.incident_notes from tbl_incident i join tbl_incidentcat c on c.incidentcat_id = i.incident_cat join tbl_street s on s.street_id = i.incident_street join tbl_area a on s.street_area = a.area_id where i.incident_exists = 1 and incident_status = "Action Done"');
+
+       return response()->json($incidents);
+    }
+
+    public function getIncidentPending(){
+
+        $incidents = DB::select('select lpad(i.incident_id,8,"0") as incident_id, concat(s.street_name,", ",a.area_name) as place, i.incident_datetime, c.incidentcat_name, i.incident_status, i.incident_notes from tbl_incident i join tbl_incidentcat c on c.incidentcat_id = i.incident_cat join tbl_street s on s.street_id = i.incident_street join tbl_area a on s.street_area = a.area_id where i.incident_exists = 1 and incident_status = "Pending"');
+
+       return response()->json($incidents);
+    }
+
+    public function getIncidentOngoing(){
+
+        $incidents = DB::select('select lpad(i.incident_id,8,"0") as incident_id, concat(s.street_name,", ",a.area_name) as place, i.incident_datetime, c.incidentcat_name, i.incident_status, i.incident_notes from tbl_incident i join tbl_incidentcat c on c.incidentcat_id = i.incident_cat join tbl_street s on s.street_id = i.incident_street join tbl_area a on s.street_area = a.area_id where i.incident_exists = 1 and incident_status = "On-going"');
 
        return response()->json($incidents);
     }

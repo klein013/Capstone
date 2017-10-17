@@ -7,6 +7,8 @@ use DB;
 use App\Models\TblClearance;
 use App\Models\TblPrice;
 use App\Models\TblClearancerequirement;
+use App\Models\TblClearancevalidity;
+use App\Models\TblClearancecontent;
 use Session;
 
 class ClearanceController extends Controller
@@ -15,86 +17,78 @@ class ClearanceController extends Controller
     public function create()
     {
         $reqs = DB::select('select requirement_id, requirement_name from tbl_requirement where requirement_exists=1');
-          $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official')];
+          $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official'),'admin'=>Session::get('admin')];
         
         return view('admin.maintenance_clearance')->with(['reqs'=>$reqs,'return'=>$return]);
     }
 
     public function update(Request $request)
     {
+        $newdate = date('Y-m-d H:i:s');
 
+        DB::table('tbl_clearance')->where('clearance_id',$request->id)->update(['updated_at'=>date('Y-m-d H:i:s'),'clearance_desc'=>$request->desc]);
 
-        $exists = DB::select('select clearance_id from tbl_clearance where LOWER(Clearance_Type) = LOWER("'.$request->name.'") and clearance_exists = 1');
-        if(empty($exist)){
+        $validity = DB::select('select * from tbl_clearancevalidity where updated_at is null and clearance_id ='.$request->id);
 
-            $priceexists = DB::select('select price_id from tbl_price where price_amt = '.$request->price);
-            if(empty($priceexists[0]->price_id)){
+        if(($validity[0]->validity_no!=$request->number)||($validity[0]->validity_unit!=$request->unit)){
 
-                $price = new TblPrice;
+            DB::table('tbl_clearancevalidity')->where('validity_id',$validity[0]->validity_id)->update(['updated_at'=>$newdate]);
 
-                $price->price_amt = $request->price;
-                $price->price_date = date('Y-m-d');
-                $price->save();
+           $newvalidity = new TblClearancevalidity;
 
-                DB::table('tbl_clearance')->where('clearance_id',$request->id)->update(['clearance_type'=>$request->name,'clearance_desc'=>$request->desc, 'clearance_price'=>$price->price_id]);
+           $newvalidity->clearance_id = $request->id;
+           $newvalidity->validity_unit = $request->unit;
+           $newvalidity->validity_no = $request->number;
+           $newvalidity->updated_at = null;
+           $newvalidity->save();
+        }
 
-                if($request->req!=null){
+        $content = DB::select('select * from tbl_clearancecontent where updated_at is null and clearance_id = '.$request->id);
 
-                    DB::delete('delete from tbl_clearancerequirement where cr_clearance = '.$request->id);
+        if(strcmp($content[0]->content,$request->cont)!=0){
 
-                    $reqs = explode(',',$request->req);
+            DB::table('tbl_clearancecontent')->where('content_id',$content[0]->content_id)->update(['updated_at'=>$newdate]);
 
-                    foreach($reqs as $req){
-                        $insert = new TblClearancerequirement;
+            $newcontent = new TblClearancecontent;
 
-                        $insert->cr_requirement = $req;
-                        $insert->cr_clearance = $clearance->clearance_id;
-                        $insert->save();
-                    }
+            $newcontent->clearance_id = $request->id;
+            $newcontent->content = $request->cont;
+            $newcontent->updated_at = null;
+            $newcontent->save();
+        }
 
-                     
+        $price = DB::select('select * from tbl_price where updated_at is null and clearance_id = '.$request->id);
 
-                }
-                else{
+        if($price[0]->price_amt!=$request->price){
 
-                     DB::delete('delete from tbl_clearancerequirement where cr_clearance = '.$request->id);
-                    
-                }
+            DB::table('tbl_price')->where('price_id',$price[0]->price_id)->update(['updated_at'=>$newdate]);
 
-               
-            }
-            else{
+            $newprice = new TblPrice;
 
-               DB::table('tbl_clearance')->where('clearance_id',$request->id)->update(['clearance_type'=>$request->name,'clearance_desc'=>$request->desc, 'clearance_price'=>$priceexists[0]->price_id]);
+            $newprice->price_amt = $request->price;
+            $newprice->clearance_id = $request->id;
+            $newprice->updated_at = null;
+            $newprice->save();
 
-                if($request->req!=null){
+        }
 
-                    DB::delete('delete from tbl_clearancerequirement where cr_clearance = '.$request->id);
+        DB::delete('DELETE FROM tbl_clearancerequirement WHERE cr_clearance = '.$request->id);
 
-                    $reqs = explode(',',$request->req);
+        if($request->req!=null){
 
-                    foreach($reqs as $req){
-                        $insert = new TblClearancerequirement;
+            $reqs = explode(',', $request->req);
 
-                        $insert->cr_requirement = $req;
-                        $insert->cr_clearance = $request->id;
-                        $insert->save();
-                    }
+            foreach($reqs as $req){
+                $requirement = new TblClearancerequirement;
 
-                }
-                else{
-
-                    DB::delete('delete from tbl_clearancerequirement where cr_clearance = '.$request->id);
-
-                }
-
-
-                return response()->json("success");
+                    $requirement->cr_clearance = $request->id;
+                    $requirement->cr_requirement = $req;
+                    $requirement->save();
             }
         }
-        else{
-            return response()->json(null);
-        }
+
+        return response()->json("success");
+
     }
 
     public function store(Request $request)
@@ -111,93 +105,67 @@ class ClearanceController extends Controller
 
     public function show($id)
     {
-        $details = DB::select('select c.clearance_type, c.clearance_desc, group_concat(distinct(r.requirement_id) separator ",") as clearance_requirements, p.price_amt as clearance_price from tbl_clearance c join tbl_price p on p.price_id = c.clearance_price left join tbl_clearancerequirement cr on c.clearance_id = cr.cr_clearance left join tbl_requirement r on cr.cr_requirement = r.requirement_id where c.clearance_exists = 1 and c.clearance_id = '.$id.' group by c.clearance_id');
+        $details = DB::select('select c.clearance_name as clearance_type, c.clearance_desc, group_concat(distinct(r.requirement_id) separator ",") as clearance_requirements, p.price_amt as clearance_price, v.validity_no,v.validity_unit, cc.content as clearance_content from tbl_clearance c join tbl_price p on p.clearance_id = c.clearance_id left join tbl_clearancerequirement cr on c.clearance_id = cr.cr_clearance left join tbl_requirement r on cr.cr_requirement = r.requirement_id join tbl_clearancevalidity v on c.clearance_id = v.clearance_id join tbl_clearancecontent cc on cc.clearance_id = c.clearance_id where p.updated_at is null and cc.updated_at is null and v.updated_at is null and c.clearance_exists = 1 and c.clearance_id = '.$id.' group by c.clearance_id');
 
         return response()->json($details);
     }
 
     public function getClearances(){
-        $clearances = DB::select('select c.clearance_id, c.clearance_type, group_concat(distinct(r.requirement_name) separator "<br>") as clearance_requirements, p.price_amt as clearance_price from tbl_clearance c join tbl_price p on p.price_id = c.clearance_price left join tbl_clearancerequirement cr on c.clearance_id = cr.cr_clearance left join tbl_requirement r on cr.cr_requirement = r.requirement_id where c.clearance_exists = 1 group by c.clearance_id');
+        $clearances = DB::select('select distinct(c.clearance_id), c.clearance_name as clearance_type, group_concat(distinct(r.requirement_name) separator "<br>") as clearance_requirements, p.price_amt as clearance_price, concat(v.validity_no," ",v.validity_unit) as validity from tbl_clearance c join tbl_price p on p.clearance_id = c.clearance_id left join tbl_clearancerequirement cr on c.clearance_id = cr.cr_clearance left join tbl_requirement r on cr.cr_requirement = r.requirement_id join tbl_clearancevalidity v on c.clearance_id = v.clearance_id join tbl_clearancecontent cc on cc.clearance_id = c.clearance_id where c.clearance_exists = 1 and p.updated_at is null and cc.updated_at is null and v.updated_at is null group by c.clearance_id');
 
         return response()->json($clearances);
     }
 
     public function add(Request $request){
-        $exists = DB::select('select clearance_id from tbl_clearance where LOWER(Clearance_Type) = LOWER("'.$request->name.'") and clearance_exists = 1');
-        if(empty($exist)){
+        
+        $checkexist = DB::select('select * from tbl_clearance where clearance_name = "'.$request->name.'" and clearance_exists = 1');
+        if(empty($checkexist[0])){
 
-            $priceexists = DB::select('select price_id from tbl_price where price_amt = '.$request->price);
-            if(empty($priceexists[0]->price_id)){
+            $clearance = new TblClearance;
 
-                $price = new TblPrice;
+            $clearance->clearance_name = $request->name;
+            $clearance->clearance_desc = $request->desc;
+            $clearance->clearance_exists = 1;
+            $clearance->updated_at = null;
+            $clearance->save();
+                
+            if($request->req!=null){
+                $reqs = explode(',', $request->req);
 
-                $price->price_amt = $request->price;
-                $price->price_date = date('Y-m-d');
-                $price->save();
+                foreach($reqs as $req){
 
-                $clearance = new TblClearance;
+                    $requirement = new TblClearancerequirement;
 
-                $clearance->clearance_type = $request->name;
-                $clearance->clearance_desc = $request->desc;
-                $clearance->clearance_price = $price->id;
-                $clearance->clearance_content = $request->cont;
-                $clearance->clearance_exists = 1;
-                $clearance->save();
-
-                if($request->req!=null){
-                    $reqs = explode(',',$request->req);
-
-                    foreach($reqs as $req){
-                        $insert = new TblClearancerequirement;
-
-                        $insert->cr_requirement = $req;
-                        $insert->cr_clearance = $clearance->clearance_id;
-                        $insert->save();
-                    }
-
-                     $clearances = DB::select('select c.clearance_id, c.clearance_type, group_concat(r.requirement_name separator "<br>") as clearance_requirements, p.price_amt as clearance_price from tbl_clearance c join tbl_price p on p.price_id = c.clearance_price join tbl_clearancerequirement cr on c.clearance_id = cr.cr_clearance join tbl_requirement r on cr.cr_requirement = r.requirement_id where cr.cr_clearance = '.$clearance->clearance_id.' group by c.clearance_id');
+                    $requirement->cr_clearance = $clearance->clearance_id;
+                    $requirement->cr_requirement = $req;
+                    $requirement->save();
 
                 }
-                else{
-                    $clearances = DB::select('select c.clearance_id, c.clearance_type, null as clearance_requirements, p.price_amt as clearance_price from tbl_clearance c join tbl_price p on p.price_id = c.clearance_price where c.clearance_id = '.$clearance->clearance_id.' and c.clearance_id not in(select cr_clearance from tbl_clearancerequirement) group by c.clearance_id');
-                }
-
-               
-
-                return response()->json($clearances);
             }
-            else{
 
-                $clearance = new TblClearance;
+            $price = new TblPrice;
 
-                $clearance->clearance_type = $request->name;
-                $clearance->clearance_desc = $request->desc;
-                $clearance->clearance_price = $priceexists[0]->price_id;
-                $clearance->clearance_content = $request->cont;
-                $clearance->clearance_exists = 1;
-                $clearance->save();
+            $price->clearance_id = $clearance->clearance_id;
+            $price->price_amt = $request->price;
+            $price->updated_at = null;
+            $price->save();
 
-                if($request->req!=null){
-                    $reqs = explode(',',$request->req);
+            $content = new TblClearancecontent;
 
-                    foreach($reqs as $req){
-                        $insert = new TblClearancerequirement;
+            $content->clearance_id = $clearance->clearance_id;
+            $content->content = $request->cont;
+            $content->updated_at = null;
+            $content->save();
 
-                        $insert->cr_requirement = $req;
-                        $insert->cr_clearance = $clearance->clearance_id;
-                        $insert->save();
-                    }
+            $validity = new TblClearancevalidity;
 
-                      $clearances = DB::select('select c.clearance_id, c.clearance_type, group_concat(r.requirement_name separator "<br>") as clearance_requirements, p.price_amt as clearance_price from tbl_clearance c join tbl_price p on p.price_id = c.clearance_price join tbl_clearancerequirement cr on c.clearance_id = cr.cr_clearance join tbl_requirement r on cr.cr_requirement = r.requirement_id where cr.cr_clearance = '.$clearance->clearance_id.' group by c.clearance_id');
+            $validity->clearance_id = $clearance->clearance_id;
+            $validity->validity_no = $request->number;
+            $validity->validity_unit = $request->unit;
+            $validity->updated_at = null;
+            $validity->save();
 
-                }
-                else{
-                    $clearances = DB::select('select c.clearance_id, c.clearance_type, null as clearance_requirements, p.price_amt as clearance_price from tbl_clearance c join tbl_price p on p.price_id = c.clearance_price where c.clearance_id = '.$clearance->clearance_id.' and c.clearance_id not in(select cr_clearance from tbl_clearancerequirement) group by c.clearance_id');
-                }
-
-
-                return response()->json($clearances);
-            }
+            return response()->json("Success");
         }
         else{
             return response()->json(null);

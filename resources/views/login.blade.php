@@ -6,9 +6,11 @@
 </head>
 <body class="login-page" style="background-image: url('../../images/bg1.jpg'); background-size: cover; height: 100%; "> 
     <div class="imgcontainer" style="text-align: center;margin: 0px;color:black;">
-        <img src="{{asset('images/payatas.png')}}" alt="Avatar" class="avatar" style="width: 40%;">
-        <h1>BARANGAY PAYATAS</h1>
-        <h4>Blotter and Clearance Management System</h4>
+        <!-- <img src="{{asset('images/payatas.png')}}" alt="Avatar" class="avatar" style="width: 40%;"> -->
+        <br><br>
+        <h1>BARANGAY</h1>
+        <h4>Blotter and Clearance</h4>
+        <h4>Management System</h4>
         <hr>
       </div>
     <div class="login-box">

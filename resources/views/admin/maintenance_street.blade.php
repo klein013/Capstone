@@ -76,7 +76,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 	<div class="card">
                         <div class="body table-responsive">
-                            <table class="table table-hover dataTable js-exportable" id="PosTable">
+                            <table class="table table-condensed table-bordered table-striped table-hover dataTable js-exportable" id="PosTable">
                                 <thead>
                                     <tr class="bg-blue-grey">
                                         <th>ID</th>

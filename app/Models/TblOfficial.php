@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 29 Aug 2017 07:28:56 +0000.
+ * Date: Mon, 16 Oct 2017 19:28:36 +0800.
  */
 
 namespace App\Models;
@@ -20,7 +20,9 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property \App\Models\TblPosition $tbl_position
  * @property \App\Models\TblResident $tbl_resident
  * @property \App\Models\TblCaseallocation $tbl_caseallocation
+ * @property \Illuminate\Database\Eloquent\Collection $tbl_minutes
  * @property \Illuminate\Database\Eloquent\Collection $tbl_officialusers
+ * @property \Illuminate\Database\Eloquent\Collection $tbl_requests
  *
  * @package App\Models
  */
@@ -56,8 +58,18 @@ class TblOfficial extends Eloquent
 		return $this->hasOne(\App\Models\TblCaseallocation::class, 'caseallocation_official');
 	}
 
+	public function tbl_minutes()
+	{
+		return $this->hasMany(\App\Models\TblMinute::class, 'minutes_official');
+	}
+
 	public function tbl_officialusers()
 	{
 		return $this->hasMany(\App\Models\TblOfficialuser::class, 'official_id');
+	}
+
+	public function tbl_requests()
+	{
+		return $this->hasMany(\App\Models\TblRequest::class, 'request_captain');
 	}
 }

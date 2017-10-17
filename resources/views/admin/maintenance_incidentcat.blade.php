@@ -62,21 +62,19 @@
                 </div>
 
 
+            </div> </div> <!-- Basic Table --> <div class="row clearfix"> <div
+            class="col-sm-2 col-sm-offset-10">     <button type="button"
+            class="btn bg-teal btn-lg waves-effect waves-float pull-right"
+            data-toggle="modal" data-target="#defaultModal"><i class
+            ="material-icons">add</i>Add Incident Category</button> </div>
             </div>
-            </div>
-            <!-- Basic Table -->
-            <div class="row clearfix">
-                                    <div class="col-sm-2 col-sm-offset-10">
-                                        <button type="button" class="btn bg-teal btn-lg waves-effect waves-float pull-right" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i>Add Incident Category</button>
-                                    </div>
-                                </div>
-            </div>
+            
             <br>
-            <div class="card">
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="body table-responsive" id="table">
-                            <table class="table dataTable" id="CaseTable">
+                    <div class="card">
+                        <div class="body table-responsive">
+                            <table class="table dataTable table-condensed table-bordered table-striped table-hover" width="100%;" id="CaseTable">
                                 <thead>
                                     <tr class="bg-blue-grey">
                                         <th>ID</th>
@@ -90,8 +88,8 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
 	</section>

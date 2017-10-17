@@ -54,56 +54,170 @@
         </aside>
 
         <section class="content">
-                <div class="container-fluid">
+            <div class="container-fluid">
             <div class="block header">
                 <h3>DASHBOARD</h3>
+                 <div class="form-group">
+                        <div class="form-line">
+                                                
+                        </div>
+                 </div>
             </div>
 
+             <center> <h2>On This Day</h2></center>
+             <br>
+
+            <h4>Clearance</h4>
+            <br>
             <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-pink hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">accessibility</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">NEW RESIDENTS</div>
+                            <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20">4 </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-cyan hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">announcement</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">COMPLAINT</div>
+                            <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-orange hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">file_download</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">RELEASE</div>
+                            <div class="number count-to" data-from="0" data-to="243" data-speed="1000" data-fresh-interval="20">4</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-green hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">gavel</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">CLEARANCE</div>
+                            <div class="number count-to" data-from="0" data-to="1225" data-speed="1000" data-fresh-interval="20">Php 432</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h4>Barangay Blotter</h4>
+            <br>
+            <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-pink hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">report</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">NEW COMPLAINTS</div>
+                            <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20"> 0 </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-cyan hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">gavel</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">HEARING</div>
+                            <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20"> 1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <h4>Incident</h4>
+            <br>
+            <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-pink hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">error</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">NEW INCIDENTS</div>
+                            <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20"> 0 </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box bg-cyan hover-expand-effect">
                         <div class="icon">
                             <i class="material-icons">error</i>
                         </div>
                         <div class="content">
-                            <div class="text">INCIDENT</div>
-                            <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20">3 </div>
+                            <div class="text">PENDING INCIDENTS</div>
+                            <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20"> 1</div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-pink hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">announcement</i>
+            </div>
+
+                 <div class="form-group">
+                        <div class="form-line">
+                                                
                         </div>
-                        <div class="content">
-                            <div class="text">COMPLAINT</div>
-                            <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20">20</div>
+                 </div>
+
+                <div class="row clearfix">
+                <!-- Visitors -->
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
+                
+                </div>
+                <!-- #END# Visitors -->
+                <!-- Latest Social Trends -->
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6">
+                    <div class="card">
+                        <div class="body bg-teal">
+                            <div class="m-b--35 font-bold">LATEST RECORD TRENDS</div>
+                            <ul class="dashboard-stat-list">
+                                <li>
+                                    #newresidents
+                                    <span class="pull-right">
+                                        4
+                                    </span>
+                                </li>
+                                <li>
+                                    #release
+                                    <span class="pull-right">
+                                        4
+                                    </span>
+                                </li>
+                                <li>#clearance</li>
+                                <li>#hearing</li>
+                                <li>#pendingincidents</li>
+                                <li>
+                                    #newcomplaint
+                                </li>
+
+                                <li>
+                                    #newincidents
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-light-green hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">markunread_mailbox</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">CLEARANCE</div>
-                            <div class="number count-to" data-from="0" data-to="243" data-speed="1000" data-fresh-interval="20">120</div>
-                        </div>
-                    </div>
+                <!-- #END# Latest Social Trends -->
+                <!-- Answered Tickets -->
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-2">
+                    
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-yellow hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">gavel</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">HEARING</div>
-                            <div class="number count-to" data-from="0" data-to="1225" data-speed="1000" data-fresh-interval="20">4</div>
-                        </div>
-                    </div>
-                </div>
+                <!-- #END# Answered Tickets -->
             </div>
     </section>
 

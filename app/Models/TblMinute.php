@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 29 Aug 2017 07:28:56 +0000.
+ * Date: Mon, 16 Oct 2017 19:28:36 +0800.
  */
 
 namespace App\Models;
@@ -15,8 +15,13 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $minutes_id
  * @property int $minutes_hearing
  * @property string $minutes_details
+ * @property \Carbon\Carbon $minutes_start
+ * @property \Carbon\Carbon $minutes_end
+ * @property \Carbon\Carbon $minutes_timerendered
+ * @property int $minutes_official
  * 
  * @property \App\Models\TblHearing $tbl_hearing
+ * @property \App\Models\TblOfficial $tbl_official
  *
  * @package App\Models
  */
@@ -26,16 +31,32 @@ class TblMinute extends Eloquent
 	public $timestamps = false;
 
 	protected $casts = [
-		'minutes_hearing' => 'int'
+		'minutes_hearing' => 'int',
+		'minutes_official' => 'int'
+	];
+
+	protected $dates = [
+		'minutes_start',
+		'minutes_end',
+		'minutes_timerendered'
 	];
 
 	protected $fillable = [
 		'minutes_hearing',
-		'minutes_details'
+		'minutes_details',
+		'minutes_start',
+		'minutes_end',
+		'minutes_timerendered',
+		'minutes_official'
 	];
 
 	public function tbl_hearing()
 	{
 		return $this->belongsTo(\App\Models\TblHearing::class, 'minutes_hearing');
+	}
+
+	public function tbl_official()
+	{
+		return $this->belongsTo(\App\Models\TblOfficial::class, 'minutes_official');
 	}
 }

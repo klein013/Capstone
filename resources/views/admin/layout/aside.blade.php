@@ -50,7 +50,7 @@
                                 <a href="javascript:void(0);" class="menu-toggle"><span>Incident Blotter</span></a>
                                 <ul class="ml-menu">
                                     <li>
-                                        <a href="{{URL('incident')}}">Report Incident</a>
+                                        <a href="{{URL('incident')}}">Incidents</a>
                                     </li>
                                     <li>
                                         <a href="{{URL('incident_mapping')}}">Incident Mapping</a>
@@ -101,7 +101,7 @@
                                 </a>
                                 <ul class="ml-menu">
                                     <li>
-                                        <a href="{{URL('/reports_incident')}}">Incident Report</a>
+                                        <a href="{{URL('/reports_incident')}}">Incidents Report</a>
                                     </li>
                                     <li>
                                         <a href="{{URL('/reports_barangay')}}">Barangay Report</a>

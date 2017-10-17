@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 29 Aug 2017 07:28:56 +0000.
+ * Date: Mon, 16 Oct 2017 19:28:36 +0800.
  */
 
 namespace App\Models;
@@ -16,6 +16,8 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $hearing_case
  * @property \Carbon\Carbon $hearing_sched
  * @property int $hearing_type
+ * @property string $hearing_status
+ * @property bool $hearing_exists
  * 
  * @property \App\Models\TblCase $tbl_case
  * @property \App\Models\TblCasestage $tbl_casestage
@@ -34,7 +36,8 @@ class TblHearing extends Eloquent
 
 	protected $casts = [
 		'hearing_case' => 'int',
-		'hearing_type' => 'int'
+		'hearing_type' => 'int',
+		'hearing_exists' => 'bool'
 	];
 
 	protected $dates = [
@@ -44,7 +47,9 @@ class TblHearing extends Eloquent
 	protected $fillable = [
 		'hearing_case',
 		'hearing_sched',
-		'hearing_type'
+		'hearing_type',
+		'hearing_status',
+		'hearing_exists'
 	];
 
 	public function tbl_case()

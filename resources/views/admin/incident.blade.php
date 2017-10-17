@@ -81,8 +81,15 @@
             <div class="row">    
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-3 col-sm-offset-9">
+                                <span><h4><span class="label label-primary" id="actiondone">Action Done</span> <span class="label label-warning" id="pending">Pending</span> <span class="label label-success" id="ongoing">On-going</span> <span class="label label-info" id="all">All</span></h4></span>
+                            </div>
+                        </div>
+                        <br>
                         <div class="body table-responsive">
-                            <table class="table table-hover dataTable js-exportable" id="incTable">
+                            <table class="table table-condensed table-bordered table-striped table-hover dataTable js-exportable" id="incTable">
                                 <thead>
                                     <tr class="bg-blue-grey">
                                         <th>ID</th>
@@ -399,6 +406,180 @@
             });
             }
         });
+
+        $('#ongoing').on('click', function(){
+            table.destroy();
+            table = $("#incTable").DataTable({
+            bSort: false,
+            "ajax" : {
+                    "url": "/getIncident/ongoing",
+                    "dataSrc" : function (json) {
+                        var return_data = new Array();
+                        tblctr = json.length;
+                        for(var i=0;i< json.length; i++){
+                            var notes = json[i].incident_notes;
+                            if(notes==null){
+                                notes="";
+                            }
+                            var button = "";
+                            button = "<button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'view btn btn-space bg-green waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='View Record'><i class='material-icons'>view_module</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button>";
+                            return_data.push({
+                            'ID' : json[i].incident_id,
+                            'Place' : json[i].place,
+                            'DateTime' : json[i].incident_datetime,
+                            'Desc' : json[i].incidentcat_name,
+                            'Status': json[i].incident_status,
+                            'Notes': notes,
+                            'Button': button
+                            });
+                        }     
+                        return return_data;
+                    }
+                },
+                "columns": [
+                    { "data": "ID" },
+                    { "data": "Place"},
+                    { "data": "DateTime" },
+                    { "data": "Desc" },
+                    { "data": "Status" },
+                    { "data": "Notes" },
+                    { "data": "Button" },
+                    ]
+            });
+        });
+
+        $('#all').on('click', function(){
+            table.destroy();
+            table = $("#incTable").DataTable({
+            bSort: false,
+            "ajax" : {
+                    "url": "/getIncident",
+                    "dataSrc" : function (json) {
+                        var return_data = new Array();
+                        tblctr = json.length;
+                        for(var i=0;i< json.length; i++){
+                            var notes = json[i].incident_notes;
+                            if(notes==null){
+                                notes="";
+                            }
+                            var button = "";
+                            if(json[i].incident_status=="Pending"){
+                                button = "<button type = 'button' class = 'approve btn btn-space bg-orange waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Approve Record'><i class='material-icons'>done</i></button><button type = 'button' class = 'view btn btn-space bg-green waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='View Record'><i class='material-icons'>view_module</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button>"
+                            }
+                            else{
+                                button = "<button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'view btn btn-space bg-green waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='View Record'><i class='material-icons'>view_module</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button>"
+                            }
+                            return_data.push({
+                            'ID' : json[i].incident_id,
+                            'Place' : json[i].place,
+                            'DateTime' : json[i].incident_datetime,
+                            'Desc' : json[i].incidentcat_name,
+                            'Status': json[i].incident_status,
+                            'Notes': notes,
+                            'Button': button
+                            });
+                        }     
+                        return return_data;
+                    }
+                },
+                "columns": [
+                    { "data": "ID" },
+                    { "data": "Place"},
+                    { "data": "DateTime" },
+                    { "data": "Desc" },
+                    { "data": "Status" },
+                    { "data": "Notes" },
+                    { "data": "Button" },
+                    ]
+            });
+        });
+
+        $('#pending').on('click', function(){
+            table.destroy();
+            table = $("#incTable").DataTable({
+            bSort: false,
+            "ajax" : {
+                    "url": "/getIncident/pending",
+                    "dataSrc" : function (json) {
+                        var return_data = new Array();
+                        tblctr = json.length;
+                        for(var i=0;i< json.length; i++){
+                            var notes = json[i].incident_notes;
+                            if(notes==null){
+                                notes="";
+                            }
+                            var button = "";
+                            if(json[i].incident_status=="Pending"){
+                                button = "<button type = 'button' class = 'approve btn btn-space bg-orange waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Approve Record'><i class='material-icons'>done</i></button><button type = 'button' class = 'view btn btn-space bg-green waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='View Record'><i class='material-icons'>view_module</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button>"
+                            }
+                            else{
+                                button = "<button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'view btn btn-space bg-green waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='View Record'><i class='material-icons'>view_module</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button>"
+                            }
+                            return_data.push({
+                            'ID' : json[i].incident_id,
+                            'Place' : json[i].place,
+                            'DateTime' : json[i].incident_datetime,
+                            'Desc' : json[i].incidentcat_name,
+                            'Status': json[i].incident_status,
+                            'Notes': notes,
+                            'Button': button
+                            });
+                        }     
+                        return return_data;
+                    }
+                },
+                "columns": [
+                    { "data": "ID" },
+                    { "data": "Place"},
+                    { "data": "DateTime" },
+                    { "data": "Desc" },
+                    { "data": "Status" },
+                    { "data": "Notes" },
+                    { "data": "Button" },
+                    ]
+            });
+        });
+
+        $('#actiondone').on('click', function(){
+            table.destroy();
+            table = $("#incTable").DataTable({
+            bSort: false,
+            "ajax" : {
+                    "url": "/getIncident/actiondone",
+                    "dataSrc" : function (json) {
+                        var return_data = new Array();
+                        tblctr = json.length;
+                        for(var i=0;i< json.length; i++){
+                            var notes = json[i].incident_notes;
+                            if(notes==null){
+                                notes="";
+                            }
+                            var button = "";
+                            button = "<button type = 'button' class = 'update btn btn-space bg-blue waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Update Record'><i class='material-icons'>create</i></button><button type = 'button' class = 'view btn btn-space bg-green waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='View Record'><i class='material-icons'>view_module</i></button><button type = 'button' class = 'delete btn btn-space bg-red waves-effect' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Delete Record'><i class='material-icons'>delete</i></button>";
+                            return_data.push({
+                            'ID' : json[i].incident_id,
+                            'Place' : json[i].place,
+                            'DateTime' : json[i].incident_datetime,
+                            'Desc' : json[i].incidentcat_name,
+                            'Status': json[i].incident_status,
+                            'Notes': notes,
+                            'Button': button
+                            });
+                        }     
+                        return return_data;
+                    }
+                },
+                "columns": [
+                    { "data": "ID" },
+                    { "data": "Place"},
+                    { "data": "DateTime" },
+                    { "data": "Desc" },
+                    { "data": "Status" },
+                    { "data": "Notes" },
+                    { "data": "Button" },
+                    ]
+            });
+        })
 
         $('#okbtn').on('click', function(){
             $('#view').modal('toggle');
@@ -765,25 +946,6 @@
             }
         })
 
-        function checkTasks(){
-            setTimeout(checkTasks, 10000);
-            $.ajax({
-                url: '/countincident',
-                method: 'GET',
-                success: function(response){
-                    if(response!=tblctr){
-                        tblctr = response;
-                        $('#btndisp').toggle();
-                    }
-                }
-            })
-        }
-        checkTasks();
-
-        $('#newinc').on('click', function(){
-            table.ajax.reload();
-            $('#btndisp').toggle();
-        })
 
     });
 </script>

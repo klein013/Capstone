@@ -23,7 +23,7 @@
                                 <a href="javascript:void(0);" class="menu-toggle"><span>Incident Blotter</span></a>
                                 <ul class="ml-menu">
                                     <li class="{{Request::is('blotter/incident/incident') ? 'active' : '' }}">
-                                        <a href="{{URL('blotter/incident/incident')}}">Report Incident</a>
+                                        <a href="{{URL('blotter/incident/incident')}}">Incidents</a>
                                     </li>
                                     <li class="{{Request::is('blotter/incident/incident_mapping') ? 'active' : ''}}">
                                         <a href="{{URL('blotter/incident/incident_mapping')}}">Incident Mapping</a>
@@ -35,11 +35,11 @@
                                     <span>Barangay Blotter</span>
                                 </a>
                                 <ul class="ml-menu">
-                                    <li class="{{Request::is('blotter/barangay/schedule') ? 'active' : '' }}">
-                                        <a href="{{URL('blotter/barangay/schedule')}}">Schedules</a>
-                                    </li>
                                     <li class="{{Request::is('blotter/barangay/complaint') ? 'active' : '' }}">
                                         <a href="{{URL('blotter/barangay/complaint')}}">Complaint</a>
+                                    </li>
+                                    <li class="{{Request::is('blotter/barangay/schedule') ? 'active' : '' }}">
+                                        <a href="{{URL('blotter/barangay/schedule')}}">Schedules</a>
                                     </li>
                                     <li class="{{Request::is('blotter/barangay/record') ? 'active' : '' }}">
                                         <a href="{{URL('blotter/barangay/record')}}">Records</a>
@@ -97,6 +97,7 @@
                             <span>Queries</span>
                         </a>
                     </li>
+                    @if($return['admin']==1)
                    <li class="{{Request::is('maintenance/*') ? 'active' : ''}}">
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">build</i>
@@ -155,17 +156,15 @@
                             <li class="{{Request::is('utilities/info') ? 'active' : '' }}">
                                 <a href="{{ URL('utilities/info') }}">Barangay Information</a>
                             </li>
-                            <li class="{{Request::is('utitilities/branch') ? 'active' : '' }}">
-                                <a href="{{ URL('utilities/branch') }}">Branch</a>
-                            </li>
                             <li class="{{Request::is('utilities/access') ? 'active' : '' }}">
                                 <a href="{{ URL('utilities/access') }}">Access</a>
                             </li>
 
-                                <li class="{{Request::is('utilities/holidays_events') ? 'active' : '' }}">
-                                    <a href="{{URL('utilities/holidays_events')}}">Holiday and Suspension</a>
+                                <li class="{{Request::is('utilities/events') ? 'active' : '' }}">
+                                    <a href="{{URL('utilities/events')}}">Events</a>
                                 </li>
                         </ul>
                     </li>
+                    @endif
                     </ul>
             </div>

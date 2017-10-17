@@ -31,7 +31,7 @@ class ResidentController extends Controller
     public function create()
     {
         $streets = DB::select("select street_id, street_name, area_name from tbl_street join tbl_area on tbl_street.street_area=tbl_area.area_id order by area_name,street_name");
-        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official')];
+        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official'),'admin'=>Session::get('admin')];
 
         return view('admin.resident')->with(['streets'=>$streets, 'return'=>$return]);
     }
@@ -51,15 +51,24 @@ class ResidentController extends Controller
      */
     public function store(Request $request)
     {
+        
+        $ifexists = DB::select('select * from tbl_resident where resident_contact = "'.$request->contact.'" and resident_exists=1');
+
+        if(empty($ifexists[0]->resident_id)){
         $residents = new TblResident;
 
         if(!$request->hasFile('file')){
             $residents->resident_image = 'uploads/human.png';
         }
         else{
-            $file = $request->file('file');
-            $file->move('uploads', $file->getClientOriginalName());
-            $residents->resident_image = 'uploads/'.$file->getClientOriginalName();
+
+            try{
+                $file = $request->file('file');
+                $file->move('uploads', $file->getClientOriginalName());
+                $residents->resident_image = 'uploads/'.$file->getClientOriginalName();
+            }catch(\Exception $e){
+                return response("exceed");
+            }
         }
 
         $residents->resident_fname = $request->fname;
@@ -77,9 +86,62 @@ class ResidentController extends Controller
         $residents->save();
 
         return response("success");
+        }
+        else{
+            return response("Contact Number already used");
+        }
     }
 
-    public function destroy(Request $id)
+    public function update(Request $request){
+
+         $ifexists = DB::select('select * from tbl_resident where resident_contact = "'.$request->contact.'" and resident_exists=1 and resident_id != "'.$request->id.'"');
+
+        if(empty($ifexists[0]->resident_id)){
+            
+            $image="";
+            if(!$request->hasFile('file')){
+                $image = 'uploads/human.png';
+            }
+            else{
+                try{
+                    $file = $request->file('file');
+                    $file->move('uploads', $file->getClientOriginalName());
+                    $image = 'uploads/'.$file->getClientOriginalName();
+                }catch(\Exception $e){
+                    return response("exceed");
+                }
+            }
+
+            DB::table('tbl_resident')->where('resident_id', $request->id)->update(['resident_fname'=>$request->fname, 'resident_mname'=>$request->mname, 'resident_lname'=>$request->lname, 'resident_bdate'=>$request->bdate, 'resident_contact'=>$request->contact, 'resident_hno'=>$request->house, 'resident_street'=>$request->street, 'resident_gender'=>$request->gender, 'resident_yearstayed'=>$request->year, 'resident_yearstayed'=>$request->year, 'resident_allowmessage'=>$request->allow, 'resident_image'=>$image]);
+
+            
+
+            $ifofficial = DB::select('select concat(r.resident_fname," ",r.resident_lname) as name, r.resident_image, p.position_id, o.official_id, u.official_admin from tbl_resident r join tbl_official o on o.resident_id = r.resident_id join tbl_officialuser u on o.official_id = u.official_id join tbl_position p on p.position_id = o.position_id where o.official_id = '.Session::get('official'));
+
+            if(!empty($ifofficial[0]->name)){
+                session(['position'=>$ifofficial[0]->position_id]);
+                session(['name'=> $ifofficial[0]->name]);
+                session(['image'=> $ifofficial[0]->resident_image]);
+                session(['official'=> $ifofficial[0]->official_id]);
+                session(['admin'=> $ifofficial[0]->official_admin]);
+            }
+    
+            return response()->json($ifofficial);
+        }
+        else{
+            return response("Contact Number already used");
+        }
+
+    }
+
+    public function showrecord($id){
+
+        $resident = DB::select('select * from tbl_resident r join tbl_street s on r.resident_street = s.street_id where resident_id = "'.$id.'"');
+
+        return response()->json($resident);
+    }
+
+    public function destroy(Request $request)
     {
         DB::table('tbl_resident')->where('resident_id',$request->id)->update(['resident_exists' => 0]);
         return response("success");

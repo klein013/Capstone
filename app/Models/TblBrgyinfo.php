@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 29 Aug 2017 07:28:56 +0000.
+ * Date: Mon, 16 Oct 2017 19:28:35 +0800.
  */
 
 namespace App\Models;
@@ -23,8 +23,6 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $brgyinfo_case
  * @property \Carbon\Carbon $brgyinfo_opening
  * @property \Carbon\Carbon $brgyinfo_closing
- * 
- * @property \Illuminate\Database\Eloquent\Collection $tbl_offices
  *
  * @package App\Models
  */
@@ -52,9 +50,4 @@ class TblBrgyinfo extends Eloquent
 		'brgyinfo_opening',
 		'brgyinfo_closing'
 	];
-
-	public function tbl_offices()
-	{
-		return $this->hasMany(\App\Models\TblOffice::class, 'office_brgy');
-	}
 }
