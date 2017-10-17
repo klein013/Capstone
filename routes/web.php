@@ -123,6 +123,8 @@ Route::get('/clearance/payments/payreceipt/{id}', 'PaymentController@getreceipt'
 Route::get('/blotter/barangay/complaint', 'ComplaintController@create');
 Route::get('/blotter/barangay/complaint_res', 'ComplaintController@com');
 Route::post('/blotter/barangay/complaint_process', 'ComplaintController@process');
+Route::get('/blotter/barangay/printps/{id}', 'ComplaintController@printps');
+Route::get('/blotter/barangay/printvawc/{id}', 'ComplaintController@printvawc');
 
 Route::get('/blotter/barangay/schedule', 'ScheduleController@create');
 Route::get('/getSchedule', 'ScheduleController@view');
@@ -136,27 +138,44 @@ Route::delete('/blotter/barangay/delete/{id}', 'RecordController@delete');
 Route::post('/blotter/barangay/reschedcap/{id}', 'RecordController@reschedcap');
 Route::post('/blotter/barangay/resched/{id}', 'RecordController@resched');
 
-Route::get('/blotter/barangay/getmed/{id}', 'RecordController@mediation');
-Route::get('/blotter/barangay/getcon/{id}', 'RecordController@concillation');
-Route::get('/blotter/barangay/getarb/{id}', 'RecordController@arbitration');
+// Route::get('/blotter/barangay/getmed/{id}', 'RecordController@mediation');
+// Route::get('/blotter/barangay/getcon/{id}', 'RecordController@concillation');
+// Route::get('/blotter/barangay/getarb/{id}', 'RecordController@arbitration');
 
-Route::get('/blotter/barangay/record/mres/{id}', 'RecordController@printmres');
-Route::get('/blotter/barangay/record/mcom/{id}', 'RecordController@printmcom');
-Route::get('/blotter/barangay/record/mwit/{id}', 'RecordController@printmwit');
+// Route::get('/blotter/barangay/record/mres/{id}', 'RecordController@printmres');
+// Route::get('/blotter/barangay/record/mcom/{id}', 'RecordController@printmcom');
+// Route::get('/blotter/barangay/record/mwit/{id}', 'RecordController@printmwit');
 
-Route::get('/blotter/barangay/record/cres/{id}', 'RecordController@printcres');
-Route::get('/blotter/barangay/record/ccom/{id}', 'RecordController@printccom');
-Route::get('/blotter/barangay/record/cwit/{id}', 'RecordController@printcwit');
+// Route::get('/blotter/barangay/record/cres/{id}', 'RecordController@printcres');
+// Route::get('/blotter/barangay/record/ccom/{id}', 'RecordController@printccom');
+// Route::get('/blotter/barangay/record/cwit/{id}', 'RecordController@printcwit');
 
 Route::get('/blotter/barangay/schedule/{id}', 'HearingController@processhearing');
 Route::get('/blotter/barangay/getdetails/{id}', 'ScheduleController@getdetails');
 Route::post('/blotter/barangay/hearing', 'HearingController@addminutes');
 Route::post('/blotter/barangay/starthearing', 'HearingController@startminutes');
 
+
+Route::get('/blotter/barangay/schednext', 'ScheduleController@schednext');
 Route::post('/blotter/barangay/resched', 'ScheduleController@resched');
 
 Route::get('/blotter/barangay/show/{id}', 'RecordController@showblotter');
 Route::get('/blotter/barangay/hearingshow/{id}', 'RecordController@showhearing');
+Route::get('/blotter/barangay/forprint/{id}', 'RecordController@showprint');
+Route::get('/blotter/barangay/viewhearing/{id}', 'HearingController@showhearing');
+
+
+Route::get('/blotter/barangay/settlement/{id}', 'SettlementController@create');
+Route::post('/blotter/barangay/settlement', 'SettlementController@store');
+Route::get('/blotter/barangay/printsettlement/{id}', 'SettlementController@printsettle');
+
+Route::get('/blotter/barangay/received/{id}', 'RecordController@receive');
+
+Route::get('/blotter/barangay/print/summon/{id}', 'PrintController@summon');
+Route::get('/blotter/barangay/print/noticemed/{id}', 'PrintController@noticemed');
+Route::get('/blotter/barangay/print/noticemedf{id}', 'PrintController@noticemedf');
+
+Route::post('/blotter/barangay/attendance', 'HearingController@attendance');
 //Barangay Blotter
 
 // Incident Blotter
@@ -198,6 +217,12 @@ Route::post('/reports_incident/daily', 'ReportController@getIncidentDaily');
 Route::post('/reports_incident/weekly', 'ReportController@getIncidentWeekly');
 Route::post('/reports_incident/monthly', 'ReportController@getIncidentMonthly');
 Route::post('/reports_incident/yearly', 'ReportController@getIncidentYearly');
+
+
+Route::post('/reports_blotter/daily', 'ReportController@getBlotterDaily');
+Route::post('/reports_blotter/weekly', 'ReportController@getBlotterWeekly');
+Route::post('/reports_blotter/monthly', 'ReportController@getBlotterMonthly');
+Route::post('/reports_blotter/yearly', 'ReportController@getBlotterYearly');
 
 
 //Reports

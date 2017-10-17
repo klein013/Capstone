@@ -17,9 +17,6 @@ class ReportController extends Controller
         return view('admin.incidentprintreport')->with(['return'=>$return, 'years'=>$yearavail]);
     }
 
-    public function barangay(){
-    	return view('admin.reports_barangay');
-    }
 
     public function clearance(){
     	$return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official'),'admin'=>Session::get('admin')];
@@ -28,6 +25,15 @@ class ReportController extends Controller
         
 
         return view('admin.clearanceprintreport')->with(['return'=>$return, 'years'=>$yearavail]);
+    }
+
+    public function barangay(){
+        $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official'),'admin'=>Session::get('admin')];
+
+         $yearavail = DB::select('select YEAR(case_filed) as yeardate from tbl_case group by YEAR(case_filed)');
+        
+
+        return view('admin.blotterprintreport')->with(['return'=>$return, 'years'=>$yearavail]);
     }
 
     public function get(){
@@ -130,6 +136,60 @@ class ReportController extends Controller
         $tabledata = DB::select('select lpad(i.incident_id,8,"0") as trans_id, c.incidentcat_name as clearance_name, i.incident_datetime as trans_date, i.incident_status as request_status, s.street_name as price_amt, null as name from tbl_incident i join tbl_incidentcat c on c.incidentcat_id = i.incident_cat join tbl_street s on s.street_id = i.incident_street where YEAR(i.incident_datetime) = "'.$request->yearlyyear.'" and i.incident_exists =1 order by 2,4 asc');
 
         $return =['chartdata'=>$chartdata, 'tabledata'=>$tabledata];
+        return response()->json($return);
+
+    }
+
+    public function getBlotterDaily(Request $request){
+
+         $chartdata = DB::select('select count(*) as shit, k.caseskp_name, c.case_status from tbl_case c join tbl_caseskp k on k.caseskp_id = c.case_caseskp where case_exists = 1 and DATE(case_filed) = "'.$request->date.'" group by c.case_status');
+
+        $tabledata = DB::select('select lpad(c.case_id,8,"0") as case_id, k.caseskp_name as case_name, c.case_filed, c.case_status from tbl_caseskp k join tbl_case c on c.case_caseskp = k.caseskp_id where case_exists = 1 and DATE(c.case_filed) = "'.$request->date.'" order by 1');
+
+        $resident = DB::select('select concat(r.resident_fname," ",r.resident_lname) as name, p.personinvolve_case, p.personinvolve_type from tbl_resident r join tbl_personinvolve p on p.personinvolve_resident = r.resident_id join tbl_case c on c.case_id = p.personinvolve_case where c.case_exists = 1 and DATE(c.case_filed) = "'.$request->date.'"');
+
+        $return =['chartdata'=>$chartdata, 'tabledata'=>$tabledata, 'resident'=>$resident];
+        return response()->json($return);
+    }
+
+    public function getBlotterMonthly(Request $request){
+
+        $chartdata = DB::select('select count(*) as shit, k.caseskp_name, c.case_status from tbl_case c join tbl_caseskp k on k.caseskp_id = c.case_caseskp where case_exists = 1 and MONTH(case_filed) = '.$request->monthlymonth.' and YEAR(case_filed) = '.$request->monthlyyear.' group by c.case_status');
+
+        $tabledata = DB::select('select lpad(c.case_id,8,"0") as case_id, k.caseskp_name as case_name, c.case_filed, c.case_status from tbl_caseskp k join tbl_case c on c.case_caseskp = k.caseskp_id where case_exists = 1 and MONTH(c.case_filed) = '.$request->monthlymonth.' and YEAR(c.case_filed) = '.$request->monthlyyear.' order by 1');
+
+        $resident = DB::select('select concat(r.resident_fname," ",r.resident_lname) as name, p.personinvolve_case, p.personinvolve_type from tbl_resident r join tbl_personinvolve p on p.personinvolve_resident = r.resident_id join tbl_case c on c.case_id = p.personinvolve_case where c.case_exists = 1 and MONTH(c.case_filed) = '.$request->monthlymonth.' and YEAR(c.case_filed) = '.$request->monthlyyear);
+
+        $return =['chartdata'=>$chartdata, 'tabledata'=>$tabledata, 'resident'=>$resident];
+
+        return response()->json($return);
+
+    }
+
+    public function getBlotterWeekly(Request $request){
+
+        $chartdata = DB::select('select count(*) as shit, k.caseskp_name, c.case_status from tbl_case c join tbl_caseskp k on k.caseskp_id = c.case_caseskp where case_exists = 1 and DATE(case_filed) between "'.$request->fromdate.'" and "'. $request->todate.'" group by c.case_status');
+
+        $tabledata = DB::select('select lpad(c.case_id,8,"0") as case_id, k.caseskp_name as case_name, c.case_filed, c.case_status from tbl_caseskp k join tbl_case c on c.case_caseskp = k.caseskp_id where case_exists = 1 and DATE(c.case_filed) between "'.$request->fromdate.'" and "'.$request->todate.'" order by 1');
+
+        $resident = DB::select('select concat(r.resident_fname," ",r.resident_lname) as name, p.personinvolve_case, p.personinvolve_type from tbl_resident r join tbl_personinvolve p on p.personinvolve_resident = r.resident_id join tbl_case c on c.case_id = p.personinvolve_case where c.case_exists = 1 and DATE(c.case_filed) between "'.$request->fromdate.'" and "'.$request->todate.'"');
+
+        $return =['chartdata'=>$chartdata, 'tabledata'=>$tabledata, 'resident'=>$resident];
+
+        return response()->json($return);
+
+    }
+
+    public function getBlotterYearly(Request $request){
+
+        $chartdata = DB::select('select count(*) as shit, k.caseskp_name, c.case_status from tbl_case c join tbl_caseskp k on k.caseskp_id = c.case_caseskp where case_exists = 1 and YEAR(case_filed) = "'.$request->yearlyyear.'" group by c.case_status');
+
+        $tabledata = DB::select('select lpad(c.case_id,8,"0") as case_id, k.caseskp_name as case_name, c.case_filed, c.case_status from tbl_caseskp k join tbl_case c on c.case_caseskp = k.caseskp_id where case_exists = 1 and YEAR(c.case_filed) = "'.$request->yearlyyear.'" order by 1');
+
+        $resident = DB::select('select concat(r.resident_fname," ",r.resident_lname) as name, p.personinvolve_case, p.personinvolve_type from tbl_resident r join tbl_personinvolve p on p.personinvolve_resident = r.resident_id join tbl_case c on c.case_id = p.personinvolve_case where c.case_exists = 1 and YEAR(c.case_filed) = "'.$request->yearlyyear.'"');
+
+        $return =['chartdata'=>$chartdata, 'tabledata'=>$tabledata, 'resident'=>$resident];
+
         return response()->json($return);
 
     }

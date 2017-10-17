@@ -91,12 +91,6 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="{{Request::is('queries') ? 'active' : '' }}">
-                        <a href="{{URL('queries')}}">
-                            <i class="material-icons">live_help</i>
-                            <span>Queries</span>
-                        </a>
-                    </li>
                     @if($return['admin']==1)
                    <li class="{{Request::is('maintenance/*') ? 'active' : ''}}">
                         <a href="javascript:void(0);" class="menu-toggle">

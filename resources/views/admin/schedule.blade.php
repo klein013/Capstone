@@ -332,7 +332,7 @@ $(document).ready(function(){
             var events = [];
             $.each(response,function(index,value){
                 var color = "";
-                if(value.hearing_status=="Finished"){
+                if(value.hearing_status=="Done"){
                     color = "green";
 
                 }

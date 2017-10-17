@@ -21,7 +21,7 @@
                                <div class="col-sm-2">
                                 <select id="selecttype">
                                             <option value="1">Daily</option>
-                                            <option value="2">Weekly</option>
+                                            <option value="2">Interval</option>
                                             <option value="3">Monthly</option>
                                             <option value="4">Annually</option>
                                   </select>
@@ -230,11 +230,13 @@
             });
 
            
+            var chartvar;
             $('#generate').on('click', function(){
                 $('#reportdiv').show();
                 $('#todisplay').show();
                 $('#nonsense').hide();
                 $('#reportTablebody').empty();
+                
                 if(value==1){
                 var selecteddate = $('#dailydate').val();
                 $.ajax({
@@ -339,7 +341,14 @@
                         };
 
                         var ctx = document.getElementById("chart").getContext('2d');
+
                         var myChart = new Chart(ctx, {
+                            type : 'bar',
+                            data : chartdata,
+                            options: options
+                        });
+                        myChart.destroy();
+                        myChart = new Chart(ctx, {
                             type : 'bar',
                             data : chartdata,
                             options: options
@@ -464,6 +473,12 @@
 
                         var ctx = document.getElementById("chart").getContext('2d');
                         var myChart = new Chart(ctx, {
+                            type : 'bar',
+                            data : chartdata,
+                            options: options
+                        });
+                        myChart.destroy();
+                        myChart = new Chart(ctx, {
                             type : 'bar',
                             data : chartdata,
                             options: options
@@ -597,6 +612,12 @@
                             data : chartdata,
                             options: options
                         });
+                        myChart.destroy();
+                        myChart = new Chart(ctx, {
+                            type : 'bar',
+                            data : chartdata,
+                            options: options
+                        });
 
                         var pricetotal = 0;
                         var pricetotalif = 0;
@@ -719,6 +740,12 @@
 
                         var ctx = document.getElementById("chart").getContext('2d');
                         var myChart = new Chart(ctx, {
+                            type : 'bar',
+                            data : chartdata,
+                            options: options
+                        });
+                        myChart.destroy();
+                        myChart = new Chart(ctx, {
                             type : 'bar',
                             data : chartdata,
                             options: options

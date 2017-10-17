@@ -66,9 +66,6 @@
                   <div class="card">
                     <br>
     <div class="col-sm-12">
-    <div class="col-sm-4 col-sm-offset-8">
-                                <span><label>Status: </label><h4><span class="label label-success" id="settled">Settled</span> <span class="label bg-blue" id="mediation">Mediation</span> <span class="label bg-light-blue" id="concillation">Concillation</span> <span class="label bg-cyan" id="arbitration">Arbitraion</span> <span class="label bg-teal" id="captain">Captain</span><br><br><span class="label bg-green" id="lupon">Lupon</span> <span class="label bg-light-green" id="pangkat">Pangkat Tagapagkasundo</span> <span class="label bg-red" id="record">Record Only</span> <span class="label bg-pink" id="pending">Pending</span> </h4></span>
-    </div>
     </div>
                         <div class="body table-responsive">
                             <table class="table table-hover table-striped table-bordered table-condensed dataTable js-exportable" id='recordtable'>
@@ -124,87 +121,6 @@
                     </div>
                 </div>
 </div>
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-            </div>
-            <div class="modal-body">
-                <div class="row clearfix">
-                    <div class="body">
-                            <div id="wizard_horizontal">
-                                <h2>Mediation</h2>
-                                <section>
-                                    <div class="row clearfix">
-                                        <div class="col-sm-12" class="body table-responsive">
-                                            <table class="table table-bordered" id="mtable">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID</th>
-                                                        <th>Hearing Date</th>
-                                                        <th>Hearing Type</th>
-                                                        <th>Hearing Status</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </section>
-
-                                <h2>Concillation</h2>
-                                <section>
-                                    <div class="row clearfix">
-                                        <div class="col-sm-12" class="body table-responsive">
-                                            <table class="table table-bordered" id="ctable">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID</th>
-                                                        <th>Hearing Date</th>
-                                                        <th>Hearing Type</th>
-                                                        <th>Hearing Status</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </section>
-
-                                <h2>Arbitration</h2>
-                                <section>
-                                    <div class="row clearfix">
-                                        <div class="col-sm-12" class="body table-responsive">
-                                            <table class="table table-bordered" id="atable">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID</th>
-                                                        <th>Hearing Date</th>
-                                                        <th>Hearing Type</th>
-                                                        <th>Hearing Status</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </section>
-                            </div>
-                        </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 @include('admin.layout.scripts');
 <script src="{{asset('plugins/jquery-steps/jquery.steps.js')}}"></script>
@@ -213,22 +129,7 @@
 <script>
 $(document).ready(function(){
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-    $('#wizard_horizontal').steps({
-                headerTag: 'h2',
-                bodyTag: 'section',
-                transitionEffect: 'slideLeft',
-                onInit: function (event, currentIndex) {
-                    setButtonWavesEffect(event);
-                    
-                },
-                onStepChanged: function (event, currentIndex, priorIndex) {
-                    setButtonWavesEffect(event);
-                }
-            });
-            function setButtonWavesEffect(event) {
-                $(event.currentTarget).find('[role="menu"] li a').removeClass('waves-effect');
-                $(event.currentTarget).find('[role="menu"] li:not(.disabled) a').addClass('waves-effect');
-            }
+
 
     var table = $('#recordtable').DataTable({
         bSort : false,
@@ -277,7 +178,7 @@ $(document).ready(function(){
                                         button = "<button type='button' class='assign btn btn-space bg-indigo waves-effect' data-toggle='tooltip' data-placement='bottom' title data-original-title='Assign Case'><i class='material-icons'>assignment_ind</i></button><button class='delete btn btn-space bg-red waves-effect'><i class='material-icons'>delete</i></button>";
                                     }
                                     else{
-                                        button = "<button type = 'button' value='"+json[i].case_id+"' class = 'process btn btn-space bg-blue waves-effect'><i class='material-icons'>navigate_next</i></button>";
+                                        button = "<button type = 'button' value='"+json[i-1].case_id+"' class = 'process btn btn-space bg-blue waves-effect'><i class='material-icons'>navigate_next</i></button>";
                                     }
                                  return_data.push({
                                         'id' : json[i-1].case_id,

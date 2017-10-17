@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Clearance | Hearing</title>
+    <title>Blotter | Hearing</title>
     @include('admin.layout.head');
     <link href="{{asset('plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css')}}" rel="stylesheet">
 </head>
@@ -67,9 +67,53 @@
 
             <div class="row clearfix">
                 <div class="col-sm-12">
-                    <div class="card">
-                        <div class="body">
-                            <div class="row clearfix">
+                    <div class="card" id="attendancecard">
+                        <div class="body table-responsive">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <center><h4>ATTENDANCE</h4></center>
+                            
+                            <br>
+                            <h5>*Check all present resident</h5>
+                            <table class="table table-bordered table-condensed table-striped table-hover" id="atten">
+                                <tbody>
+                                <tr>
+                                    <td>Complainant/s</t>
+                                    <td>
+                                        @foreach($cresident as $resident)
+                                            <input type="checkbox" class="req" value="{{$resident->resident_id}}|{{$resident->personinvolve_type}}" id="{{$resident->resident_id}}" class="cbreq"/><label for="{{$resident->resident_id}}">{{$resident->name}}</label><br>
+                                        @endforeach        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Respondents/s</td>
+                                    <td>
+                                        @foreach($rresident as $resident)
+                                            <input type="checkbox" class="req" value="{{$resident->resident_id}}|{{$resident->personinvolve_type}}"" id="{{$resident->resident_id}}" class="cbreq"/><label for="{{$resident->resident_id}}">{{$resident->name}}</label><br>
+                                        @endforeach        
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="col-sm-3 col-sm-offset-9">
+                                <button type ="button" id="procatten" class="btn btn-space waves-effect bg-teal">Proceed</button>
+                                <button type="button" id="cancelatten" class="btn btn-space waves-effect bg-teal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" id="aftercard" style="display:none;">
+                        <div class="body table-responsive">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <center><h4>SCHEDULE FOR NEXT HEARING</h4></center>
+                            
+                            <br>
+                            <p id="schednext"></p>
+                        </div>
+                    </div>
+                </div>
+                    <div class="card" id="hearingbody"  style="display:none;">
+                        <div class="body" >
+                            <div class="row clearfix" >
                                 <div class="body table-responsive">
                                     <table class="table table-bordered">
                                         <tbody>
@@ -92,16 +136,28 @@
                                             </tr>
                                             <tr>
                                                 <td><label class="pull-right">Complainant/s : </label></td>
-                                                <td><p id="complainant">{{$cresident[0]->name}}<button type="button" class="btn btn-circle waves-effect waves-circle waves-float bg-blue pull-right"><i class="material-icons">mode_edit</i></button></p></td>
+                                                <td>
+                                                    @foreach($cresident as $resident)
+                                                    <p id="complainant">{{$resident->name}}</p>
+                                                    @endforeach
+                                                </td>
                                                 <td><label class="pull-right">Respondent/s : </label></td>
-                                                <td><p id="respondent">{{$rresident[0]->name}}<button type="button" class="btn btn-circle waves-effect waves-circle waves-float bg-blue pull-right"><i class="material-icons">mode_edit</i></button></p></td>
+                                                <td>
+                                                    @foreach($rresident as $resident)
+                                                    <p id="respondent">{{$resident->name}}</p>
+                                                    @endforeach
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><label class="pull-right">Witness/es : </label></td>
-                                                <td><p id="witness">
-                                                {{$wresident[0]->name}}
-                                                <button type="button" class="btn btn-circle waves-effect waves-circle waves-float bg-blue pull-right"><i class="material-icons">mode_edit</i></button></p></td>
-                                                <td><label class="pull-right">Case Added : </label></td>
+                                                <td>
+                                                    @if($rresident!=null)
+                                                    @foreach($wresident as $resident)
+                                                    <p id="witness">{{$resident->name}}</p>
+                                                    @endforeach
+                                                    @endif
+                                                <button type="button" class="btn btn-circle waves-effect waves-circle waves-float bg-blue pull-right"><i class="material-icons">mode_edit</i></button></td>
+                                                <td><label class="pull-right">Case Filed : </label></td>
                                                 <td><p id="caseadded">{{$case[0]->case_filed}}</p></td>
                                             </tr>
                                             <tr>
@@ -126,8 +182,9 @@
                                 </div>
                                 <br>
                                 <div class="row clearfix">
-                                    <div class="col-sm-1 col-sm-offset-11">
-                                        <button type="submit" class="btn btn-lg bg-teal waves-effect">Submit</button>
+                                    <div class="col-sm-2 col-sm-offset-10">
+                                        <button type="submit" class="btn btn-lg bg-teal btn-space waves-effect">Submit</button>
+                                        <button type="button" id="cancelbtn" class="btn pull-right btn-lg bg-teal waves-effect">Cancel</button>
                                     </div>
                                 </div>
                             </form>
@@ -151,10 +208,9 @@
 
             var CSRF_TOKEN = $('meta[name="csrf-token"').attr('content');
 
+            
+
             var minuteid;
-            $('#requestTable').dataTable({
-                "bSort" : false
-            });
 
             tinymce.init({
             selector: '#myTextarea',
@@ -274,32 +330,92 @@
                 }
             },
             submitHandler: function(form){
-                clearInterval(timeUpdate);
-                $(this).html("<span class='ui-button-text'>Resume</span>");
-                $.ajax({
-                    url: '/blotter/barangay/hearing',
-                    method: 'POST',
-                    data: {
-                        _token : CSRF_TOKEN,
-                        id : parseInt($('#hearingid').text()),
-                        minutes: tinyMCE.get('myTextarea').getContent(),
-                        official : ($('#official').text()).split(" ")[0],
-                        rendered : $('#hours').html()+":"+$('#minutes').html()+":"+$('#seconds').html()
-                    },
-                    success: function(response) {
-                        table.ajax.reload();
-                        if(response=="success"){
+                swal({
+                    title: "Are you sure you want to continue?",
+                    text: "This will save the details for this hearing",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Proceed",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },  
+                function(isConfirm) {
+                    if (isConfirm){
+                        $.ajax({
+                            url: '/blotter/barangay/hearing',
+                            method: 'POST',
+                            data: {
+                                _token : CSRF_TOKEN,
+                                id : parseInt($('#hearingid').text()),
+                                minutes: tinyMCE.get('myTextarea').getContent(),
+                                official : ($('#official').text()).split(" ")[0],
+                                rendered : $('#hours').html()+":"+$('#minutes').html()+":"+$('#seconds').html()
+                            },
+                            success: function(response) {
+                            if(response=="success"){
+                                swal({
+                                    title: "Success",
+                                    text: "Minutes Update",
+                                    type: "success",
+                                    showConfirmButton: true
+                                });
+                                 swal({
+                                    title: "Decide!",
+                                    type: "success",
+                                    showCancelButton: true,
+                                    confirmButtonClass: "btn-danger",
+                                    confirmButtonText: "Proceed to Settlement",
+                                    cancelButtonText: "Schedule for next hearing",
+                                    closeOnConfirm: true,
+                                    closeOnCancel: true
+                                },  
+                                function(isConfirm) {
+                                    if (isConfirm){
+                                        $(location).attr('href', '/blotter/barangay/settlement/'+parseInt($('#hearingid').text()));
+                                        
+                                    }
+                                    else{
+                                        $.ajax({
+                                            url : '/barangay/blotter/schednext',
+                                            method : 'GET',
+                                            data : {
+                                                id : $('#caseid').text(),
+                                                type : $('#hearingtype').text(),
+                                                number : 7
+                                            },
+                                            success: function(response){
+                                                swal({
+                                                    title: "Case Allocated!",
+                                                    text: "Case Number: "+response[0].case+"\nScheduled Date: "+response[0].sched,
+                                                    type: "success",
+                                                    showConfirmButton: true
+                                                    }, function(isConfirm){
+                                                        if(isConfirm){
+                                                            $(location).attr('href', '/blotter/barangay/show/'+response[0].case);
+                                                        }
+                                                    });
+                                            }
+                                        });
+                                    }
+                                });
+                                
+                            }
+                            }
+                        });
+                    } 
+                    else {
                         swal({
-                                title: "Success",
-                                text: "Minutes Update",
-                                type: "success",
-                                timer: 1000,
-                                showConfirmButton: false
-                            });
-                        }
-
+                            title : "Cancelled", 
+                            text : "Record is not deleted",
+                            type :  "error",
+                            showConfirmButton : false,
+                            timer : 1000
+                        });
                     }
-                });
+                });     
+                
             },
             highlight: function (input) {
                 $(input).parents('.form-line').addClass('error');
@@ -311,6 +427,90 @@
                 $(element).parents('.form-group').append(error);
             }
        });
+
+     $('#cancelbtn').on('click', function(){
+        window.history.back();
+     });
+
+     $('#cancelatten').on('click', function(){
+        window.history.back();
+     });
+
+     var sr = [];
+     var hearingid = '';
+     $('#procatten').on('click', function(){
+        hearingid = parseInt($('#hearingid').text());
+        var mayres = false;
+        var maycom = false;
+        $('input:checkbox.req').each(function () {
+                if($(this).is(":Checked")){
+                    if(($(this).val()).split('|')[1]=='C'){
+                        maycom = true;
+                    }
+                    else if(($(this).val()).split('|')[1]=='R'){
+                        mayres = true;
+                    }
+                    sr.push((($(this).val())).split('|')[0]+"|1");
+                }
+                else{
+                    sr.push((($(this).val())).split('|')[0]+"|0");
+                }
+                
+            });
+
+        if(maycom&&mayres){
+            $.ajax({
+                url : '/blotter/barangay/attendance',
+                method: 'POST',
+                data : {
+                    _token : CSRF_TOKEN,
+                    yown : sr,
+                    id : hearingid
+                },
+                success: function(response){
+                    if(response!="success"){
+                        swal({
+                            title: "The Hearing can't start without a complainant and respondent",
+                            type: "error",
+                            showConfirmButton: true
+                        });
+                    }
+                    else{
+                        $('#hearingbody').css('display', 'block');
+                        $('#attendancecard').hide();
+                        
+                    }
+                }
+            });
+        }
+        else{
+
+            $.ajax({
+                url : '/blotter/barangay/attendance',
+                method: 'POST',
+                data : {
+                    _token : CSRF_TOKEN,
+                    yown : sr,
+                    id : hearingid
+                },
+                success: function(response){
+                    if(response!="success"){
+                        swal({
+                            title: "The Hearing can't start without a complainant and respondent",
+                            type: "error",
+                            showConfirmButton: true
+                        });
+                    }
+                    else{
+                        $('#hearingbody').css('display', 'block');
+                        $('#attendancecard').hide();
+                        
+                    }
+                }
+            });
+        }
+
+     });
 });
     </script>
     

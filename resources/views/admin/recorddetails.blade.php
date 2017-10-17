@@ -47,7 +47,7 @@
 <section class="content">
    <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <div class="card">
+                  <div class="card" style="height: 1000px;">
                     <div class="body">
                         <div class="col-sm-12 body table-responsive">
                             <table class="table table-bordered table-condensed">
@@ -56,7 +56,14 @@
                                 </tr>
                                 <tr>
                                     <td style="width:50%;"><h5>Case Filed: </h5><p>&nbsp;{{$records[0]->case_filed}}</p></td>
-                                    <td style="width:50%;"><h5>Case Status: </h5><p>&nbsp;{{$records[0]->case_status}}</p></td>
+                                    <td style="width:50%;"><h5>Case Status: </h5><p>&nbsp;{{$records[0]->case_status}}</p>
+                                        @if($records[0]->case_status=="Settled")
+                                            <button type="button" class="settled btn btn-space waves-effect bg-teal" value="{{$records[0]->case_id}}">View Settlement</button>
+                                        @elseif($records[0]->case_status=="Police Station")
+                                            <button type="button" class="letterprintps btn btn-space waves-effect bg-teal" value="{{$records[0]->case_id}}">Print Letter</button>
+                                        @elseif($records[0]->case_status=="Violence Against Women and Children")
+                                            <button type="button" class="letterprintvawc btn btn-space waves-effect bg-teal" value="{{$records[0]->case_id}}">Print Letter</button>
+                                        @endif</td>
                                 </tr>
                                 <tr>
                                     <td style="width:50%;"> <span><h5>Official/s Assigned :</h5>
@@ -106,6 +113,12 @@
                             </table>
                         </div>
                         <br>
+                        @if(!(($records[0]->case_status!='Record')&&($records[0]->case_status!='Police Station')&&($records[0]->case_status!='Violence Against Women and Children')))
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                        @else
                             <div id="wizard_horizontal">
                                 <h2>Mediation</h2>
                                 <section>
@@ -130,8 +143,10 @@
                                                                 <td>{{$hearing->casestage}}</td>
                                                                 <td>{{$hearing->hearing_status}}</td>
                                                                 @if($hearing->hearing_status=='For Process')
-                                                                <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-blue">Direct to Hearing</button></td>
+                                                                <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-blue">Proceeed to Hearing</button></td>
                                                                 @elseif($hearing->hearing_status=="Pending")
+                                                                <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-indigo">View</button></td>
+                                                                @elseif($hearing->hearing_status=="Done")
                                                                 <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-indigo">View</button></td>
                                                                 @elseif($hearing->hearing_status=='For Reschedule')
                                                                 <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-red">Reschedule</button></td>
@@ -173,8 +188,10 @@
                                                                 <td>{{$hearing->casestage}}</td>
                                                                 <td>{{$hearing->hearing_status}}</td>
                                                                 @if($hearing->hearing_status=='For Process')
-                                                                <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-blue">Direct to Hearing</button></td>
+                                                                <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-blue">Proceed to Hearing</button></td>
                                                                 @elseif($hearing->hearing_status=="Pending")
+                                                                <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-indigo">View</button></td>
+                                                                @elseif($hearing->hearing_status=="Done")
                                                                 <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-indigo">View</button></td>
                                                                 @elseif($hearing->hearing_status=='For Reschedule')
                                                                 <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-red">Reschedule</button></td>
@@ -213,8 +230,10 @@
                                                                 <td>{{$hearing->casestage}}</td>
                                                                 <td>{{$hearing->hearing_status}}</td>
                                                                 @if($hearing->hearing_status=='For Process')
-                                                                <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-blue">Direct to Hearing</button></td>
+                                                                <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-blue">Proceed to Hearing</button></td>
                                                                 @elseif($hearing->hearing_status=="Pending")
+                                                                <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-indigo">View</button></td>
+                                                                @elseif($hearing->hearing_status=="Done")
                                                                 <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-indigo">View</button></td>
                                                                 @elseif($hearing->hearing_status=='For Reschedule')
                                                                 <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-red">Reschedule</button></td>
@@ -230,12 +249,14 @@
                                         </div>
                                     </div>
                                 </section>
+
                             </div>
-                        </div>
+                            </div>
                 </div>
             </div>
-
   </div>
+                        @endif
+                    
   <div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -278,17 +299,38 @@ $(document).ready(function(){
                 $(event.currentTarget).find('[role="menu"] li:not(.disabled) a').addClass('waves-effect');
             }
 
+    var hearingid = null;
 
     $('#mtable tbody').on('click', 'button.view', function(){
         var id = ($(this).val()).split('|')[0];
+        hearingid = id;
         var status = ($(this).val()).split('|')[1]
         
         if(status=="Pending"){
             $.ajax({
-                url : '/barangay/blotter/forprint/'+id,
+                url : '/blotter/barangay/forprint/'+id,
                 method : 'GET',
                 success : function(response){
-                    
+                    var todisplay = "<div class='col-sm-12'><div class='body table-responsive'><table class='table table-condensed table-bordered table-striped table-hover' id='printtable'><thead><tr class='bg-blue-grey'><td>Person</td><td>Letter Type</td><td></td></tr></thead><tbody>";
+                    for (var i = 0; i < response.length; i++) {
+                        todisplay += '<tr><td>'+response[i].name+'</td><td>'+response[i].hl_lettertype+'</td>';
+                        if(response[i].hl_datereceive==null&&response[i].hl_printdate==null){
+                            todisplay += '<td><button type="button" class="print btn btn-space waves-effect bg-black" value="'+response[i].resident_id+'|'+response[i].personinvolve_type+'|'+response[i].hl_lettertype+'"><i class="material-icons">print</i></button></td>';
+                        }
+                        else if(response[i].hl_datereceive==null&&response[i].hl_printdate!=null){
+                            todisplay += '<td><button type="button" class="save btn btn-space waves-effect bg-teal pull-right" value="'+response[i].resident_id+'_'+response[i].hl_lettertype+'">Received</button></span></td>';
+                        }
+                        else{
+                            todisplay += '<td><button type="button" class="btn btn-space waves-effect bg-teal pull-right" disabled>Received last '+response[i].hl_datereceive+'</button><button type="button" class="print btn btn-space waves-effect bg-black" value="'+response[i].resident_id+'|'+response[i].personinvolve_type+'|'+response[i].hl_lettertype+'"><i class="material-icons">print</i> Reprint</button></td>';
+                        }
+                        todisplay+='</tr>';
+                    }
+
+                    todisplay+="</tbody></table></div></div>";
+
+                    $('#modalbody').empty();
+                    $('#modalbody').append(todisplay);
+                    $('#largeModal').modal('toggle');
                 }
             });
         }
@@ -298,17 +340,190 @@ $(document).ready(function(){
         else if(status=="For Process"){
             $(location).attr('href', '/blotter/barangay/schedule/'+id);
         }
-        
+        else if(status=='Done'){
+            $.ajax({
+                url : '/blotter/barangay/viewhearing/'+id,
+                method: 'GET',
+                success: function(response){
+                    console.log(response);
+                    var todisplay = "<div class='col-sm-12'><div class='body'><div class='col-sm-6'>";
+                    todisplay += '<h4>Hearing ID : '+response.rows[0].hearing_id+'</h4><h5>Hearing Type : '+response.rows[0].casestage+'</h5><h5>Hearing Schedule : '+response.rows[0].hearing_sched+'</h5><h5>Time Started : '+response.rows[0].minutes_start+'</h5><h5>Time Ended : '+response.rows[0].minutes_end+'</h5><h5>Attendance</h5>';
+                    var comp = "<ul>";
+                    var res = "<ul>";
+                    for (var i = 0; i < response.attendances.length; i++) {
+                        if(response.attendances[i].personinvolve_type=='C'){
+                            if(response.attendances[i].ha_attented==1){
+                                comp += '<li>'+response.attendances[i].name+' - Attended</li>';
+                            }
+                            else{
+                                comp += '<li>'+response.attendances[i].name+' - Not Attended</li>';
+                            }
+                        }
+                        else if(response.attendances[i].personinvolve_type=='R'){
+                            if(response.attendances[i].ha_attented==1){
+                                res += '<li>'+response.attendances[i].name+' - Attended</li>';
+                            }
+                            else{
+                                res += '<li>'+response.attendances[i].name+' - Not Attended</li>';
+                            }
+                        }
+                    }
+                    res += '</ul>';
+                    comp += '</ul>';
+                    todisplay += '<h5>Complainant/s</h5>'+comp+'<h5>Respondent/s</h5>'+res+'</div><div class="col-sm-6"><h5>Minutes of Hearing</h5>'+response.rows[0].minutes_details+'</div><br><div class="col-sm-12"><button type="button" class="closemodal btn btn-space bg-teal pull-right waves-effect">Close</button></div></div></div>';
+
+                    $('#modalbody').empty();
+                    $('#modalbody').append(todisplay);
+                    $('#largeModal').modal('toggle');
+                }
+            }); 
+        }
     });
 
     $('#ctable tbody').on('click', 'button.view', function(){
+        var id = ($(this).val()).split('|')[0];
+        hearingid = id;
+        var status = ($(this).val()).split('|')[1]
+        
+        if(status=="Pending"){
+            $.ajax({
+                url : '/blotter/barangay/forprint/'+id,
+                method : 'GET',
+                success : function(response){
+                    var todisplay = "<div class='col-sm-12'><div class='body table-responsive'><table class='table table-condensed table-bordered table-striped table-hover' id='printtable'><thead><tr class='bg-blue-grey'><td>Person</td><td>Letter Type</td><td></td></tr></thead><tbody>";
+                    for (var i = 0; i < response.length; i++) {
+                        todisplay += '<tr><td>'+response[i].name+'</td><td>'+response[i].hl_lettertype+'</td>';
+                        if(response[i].hl_datereceive==null&&response[i].hl_printdate==null){
+                            todisplay += '<td><button type="button" class="print btn btn-space waves-effect bg-black" value="'+response[i].resident_id+'|'+response[i].personinvolve_type+'|'+response[i].hl_lettertype+'"><i class="material-icons">print</i></button></td>';
+                        }
+                        else if(response[i].hl_datereceive==null&&response[i].hl_printdate!=null){
+                            todisplay += '<td><button type="button" class="save btn btn-space waves-effect bg-teal pull-right" value="'+response[i].resident_id+'_'+response[i].hl_lettertype+'">Received</button></span></td>';
+                        }
+                        else{
+                            todisplay += '<td><button type="button" class="btn btn-space waves-effect bg-teal pull-right" disabled>Received last '+response[i].hl_datereceive+'</button><button type="button" class="print btn btn-space waves-effect bg-black" value="'+response[i].resident_id+'|'+response[i].personinvolve_type+'|'+response[i].hl_lettertype+'"><i class="material-icons">print</i> Reprint</button></td>';
+                        }
+                        todisplay+='</tr>';
+                    }
 
+                    todisplay+="</tbody></table></div></div>";
+
+                    $('#modalbody').empty();
+                    $('#modalbody').append(todisplay);
+                    $('#largeModal').modal('toggle');
+                }
+            });
+        }
+        else if(status=="For Reschedule"){
+
+        }
+        else if(status=="For Process"){
+            $(location).attr('href', '/blotter/barangay/schedule/'+id);
+        }
+        else if(status=='Done'){
+
+        }
     });    
    
     $('#atable tbody').on('click', 'button.view', function(){
+        var id = ($(this).val()).split('|')[0];
+        hearingid = id;
+        var status = ($(this).val()).split('|')[1]
+        
+        if(status=="Pending"){
+            $.ajax({
+                url : '/blotter/barangay/forprint/'+id,
+                method : 'GET',
+                success : function(response){
+                    var todisplay = "<div class='col-sm-12'><div class='body table-responsive'><table class='table table-condensed table-bordered table-striped table-hover' id='printtable'><thead><tr class='bg-blue-grey'><td>Person</td><td>Letter Type</td><td></td></tr></thead><tbody>";
+                    for (var i = 0; i < response.length; i++) {
+                        todisplay += '<tr><td>'+response[i].name+'</td><td>'+response[i].hl_lettertype+'</td>';
+                        if(response[i].hl_datereceive==null&&response[i].hl_printdate==null){
+                            todisplay += '<td><button type="button" class="print btn btn-space waves-effect bg-black" value="'+response[i].resident_id+'|'+response[i].personinvolve_type+'|'+response[i].hl_lettertype+'"><i class="material-icons">print</i></button></td>';
+                        }
+                        else if(response[i].hl_datereceive==null&&response[i].hl_printdate!=null){
+                            todisplay += '<td><button type="button" class="save btn btn-space waves-effect bg-teal pull-right" value="'+response[i].resident_id+'_'+response[i].hl_lettertype+'">Received</button></span></td>';
+                        }
+                        else{
+                            todisplay += '<td><button type="button" class="btn btn-space waves-effect bg-teal pull-right" disabled>Received last '+response[i].hl_datereceive+'</button><button type="button" class="print btn btn-space waves-effect bg-black" value="'+response[i].resident_id+'|'+response[i].personinvolve_type+'|'+response[i].hl_lettertype+'"><i class="material-icons">print</i> Reprint</button></td>';
+                        }
+                        todisplay+='</tr>';
+                    }
 
+                    todisplay+="</tbody></table></div></div>";
+
+                    $('#modalbody').empty();
+                    $('#modalbody').append(todisplay);
+                    $('#largeModal').modal('toggle');
+                }
+            });
+        }
+        else if(status=="For Reschedule"){
+
+        }
+        else if(status=="For Process"){
+            $(location).attr('href', '/blotter/barangay/schedule/'+id);
+        }
+        else if(status=='Done'){
+           
+        }
+    });
+
+    $(document).on('click', 'button.print', function(){
+        console.log(hearingid);
+        var resid= ($(this).val()).split('|')[0];
+        var restype = ($(this).val()).split('|')[1];
+        var lettertype = ($(this).val()).split('|')[2];
+        if(lettertype=="Summon"){
+            $(location).attr('href', '/blotter/barangay/print/summon/'+resid+'_'+hearingid);
+        }
+        else if(lettertype=="Notice of Hearing - Mediation Proceedings"){
+            $(location).attr('href', '/blotter/barangay/print/noticemed/'+resid+'_'+hearingid);   
+        }
     });
     
+    
+    $(document).on( 'focus', '.datarec', function(){
+        var classes = $(this).attr('class');
+        var dateofprint = classes.split(' ')[2];
+        $(this).daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                locale: {
+                    format: 'YYYY-MM-DD'
+                },
+                minDate: dateofprint,
+                maxDate: moment()
+        });
+    });
+
+    $(document).on('click', 'button.closemodal', function(){
+        $('#largeModal').modal('toggle');
+    });
+
+    $(document).on('click', 'button.save', function(){
+        var tosend = $(this).val();
+        $(this).html('Received last '+moment().format('MM-DD-YYYY'));
+        $(this).attr('disabled', true);
+        $.ajax({
+            url: '/blotter/barangay/received/'+tosend+'_'+hearingid,
+            method: 'GET',
+            success: function(response){
+                
+            }
+        });
+    });
+
+    $(document).on('click', 'button.letterprintps', function(){
+        $(location).attr('href', '/blotter/barangay/printps/'+$(this).val());
+    });
+
+    $(document).on('click', 'button.letterprintvawc', function(){
+        $(location).attr('href', '/blotter/barangay/printvawc/'+$(this).val());
+    });
+
+    $(document).on('click', 'button.settled', function(){
+        $(location).attr('href', '/blotter/barangay/printsettlement/'+$(this).val());
+    });    
 });
 </script>
 </body>
