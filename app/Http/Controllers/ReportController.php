@@ -146,7 +146,7 @@ class ReportController extends Controller
 
         $tabledata = DB::select('select lpad(c.case_id,8,"0") as case_id, k.caseskp_name as case_name, c.case_filed, c.case_status from tbl_caseskp k join tbl_case c on c.case_caseskp = k.caseskp_id where case_exists = 1 and DATE(c.case_filed) = "'.$request->date.'" order by 1');
 
-        $resident = DB::select('select concat(r.resident_fname," ",r.resident_lname) as name, p.personinvolve_case, p.personinvolve_type from tbl_resident r join tbl_personinvolve p on p.personinvolve_resident = r.resident_id join tbl_case c on c.case_id = p.personinvolve_case where c.case_exists = 1 and DATE(c.case_filed) = "'.$request->date.'"');
+        $resident = DB::select('select concat(r.resident_fname," ",r.resident_lname) as name, p.personinvolve_case, p.personinvolve_type from tbl_resident r join tbl_personinvolve p on p.personinvolve_resident = r.resident_id join tbl_case c on c.case_id = p.personinvolve_case where c.case_exists = 1 and DATE(c.case_filed) = "'.$request->date.'" group by 1');
 
         $return =['chartdata'=>$chartdata, 'tabledata'=>$tabledata, 'resident'=>$resident];
         return response()->json($return);
@@ -182,11 +182,11 @@ class ReportController extends Controller
 
     public function getBlotterYearly(Request $request){
 
-        $chartdata = DB::select('select count(*) as shit, k.caseskp_name, c.case_status from tbl_case c join tbl_caseskp k on k.caseskp_id = c.case_caseskp where case_exists = 1 and YEAR(case_filed) = "'.$request->yearlyyear.'" group by c.case_status');
+        $chartdata = DB::select('select count(*) as shit, k.caseskp_name, c.case_status from tbl_case c join tbl_caseskp k on k.caseskp_id = c.case_caseskp where case_exists = 1 and YEAR(case_filed) = "'.$request->yearlyyear.'" group by c.case_status, k.caseskp_name');
 
         $tabledata = DB::select('select lpad(c.case_id,8,"0") as case_id, k.caseskp_name as case_name, c.case_filed, c.case_status from tbl_caseskp k join tbl_case c on c.case_caseskp = k.caseskp_id where case_exists = 1 and YEAR(c.case_filed) = "'.$request->yearlyyear.'" order by 1');
 
-        $resident = DB::select('select concat(r.resident_fname," ",r.resident_lname) as name, p.personinvolve_case, p.personinvolve_type from tbl_resident r join tbl_personinvolve p on p.personinvolve_resident = r.resident_id join tbl_case c on c.case_id = p.personinvolve_case where c.case_exists = 1 and YEAR(c.case_filed) = "'.$request->yearlyyear.'"');
+        $resident = DB::select('select concat(r.resident_fname," ",r.resident_lname) as name, p.personinvolve_case, p.personinvolve_type from tbl_resident r join tbl_personinvolve p on p.personinvolve_resident = r.resident_id join tbl_case c on c.case_id = p.personinvolve_case where c.case_exists = 1 and YEAR(c.case_filed) = "'.$request->yearlyyear.'"  group by 1');
 
         $return =['chartdata'=>$chartdata, 'tabledata'=>$tabledata, 'resident'=>$resident];
 

@@ -69,7 +69,7 @@
             <div class="row clearfix">
                 
                                     <div class="col-sm-2 col-sm-offset-10">
-                                        <button type="button" class="btn bg-teal btn-lg waves-effect waves-float pull-right" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i>Add Request</button>
+                                        <button type="button" class="btn bg-teal btn-lg waves-effect waves-float pull-right" id="openmodal"><i class="material-icons">add</i>Add Request</button>
                                     </div>
                                 </div>
                                 <br>
@@ -225,7 +225,7 @@
             </div>
 
     <div class="modal fade" id="reqmodal" tabindex="-2" role="dialog">
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <div class="row clearfix">
@@ -300,6 +300,28 @@
         var pricesid = [];
         var purposes = [];
         var sr = [];
+
+        $('#openmodal').on('click', function(){
+            $.ajax({
+                url: '/clearance/clearance/checkcap',
+                method: 'GET',
+                success: function(response){
+                    if(response=="success"){
+                        $('#defaultModal').modal('toggle');
+                    }
+                    else{
+                         swal({
+                            title: "Error",
+                            text: "No Barangay Captain Found please set a barangay captain before requesting",
+                            type: "warning",
+                            confirmButtonClass: "btn-danger",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        });
+                    }
+                }
+            })
+        });
 
 
         var tblreq = $('#requestTable').DataTable({

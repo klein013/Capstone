@@ -60,6 +60,15 @@ class OfficialController extends Controller
                 session(['admin'=> $ifofficial[0]->official_admin]);
             }
     
+            if($request->pos==1){
+                $selected = DB::select('select case_id from tbl_case where case_status = "Mediation" and case_exists= 1');
+
+                foreach($selected as $select){
+                    DB::table('tbl_caseallocation')->where('caseallocation_case',$select->case_id)->update(['caseallocation_official'=>$request->id]);
+                }
+
+            }
+
             return response()->json($ifofficial);
 
     
@@ -158,5 +167,23 @@ class OfficialController extends Controller
     public function getOfficials(){
         $officials = DB::select("select lpad(o.official_id,6,'0') as official_id, r.resident_image,p.position_name, concat(r.resident_fname,' ',coalesce(r.resident_mname,''),' ',r.resident_lname) as name, r.resident_bdate, r.resident_contact, r.resident_gender, concat(r.resident_hno,' ',s.street_name,' ',a.area_name) as street from tbl_official o join tbl_resident r on r.resident_id = o.resident_id join tbl_street s on r.resident_street = s.street_id join tbl_area a on s.street_area = a.area_id join tbl_position p on p.position_id = o.position_id where o.official_exists = 1 and o.official_id != 0 order by 1");
         return response()->json($officials);
+    }
+
+    public function getResidents(){
+        $residents = DB::select('select resident_id, resident_fname, resident_bdate, resident_contact, resident_lname, resident_image, resident_hno, street_name, area_name from tbl_resident join tbl_street on tbl_resident.resident_street=tbl_street.street_id join tbl_area on tbl_street.street_area=tbl_area.area_id where resident_exists = 1 and resident_non = 0 and resident_id not in (select resident_id from tbl_official where official_exists = 1 union select p.personinvolve_resident from tbl_personinvolve p join tbl_case c on c.case_id = p.personinvolve_case where c.case_status not in("Case Dismissed", "Settled") and p.personinvolve_type = "R") ');
+
+        return response()->json($residents);
+    }
+
+    public function storebyres(Request $request){
+
+        $official = new TblOfficial;
+
+        $official->resident_id = $request->id;
+        $official->position_id = $request->pos;
+        $official->official_exists = 1;
+        $official->save();
+
+        return response("success");
     }
 }

@@ -14,7 +14,9 @@ class ProfileController extends Controller
      	$return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official'),'admin'=>Session::get('admin')];
 
      	$streets = DB::select('select s.street_name, s.street_id, a.area_name from tbl_street s join tbl_area a on a.area_id = s.street_area where s.street_exists =1 ');
-        return view('admin.profile')->with(array('profile'=>$profile, 'return'=>$return, 'streets'=>$streets));
+
+     	$user = DB::select('select official_username from tbl_officialuser where official_id ='.Session::get('official'));
+        return view('admin.profile')->with(array('profile'=>$profile, 'return'=>$return, 'streets'=>$streets, 'user'=>$user));
 
     }
 

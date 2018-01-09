@@ -41,6 +41,8 @@ class SettlementController extends Controller
 
     	DB::table('tbl_case')->where('case_id',$request->case)->update(['case_status'=>'Settled']);
 
+    	DB::table('tbl_hearing')->where([['hearing_case','=',$request->case],['hearing_exists','=',1], ['hearing_sched','>=',date('Y-m-d H:i:s')]])->update(['hearing_status'=>'Voided']);
+
     	return response("success");
 
     }

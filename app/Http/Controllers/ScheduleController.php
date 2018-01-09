@@ -25,10 +25,10 @@ class ScheduleController extends Controller
          DB::table('tbl_hearing')->whereDate('hearing_sched','=',date('Y-m-d'))->whereTime('hearing_sched','<=',date('H:i:s'))->where('hearing_status','!=','Done')->update(['hearing_status'=>'For Process']);
 
    		if(Session::get('official')==0){
-   			$scheds = DB::select('select distinct(concat("Hearing ID: ",h.hearing_id)) as "id", h.hearing_status,concat("Case : ",h.hearing_case) as "case", kp.caseskp_name as casename, h.hearing_sched from tbl_hearing h join tbl_caseallocation c on c.caseallocation_case = h.hearing_case join tbl_case ca on ca.case_id = h.hearing_case join tbl_caseskp kp on kp.caseskp_id = ca.case_caseskp where ca.case_exists = 1 and h.hearing_exists = 1');
+   			$scheds = DB::select('select distinct(concat("Hearing ID: ",h.hearing_id)) as "id", h.hearing_status,concat("Case : ",h.hearing_case) as "case", kp.caseskp_name as casename, h.hearing_sched from tbl_hearing h join tbl_caseallocation c on c.caseallocation_case = h.hearing_case join tbl_case ca on ca.case_id = h.hearing_case join tbl_caseskp kp on kp.caseskp_id = ca.case_caseskp where ca.case_exists = 1 and h.hearing_exists = 1 and h.hearing_status != "Void" ');
    		}
    		else{
-   			$scheds = DB::select('select distinct(concat("Hearing ID: ",h.hearing_id)) as "id", h.hearing_status, concat("Case : ",h.hearing_case) as "case", kp.caseskp_name as casename, h.hearing_sched from tbl_hearing h join tbl_caseallocation c on c.caseallocation_case = h.hearing_case join tbl_case ca on ca.case_id = h.hearing_case join tbl_caseskp kp on kp.caseskp_id = ca.case_caseskp where ca.case_exists = 1 and h.hearing_exists = 1 and c.caseallocation_official = '.Session::get('official'));
+   			$scheds = DB::select('select distinct(concat("Hearing ID: ",h.hearing_id)) as "id", h.hearing_status, concat("Case : ",h.hearing_case) as "case", kp.caseskp_name as casename, h.hearing_sched from tbl_hearing h join tbl_caseallocation c on c.caseallocation_case = h.hearing_case join tbl_case ca on ca.case_id = h.hearing_case join tbl_caseskp kp on kp.caseskp_id = ca.case_caseskp where ca.case_exists = 1 and h.hearing_exists = 1 and h.hearing_status != "Void" and c.caseallocation_official = '.Session::get('official'));
    		}
 
    		return response()->json($scheds);
@@ -66,7 +66,7 @@ class ScheduleController extends Controller
                $open = strtotime($brgytime[0]->brgyinfo_opening);
                $close = strtotime($brgytime[0]->brgyinfo_closing);
 
-               $hearing = DB::select('select DISTINCT(h.hearing_id), h.hearing_sched from tbl_hearing h join tbl_caseallocation c on h.hearing_case = c.caseallocation_case where c.caseallocation_official = '.$caseallocated[0]->caseallocation_official.' and DATE(h.hearing_sched) = (DATE("'.$request->rescheddate.'") + interval '.$request->number.' DAY) and h.hearing_exists = 1 order by TIME(h.hearing_sched)');
+               $hearing = DB::select('select DISTINCT(h.hearing_id), h.hearing_sched from tbl_hearing h join tbl_caseallocation c on h.hearing_case = c.caseallocation_case where c.caseallocation_official = '.$caseallocated[0]->caseallocation_official.' and DATE(h.hearing_sched) = (DATE("'.$request->rescheddate.'") + interval '.$request->number.' DAY) and h.hearing_exists = 1 and h.hearing_status != "Void" order by TIME(h.hearing_sched)');
 
                $det = [];
 
@@ -96,6 +96,9 @@ class ScheduleController extends Controller
                         }
                         else if($resident->personinvolve_type=='R'){
                            $hearingletter->hl_lettertype = 'Notice of Hearing - Mediation Proceedings'; 
+                        }
+                        else{
+                           $hearingletter->hl_lettertype = 'Subpoena';   
                         }
 
                         $hearingletter->save();
@@ -158,6 +161,9 @@ class ScheduleController extends Controller
                         else if($resident->personinvolve_type=='R'){
                            $hearingletter->hl_lettertype = 'Notice of Hearing - Mediation Proceedings'; 
                         }
+                        else{
+                           $hearingletter->hl_lettertype = 'Subpoena';   
+                        }
 
 
                         $hearingletter->save();
@@ -190,6 +196,9 @@ class ScheduleController extends Controller
                         }
                         else if($resident->personinvolve_type=='R'){
                            $hearingletter->hl_lettertype = 'Notice of Hearing - Mediation Proceedings'; 
+                        }
+                        else{
+                           $hearingletter->hl_lettertype = 'Subpoena';   
                         }
 
                         $hearingletter->save();
@@ -228,6 +237,9 @@ class ScheduleController extends Controller
                         else if($resident->personinvolve_type=='R'){
                            $hearingletter->hl_lettertype = 'Notice of Hearing - Mediation Proceedings'; 
                         }
+                        else{
+                           $hearingletter->hl_lettertype = 'Subpoena';   
+                        }
 
                         $hearingletter->save();
                      }
@@ -264,7 +276,7 @@ class ScheduleController extends Controller
                $open = strtotime($brgytime[0]->brgyinfo_opening);
                $close = strtotime($brgytime[0]->brgyinfo_closing);
 
-               $hearing = DB::select('select DISTINCT(h.hearing_id), h.hearing_sched from tbl_hearing h join tbl_caseallocation c on h.hearing_case = c.caseallocation_case where c.caseallocation_official = '.$caseallocated[0]->caseallocation_official.' and DATE(h.hearing_sched) = (curdate() + interval '.$request->number.' DAY) and h.hearing_exists = 1 order by TIME(h.hearing_sched)');
+               $hearing = DB::select('select DISTINCT(h.hearing_id), h.hearing_sched from tbl_hearing h join tbl_caseallocation c on h.hearing_case = c.caseallocation_case where c.caseallocation_official = '.$caseallocated[0]->caseallocation_official.' and DATE(h.hearing_sched) = (curdate() + interval '.$request->number.' DAY) and h.hearing_exists = 1 and h.hearing_status != "Void" order by TIME(h.hearing_sched)');
 
                $det = [];
 
@@ -281,7 +293,9 @@ class ScheduleController extends Controller
                   $newhearing->hearing_exists = true;
                   $newhearing->save();
 
-                  $residents = DB::select('select personinvolve_resident, personinvolve_type from tbl_personinvolve where personinvolve_case = '.$request->id);
+                  $residents = DB::select('select sum(h.ha_attented) as ha_attented, p.personinvolve_resident, p.personinvolve_type from tbl_personinvolve p join tbl_hearingattendance h on ha_personinvolve=p.personinvolve_resident where p.personinvolve_case = '.$request->id.' and h.ha_hearing in(select hearing_id from tbl_hearing where hearing_case = '.$request->id.') group by  p.personinvolve_case, p.personinvolve_resident, p.personinvolve_type, h.ha_hearing ');
+
+                  $sumofhearings = DB::select('select count(h.hearing_id) as number from tbl_hearing h join tbl_hearingattendance a on a.ha_hearing = h.hearing_id where h.hearing_case = '.$request->id.' and h.hearing_exists = 1');
 
                      foreach($residents as $resident){
                         $hearingletter = new TblHearingletter;
@@ -291,10 +305,24 @@ class ScheduleController extends Controller
                         $hearingletter->hl_printdate = null;
                         $hearingletter->hl_datereceive = null;
                         if($resident->personinvolve_type=='C'){
-                           $hearingletter->hl_lettertype = 'Summon';
+                           if(($sumofhearings[0]->number-$resident[0]->ha_attented)==0){
+                              $hearingletter->hl_lettertype = 'Notice of Hearing - Mediation Proceedings'; 
+                           }
+                           else if(($sumofhearings[0]->number-$resident[0]->ha_attented)==2){
+                              DB::delete('delete from tbl_hearing where hearing_id = '.$newhearing->hearing_id);
+                              DB::table('tbl_case')->where('case_id',$request->id)->update(['case_status'=>'Case Dismissed']);
+                              return response("Case Dismissed");
+                              break;
+                           }
+                           else{
+                              $hearingletter->hl_lettertype = 'Notice of Hearing (RE: Failure to Appear)'; 
+                           }
                         }
                         else if($resident->personinvolve_type=='R'){
                            $hearingletter->hl_lettertype = 'Notice of Hearing - Mediation Proceedings'; 
+                        }
+                        else{
+                           $hearingletter->hl_lettertype = 'Subpoena';   
                         }
 
                   $hearingletter->save();
@@ -344,6 +372,8 @@ class ScheduleController extends Controller
 
                      $residents = DB::select('select personinvolve_resident, personinvolve_type from tbl_personinvolve where personinvolve_case = '.$request->id);
 
+                     $sumofhearings = DB::select('select count(h.hearing_id) as number from tbl_hearing h join tbl_hearingattendance a on a.ha_hearing = h.hearing_id where h.hearing_case = '.$request->id.' and h.hearing_exists = 1');
+
                      foreach($residents as $resident){
                         $hearingletter = new TblHearingletter;
 
@@ -352,14 +382,28 @@ class ScheduleController extends Controller
                         $hearingletter->hl_printdate = null;
                         $hearingletter->hl_datereceive = null;
                         if($resident->personinvolve_type=='C'){
-                           $hearingletter->hl_lettertype = 'Summon';
+                           if(($sumofhearings[0]->number-$resident[0]->ha_attented)==0){
+                              $hearingletter->hl_lettertype = 'Notice of Hearing - Mediation Proceedings'; 
+                           }
+                           else if(($sumofhearings[0]->number-$resident[0]->ha_attented)==2){
+                              DB::delete('delete from tbl_hearing where hearing_id = '.$newhearing->hearing_id);
+                              DB::table('tbl_case')->where('case_id',$request->id)->update(['case_status'=>'Case Dismissed']);
+                              return response("Case Dismissed");
+                              break;
+                           }
+                           else{
+                              $hearingletter->hl_lettertype = 'Notice of Hearing (RE: Failure to Appear)'; 
+                           }
                         }
                         else if($resident->personinvolve_type=='R'){
                            $hearingletter->hl_lettertype = 'Notice of Hearing - Mediation Proceedings'; 
                         }
+                        else{
+                           $hearingletter->hl_lettertype = 'Subpoena';   
+                        }
 
-                        $hearingletter->save();
-                     }
+                  $hearingletter->save();
+               }
                      
                      array_push($det,['sched'=>date('Y-m-d H:i:s', strtotime("$heardate $newtime")), 'case'=>$newhearing->hearing_case.'\n '.$checktrue]);
                   }
@@ -376,23 +420,38 @@ class ScheduleController extends Controller
 
                        $residents = DB::select('select personinvolve_resident, personinvolve_type from tbl_personinvolve where personinvolve_case = '.$request->id);
 
-                       foreach($residents as $resident){
-                           $hearingletter = new TblHearingletter;
+                       $sumofhearings = DB::select('select count(h.hearing_id) as number from tbl_hearing h join tbl_hearingattendance a on a.ha_hearing = h.hearing_id where h.hearing_case = '.$request->id.' and h.hearing_exists = 1');
 
-                           $hearingletter->hl_hearing = $newhearing->hearing_id;
-                           $hearingletter->hl_personinvolve = $resident->personinvolve_resident;
-                           $hearingletter->hl_printdate = null;
-                           $hearingletter->hl_datereceive = null;
-                           if($resident->personinvolve_type=='C'){
-                              $hearingletter->hl_lettertype = 'Summon';
-                           }
-                           else if($resident->personinvolve_type=='R'){
+                     foreach($residents as $resident){
+                        $hearingletter = new TblHearingletter;
+
+                        $hearingletter->hl_hearing = $newhearing->hearing_id;
+                        $hearingletter->hl_personinvolve = $resident->personinvolve_resident;
+                        $hearingletter->hl_printdate = null;
+                        $hearingletter->hl_datereceive = null;
+                        if($resident->personinvolve_type=='C'){
+                           if(($sumofhearings[0]->number-$resident[0]->ha_attented)==0){
                               $hearingletter->hl_lettertype = 'Notice of Hearing - Mediation Proceedings'; 
                            }
-
-                           $hearingletter->save();
+                           else if(($sumofhearings[0]->number-$resident[0]->ha_attented)==2){
+                              DB::delete('delete from tbl_hearing where hearing_id = '.$newhearing->hearing_id);
+                              DB::table('tbl_case')->where('case_id',$request->id)->update(['case_status'=>'Case Dismissed']);
+                              return response("Case Dismissed");
+                              break;
+                           }
+                           else{
+                              $hearingletter->hl_lettertype = 'Notice of Hearing (RE: Failure to Appear)'; 
+                           }
+                        }
+                        else if($resident->personinvolve_type=='R'){
+                           $hearingletter->hl_lettertype = 'Notice of Hearing - Mediation Proceedings'; 
+                        }
+                        else{
+                           $hearingletter->hl_lettertype = 'Subpoena';   
                         }
 
+                  $hearingletter->save();
+               }
                         array_push($det,['sched'=>date('Y-m-d H:i:s', strtotime("$heardate $newtime")), 'case'=>$newhearing->hearing_case.'\n '.$checktrue]);
                      }
                      else if(strtotime($newtime) >= $close){
@@ -413,29 +472,54 @@ class ScheduleController extends Controller
 
                         $residents = DB::select('select personinvolve_resident, personinvolve_type from tbl_personinvolve where personinvolve_case = '.$request->id);
 
-                        foreach($residents as $resident){
-                           $hearingletter = new TblHearingletter;
+                        $sumofhearings = DB::select('select count(h.hearing_id) as number from tbl_hearing h join tbl_hearingattendance a on a.ha_hearing = h.hearing_id where h.hearing_case = '.$request->id.' and h.hearing_exists = 1');
 
-                           $hearingletter->hl_hearing = $newhearing->hearing_id;
-                           $hearingletter->hl_personinvolve = $resident->personinvolve_resident;
-                           $hearingletter->hl_printdate = null;
-                           $hearingletter->hl_datereceive = null;
-                           if($resident->personinvolve_type=='C'){
-                              $hearingletter->hl_lettertype = 'Summon';
-                           }
-                           else if($resident->personinvolve_type=='R'){
+                     foreach($residents as $resident){
+                        $hearingletter = new TblHearingletter;
+
+                        $hearingletter->hl_hearing = $newhearing->hearing_id;
+                        $hearingletter->hl_personinvolve = $resident->personinvolve_resident;
+                        $hearingletter->hl_printdate = null;
+                        $hearingletter->hl_datereceive = null;
+                        if($resident->personinvolve_type=='C'){
+                           if(($sumofhearings[0]->number-$resident[0]->ha_attented)==0){
                               $hearingletter->hl_lettertype = 'Notice of Hearing - Mediation Proceedings'; 
                            }
-
-                          $hearingletter->save();
+                           else if(($sumofhearings[0]->number-$resident[0]->ha_attented)==2){
+                              DB::delete('delete from tbl_hearing where hearing_id = '.$newhearing->hearing_id);
+                              DB::table('tbl_case')->where('case_id',$request->id)->update(['case_status'=>'Case Dismissed']);
+                              return response("Case Dismissed");
+                              break;
+                           }
+                           else{
+                              $hearingletter->hl_lettertype = 'Notice of Hearing (RE: Failure to Appear)'; 
+                           }
                         }
+                        else if($resident->personinvolve_type=='R'){
+                           $hearingletter->hl_lettertype = 'Notice of Hearing - Mediation Proceedings'; 
+                        }
+                        else{
+                           $hearingletter->hl_lettertype = 'Subpoena';   
+                        }
+
+                  $hearingletter->save();
+               }
                         array_push($det,['sched'=>date('Y-m-d H:i:s', strtotime("$heardate $newtime")), 'case'=>$newhearing->hearing_case.'\n '.$checktrue]);
                      }              
                
             }
             return response()->json($det);
          }
+            else{
+               DB::table('tbl_case')->where('case_id',$request->id)->update(['case_status'=>'Pangkat']);
 
+               return response("to assign");
+            }
+         }
+         else if($hearings[0]->hearing_type>=4){
+               if($hearings[0]->hearing_type!=7){
+                  
+               }
          }               
       }
 }

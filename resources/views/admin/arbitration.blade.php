@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Blotter | Settlement</title>
+    <title>Blotter | Arbitration</title>
     @include('admin.layout.head');
     <link href="{{asset('plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css')}}" rel="stylesheet">
 </head>
@@ -56,7 +56,7 @@
                             <i class="material-icons">gavel</i>
                         </div>
                         <div class="content">
-                            <div class="text"><h3>SETTLEMENT</h3></div>
+                            <div class="text"><h3>ARBITRATION</h3></div>
                         </div>
                     </div>
                 </div>
@@ -112,9 +112,9 @@
                                             </tr>
                                             <tr>
                                                 <td><label class="pull-right">Hearing Type : </label></td>
-                                                <td><p id="hearingtype">Settlement</p></td>
+                                                <td><p id="hearingtype">Arbitrstion</p></td>
                                                 <td><label class="pull-right">Hearing ID : </label></td>
-                                                <td><p>{{$case[0]->hearing_id}}</p></td>
+                                                <td><p>{{$case[0]->hearing_id}}</p><p id="minuteid" style="display: none;">{{$minutes->minute_id}}</p></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -123,7 +123,7 @@
                             <form id = "hearing">
                                 <div class="row clearfix">
                                     <div class="col-sm-2">
-                                        <label>Settlement</label>
+                                        <label>Arbitration Award</label>
                                     </div>
                                     <br>
                                     <div class="col-sm-12">
@@ -197,7 +197,7 @@
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonClass: "btn-danger",
-                    confirmButtonText: "Proceed",
+                    confirmButtonText: "Delete",
                     cancelButtonText: "Cancel",
                     closeOnConfirm: false,
                     closeOnCancel: false
@@ -205,46 +205,63 @@
                 function(isConfirm) {
                     if (isConfirm){
                         $.ajax({
-                            url: '/blotter/barangay/settlement',
+                            url: '/blotter/barangay/arbitration/save',
                             method: 'POST',
                             data: {
                                 _token : CSRF_TOKEN,
                                 id : parseInt($('#hearingid').text()),
                                 case : parseInt($('#caseid').text()),
+                                minutesid : parseInt($('#minutesid').text()),
                                 minutes: tinyMCE.get('myTextarea').getContent(),
                                 official : ($('#official').text()).split(" ")[0]
                             },
                             success: function(response) {
-                            if(response=="success"){
+                                if(response=="success"){
+                                    window.open("/blotter/barangay/arbitration/print/"+$('#caseid').text(),'_blank');
+                                        return false;
                                 swal({
-                                    title: "Success",
-                                    text: "Case Settled",
+                                    title: "Decide!",
                                     type: "success",
-                                    showConfirmButton: true
-                                }, function(isConfirm){
-                                    if(isConfirm){
-                                        $(location).attr('href', '/blotter/barangay/show/'+$('#caseid').text());        
+                                    showCancelButton: true,
+                                    confirmButtonClass: "btn-danger",
+                                    confirmButtonText: "Proceed to Settlement",
+                                    cancelButtonText: "Back to Record",
+                                    closeOnConfirm: true,
+                                    closeOnCancel: true
+                                },  
+                                function(isConfirm) {
+                                    if (isConfirm){
+                                        $(location).attr('href', '/blotter/barangay/settlement/'+parseInt($('#minutesid').text()));
+                                        
+                                    }
+                                    else{
+                                       $(location).attr('href', '/blotter/barangay/show/'+$('#caseid').text());
                                     }
                                 });
-                                
-                                
                             }
-                            }
+                        }
                         });
+
                     } 
                     else {
-                        swal({
-                            title : "Cancelled", 
-                            text : "Settlement is not entered",
-                            type :  "error",
-                            showCancelButton: true,
-                            confirmButtonClass: "btn-danger",
-                            confirmButtonText: "Delete",
-                        }, function(isConfirm){
+                        $.ajax({
+                            url : '/blotter/barangay/removearb/'+$('#minutesid').text()+'_'+$('#hearingid').text()+'_'+$('#caseid').text(),
+                            method: 'GET',
+                            success: function(response){
+                                swal({
+                                title : "Cancelled", 
+                                text : "Arbitration is not entered",
+                                type :  "error",
+                                showConfirmButton: true,
+                                confirmButtonText: "Okay",
+                            }, function(isConfirm){
                             if(isConfirm){
                                 $(location).attr('href', '/blotter/barangay/show/'+$('#caseid').text());
                             }
                         });
+                            }
+                        });
+                        
                     }
                 });     
                 

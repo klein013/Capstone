@@ -185,11 +185,11 @@
                             </table>
                         </div>
                     </div>
-                   <!--  <div class="row clearfix"> 
-                        <div class="col-sm-3 col-sm-offset-9">
-                            <button class="btn btn-lg bg-teal pull-right" type="button" id="pickcom">PICK</button>
+                    <div class="row clearfix"> 
+                        <div class="col-sm-4 col-sm-offset-8">
+                            <button class="btn btn-lg bg-teal pull-right" type="button" id="addnon">Add non-resident</button>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -274,6 +274,110 @@
                             <button class="btn btn-lg bg-teal pull-right" type="button" id="pickres">PICK</button>
                         </div>
                     </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="nonresmodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row clearfix">
+                    <div class="col-lg-8 col-md-3 col-sm-6 col-xs-12">
+                        <div class="info-box bg-teal">
+                            <div class="icon"><i class="material-icons">person_add</i></div>
+                            <div class="content">
+                                <div class="text"><h3>ADD COMPLAINANT</h3></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <form id="nonresform">
+                        <br>
+                    <div class="row clearfix">
+                        <br>
+                        <div class="col-sm-12">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" id="fname" name="fname">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>Middle Name</label>
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" id="mname" name="mname">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" id="lname" name='lname'>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-sm-12">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>Birthdate</label>
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" id="bdate" name="bdate">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>Gender</label>
+                                    <div class="form-line">
+                                        <select class="form-control show-tick" id="gender" name="gender"> 
+                                            <option value="M" selected>Male</option>
+                                            <option value="F">Female</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>Contact Number</label>
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" id="contact" name="contact">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-sm-12">
+                            <div class="col-sm-8">
+                                <div class="form-group">
+                                    <label>Address</label>
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" id="address" name="address">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-sm-12">
+                            <div class="col-sm-4 col-sm-offset-8 pull-right">
+                                <button type="submit" id="noneressubmit" class="btn btn-space waves-effect bg-teal">Submit</button>
+                                <button type="button" id="nonrescancel" class="btn btn-space waves-effect bg-teal">Cancel</button>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -371,6 +475,7 @@
 
         $('#resbtn').on('click', function(){
             var return_data = new Array();
+
             table.destroy();
             table = $('#restable').DataTable({
             bSort: false,
@@ -478,7 +583,7 @@
             
         }); 
 
-        $.validator.addMethod("alphanum", function(value, element) {
+        $.validator.addMethod("alphanumbasic", function(value, element) {
                 return this.optional(element) || value == value.match(/^[a-zA-Z0-9 .,!?()"'<>;:+=-_#*/@]*$/);
             },"Letters, Numbers and basic punctuations only");
 
@@ -486,10 +591,11 @@
                 rules: {
                     statement: {
                         required: true,
-                        alphanum: true
+                        alphanumbasic: true
                     }
                 },
                 submitHandler: function(form) { // for demo
+                    console.log(com.join()+" "+res.join());
                     var formData = new FormData();
                     formData.append('res', res.join());
                     formData.append('com', com.join());
@@ -526,6 +632,158 @@
                         }
                         });
                     },
+                highlight: function (input) {
+                    $(input).parents('.form-line').addClass('error');
+                },
+                unhighlight: function (input) {
+                    $(input).parents('.form-line').removeClass('error');
+                },
+                errorPlacement: function (error, element) {
+                    $(element).parents('.form-group').append(error);
+                }
+            });
+
+        $('#addnon').on('click', function(){
+            $('#defaultModal').modal('toggle');
+            $('#nonresmodal').modal('toggle');
+        });
+
+        $('#nonrescancel').on('click', function(){
+            $('#nonresmodal').modal('toggle');
+        });
+
+        $.validator.addMethod("dateISOF", function (value, element)
+            {
+                if (this.optional(element))
+                {
+                    return true;
+                }
+                if (!(/^\d{4}[\/-]\d{1,2}[\/-]\d{1,2}$/.test(value)))
+                {
+                    return false;
+                }
+                var split = value.replace(/\//g, "-").split("-");
+                var year = parseInt(split[0]);
+                var month = parseInt(split[1]) - 1;
+                var date = parseInt(split[2]);
+                var dateObj = new Date(year, month, date, 0, 0, 0, 0);
+                return dateObj.getFullYear() == year && dateObj.getMonth() == month && dateObj.getDate() == date;
+            }, "Please enter a valid date.");
+
+            $.validator.addMethod("alpha", function(value, element) {
+                return this.optional(element) || value.trim() == value.match(/^[a-zA-Z .,]*$/);
+            },"Letters, spaces, period and comma only");
+
+
+            $.validator.addMethod("alphanum", function(value, element) {
+                return this.optional(element) || value.trim() == value.match(/^[a-zA-Z0-9 .,]*$/);
+            },"Letters, Numbers, spaces, period and comma only");
+
+            $.validator.addMethod("cellno", function(value, element){
+                return this.optional(element) || value.trim() == value.match(/\+639.[0-9]{8}/);
+            }, "Must start +639 and followed by 9 digits");
+
+            var date = new Date();
+
+            $('#year').focus(function(){
+                    $('#year').attr({'min': new Date($('#bdate').val()).getFullYear()});
+            });
+
+            $('#bdate').focus(function(){
+                    $('#year').attr({'min': new Date($('#bdate').val()).getFullYear()});
+            });
+
+            $('#bdate').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                locale: {
+                    format: 'YYYY-MM-DD'
+                },
+                maxDate: moment().subtract(18,'years')
+            });
+
+
+
+        $('#nonresform').validate({
+                rules: {
+                    fname: {
+                        required: true,
+                        maxlength: 50,
+                        alpha: true
+                    },
+                    mname: {
+                        required: false,
+                        maxlength: 50,
+                        alpha: true
+                    },
+                    lname: {
+                        required: true,
+                        maxlength: 50,
+                        alpha: true
+                    },
+                    bdate: {
+                        required: true,
+                        dateISOF: true
+                    },
+                    contact: {
+                        required: false,
+                        cellno: true,
+                        maxlength: 13
+                    },
+                    address: {
+                        required: true,
+                        alphanum: true,
+                        maxlength: 50
+                    },
+                    gender: {
+                        required: true
+                    }
+                },
+                submitHandler: function(form) {
+                    console.log(com.join()+" "+res.join());
+                    $.ajax({
+                        url : '/resident/nonres',
+                        method : 'POST',
+                        data : {
+                            _token: CSRF_TOKEN,
+                            fname: $('#fname').val(),
+                            mname: $('#mname').val(),
+                            lname: $('#lname').val(),
+                            bdate: $('#bdate').val(),
+                            contact: $('#contact').val(),
+                            gender: $('#gender').val(),
+                            address: $('#address').val()
+                        },
+                        success : function(response){
+                            console.log(response);
+                            if(response=="Contact Number already used"){
+                                swal({
+                                    title : response,
+                                    type : "error",
+                                    showConfirmButton : true
+                                });
+                            }
+                            else{
+                                swal({
+                                    title : "Record Added",
+                                    type : "success",
+                                    showConfirmButton : true
+                                });
+                                var $input = $('<button type="button" value='+response.resident_id+' class="removecom btn btn-success waves-effect "><span>'+response.resident_fname+' '+response.resident_lname+'</span>  <i class="material-icons">remove</i></button>');
+                                $input.appendTo($("#comcon"));
+                                used.push('"'+response.resident_id+'"');
+                                com.push('"'+response.resident_id+'"');
+                            }
+                            $('#nonresmodal').modal('toggle');
+                            $('#fname').val("");
+                            $('#mname').val("");
+                            $('#lname').val("");
+                            $('#bdate').val("");
+                            $('#address').val("");
+                            $('#contact').val("");
+                        }
+                    });
+                },
                 highlight: function (input) {
                     $(input).parents('.form-line').addClass('error');
                 },

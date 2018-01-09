@@ -79,16 +79,28 @@
                                 <tr>
                                     <td>Complainant/s</t>
                                     <td>
-                                        @foreach($cresident as $resident)
-                                            <input type="checkbox" class="req" value="{{$resident->resident_id}}|{{$resident->personinvolve_type}}" id="{{$resident->resident_id}}" class="cbreq"/><label for="{{$resident->resident_id}}">{{$resident->name}}</label><br>
+                                        @foreach($attendance as $resident)
+                                            @if($resident->personinvolve_type=='C')
+                                                @if($resident->ha_attented==0)
+                                                    <input type="checkbox" class="req" value="{{$resident->resident_id}}|{{$resident->personinvolve_type}}" id="{{$resident->resident_id}}" class="cbreq"/><label for="{{$resident->resident_id}}">{{$resident->name}}</label><br>
+                                                @else
+                                                    <input type="checkbox" class="req" checked value="{{$resident->resident_id}}|{{$resident->personinvolve_type}}" id="{{$resident->resident_id}}" class="cbreq"/><label for="{{$resident->resident_id}}">{{$resident->name}}</label><br>
+                                                @endif
+                                            @endif
                                         @endforeach        
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Respondents/s</td>
                                     <td>
-                                        @foreach($rresident as $resident)
-                                            <input type="checkbox" class="req" value="{{$resident->resident_id}}|{{$resident->personinvolve_type}}"" id="{{$resident->resident_id}}" class="cbreq"/><label for="{{$resident->resident_id}}">{{$resident->name}}</label><br>
+                                        @foreach($attendance as $resident)
+                                            @if($resident->personinvolve_type=='R')
+                                                @if($resident->ha_attented==0)
+                                                    <input type="checkbox" class="req" value="{{$resident->resident_id}}|{{$resident->personinvolve_type}}" id="{{$resident->resident_id}}" class="cbreq"/><label for="{{$resident->resident_id}}">{{$resident->name}}</label><br>
+                                                @else
+                                                    <input type="checkbox" class="req" checked value="{{$resident->resident_id}}|{{$resident->personinvolve_type}}" id="{{$resident->resident_id}}" class="cbreq"/><label for="{{$resident->resident_id}}">{{$resident->name}}</label><br>
+                                                @endif
+                                            @endif
                                         @endforeach        
                                     </td>
                                 </tr>
@@ -183,7 +195,7 @@
                                 <br>
                                 <div class="row clearfix">
                                     <div class="col-sm-2 col-sm-offset-10">
-                                        <button type="submit" class="btn btn-lg bg-teal btn-space waves-effect">Submit</button>
+                                        <button type="submit" id="submitbtn" class="btn btn-lg bg-teal btn-space waves-effect">Submit</button>
                                         <button type="button" id="cancelbtn" class="btn pull-right btn-lg bg-teal waves-effect">Cancel</button>
                                     </div>
                                 </div>
@@ -235,11 +247,14 @@
     var prev_hours = prev_minutes = prev_seconds = prev_milliseconds = undefined;
     var timeUpdate;
 
+    $('#submitbtn').attr('disabled', true);
+
     // Start/Pause/Resume button onClick
     $("#start_pause_resume").button().click(function(){
 
         // Start button
         if($(this).text() == "Start"){  // check button label
+            $('#submitbtn').attr('disabled', false);
             $(this).html("<span class='ui-button-text'>Pause</span>");
             $.ajax({
                 url: '/blotter/barangay/starthearing',
@@ -378,7 +393,7 @@
                                     }
                                     else{
                                         $.ajax({
-                                            url : '/barangay/blotter/schednext',
+                                            url : '/blotter/barangay/schednext',
                                             method : 'GET',
                                             data : {
                                                 id : $('#caseid').text(),
@@ -386,6 +401,35 @@
                                                 number : 7
                                             },
                                             success: function(response){
+                                                if(response=="Case Dismissed"){
+                                                    swal({
+                                                        title: "Case Dismissed due to Complainant's attendance!",
+                                                        type: "error",
+                                                        showCancelButton: false,
+                                                        confirmButtonClass: "btn-danger",
+                                                        confirmButtonText: "Back to Record",
+                                                        },  
+                                                        function(isConfirm) {
+                                                            if (isConfirm){
+                                                                $(location).attr('href', '/blotter/barangay/show/'+$('#caseid').text());
+                                                            }
+                                                        });
+                                                }
+                                                else if(response=="to assign"){
+                                                     swal({
+                                                        title: "The case needs to assigned in a pangkat",
+                                                        type: "success",
+                                                        showCancelButton: false,
+                                                        confirmButtonClass: "btn-danger",
+                                                        confirmButtonText: "Back to Record",
+                                                        },  
+                                                        function(isConfirm) {
+                                                            if (isConfirm){
+                                                                $(location).attr('href', '/blotter/barangay/show/'+$('#caseid').text());
+                                                            }
+                                                        });
+                                                }
+                                                else{
                                                 swal({
                                                     title: "Case Allocated!",
                                                     text: "Case Number: "+response[0].case+"\nScheduled Date: "+response[0].sched,
@@ -396,6 +440,7 @@
                                                             $(location).attr('href', '/blotter/barangay/show/'+response[0].case);
                                                         }
                                                     });
+                                                }
                                             }
                                         });
                                     }
@@ -484,7 +529,6 @@
             });
         }
         else{
-
             $.ajax({
                 url : '/blotter/barangay/attendance',
                 method: 'POST',
@@ -494,17 +538,12 @@
                     id : hearingid
                 },
                 success: function(response){
-                    if(response!="success"){
+                    if(response=="success"){
                         swal({
                             title: "The Hearing can't start without a complainant and respondent",
                             type: "error",
                             showConfirmButton: true
                         });
-                    }
-                    else{
-                        $('#hearingbody').css('display', 'block');
-                        $('#attendancecard').hide();
-                        
                     }
                 }
             });

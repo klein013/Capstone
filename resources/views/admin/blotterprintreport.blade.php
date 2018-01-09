@@ -116,8 +116,8 @@
                         <div class="row clearfix" id="nonsense"></div>
                     <div class="row clearfix" style="display:none;" id="todisplay">
                  <div class="col-sm-12" >
-                            <div class="col-sm-6 col-sm-offset-3">
-                                <canvas id="chart" width="100%" height="100%"></canvas>
+                            <div class="col-sm-12">
+                                <canvas id="chart" width="100%" height="40%"></canvas>
                             </div>
                         </div>
                         <div class="col-sm-12">
@@ -254,7 +254,10 @@
                         var vawc = [];
                         var ps6 = [];
                         var record = [];
+                        var cfa = [];
+                        var dismissed = [];
                         var caseskp = [];
+                        var rep = [];
                         for (var i = 0; i < response.chartdata.length; i++) {
                             if(jQuery.inArray(response.chartdata[i].caseskp_name, caseskp)==-1){
                                 caseskp.push(response.chartdata[i].caseskp_name);
@@ -265,11 +268,12 @@
                                 mediation.push(0);
                                 arbitration.push(0);
                                 conciliation.push(0);
-                                mediation.push(0);
                                 vawc.push(0);
                                 ps6.push(0);
                                 record.push(0);
-                                console.log("Released");
+                                cfa.push(0);
+                                dismissed.push(0);
+                                rep.push(0);
                             }
                             else if(response.chartdata[i].case_status=="Settled"){
                                 unassigned.push(0);
@@ -277,10 +281,12 @@
                                 mediation.push(0);
                                 arbitration.push(0);
                                 conciliation.push(0);
-                                mediation.push(0);
                                 vawc.push(0);
                                 ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
                                 record.push(0);
+                                rep.push(0);
                             }
                             else if(response.chartdata[i].case_status=="Mediation"){
                                 unassigned.push(0);
@@ -288,10 +294,12 @@
                                 mediation.push(response.chartdata[i].shit);
                                 arbitration.push(0);
                                 conciliation.push(0);
-                                mediation.push(0);
                                 vawc.push(0);
                                 ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
                                 record.push(0);
+                                rep.push(0);
                             }
                             else if(response.chartdata[i].case_status=="Conciliation"){
                                 unassigned.push(0);
@@ -299,10 +307,12 @@
                                 mediation.push(0);
                                 arbitration.push(0);
                                 conciliation.push(response.chartdata[i].shit);
-                                mediation.push(0);
                                 vawc.push(0);
                                 ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
                                 record.push(0);
+                                rep.push(0);
                             }
                             else if(response.chartdata[i].case_status=="Arbitration"){
                                 unassigned.push(0);
@@ -310,10 +320,12 @@
                                 mediation.push(0);
                                 arbitration.push(response.chartdata[i].shit);
                                 conciliation.push(0);
-                                mediation.push(0);
                                 vawc.push(0);
                                 ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
                                 record.push(0);
+                                rep.push(0);
                             }
                             else if(response.chartdata[i].case_status=="Violence Against Women and Children"){
                                 unassigned.push(0);
@@ -321,10 +333,12 @@
                                 mediation.push(0);
                                 arbitration.push(0);
                                 conciliation.push(0);
-                                mediation.push(0);
                                 vawc.push(response.chartdata[i].shit);
                                 ps6.push(0);
                                 record.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                rep.push(0);
                             }
                             else if(response.chartdata[i].case_status=="Police Station"){
                                 unassigned.push(0);
@@ -332,10 +346,51 @@
                                 mediation.push(0);
                                 arbitration.push(0);
                                 conciliation.push(0);
-                                mediation.push(0);
                                 vawc.push(0);
                                 ps6.push(response.chartdata[i].shit);
                                 record.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status =="Certificate to File Action"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                record.push(0);
+                                cfa.push(response.chartdata[i].shit);
+                                dismissed.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status =="Case Dismissed"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                record.push(0);
+                                cfa.push(0);
+                                dismissed.push(response.chartdata[i].shit);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status =="Repudiated"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                record.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                rep.push(response.chartdata[i].shit);
                             }
                             else{
                                 unassigned.push(0);
@@ -343,10 +398,12 @@
                                 mediation.push(0);
                                 arbitration.push(0);
                                 conciliation.push(0);
-                                mediation.push(0);
                                 vawc.push(0);
                                 ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
                                 record.push(response.chartdata[i].shit);
+                                rep.push(0);
                             }
                                 
                         }
@@ -372,6 +429,15 @@
                             }
                             else if(response.chartdata[i].case_status=="Police Station"){
                                 ps6[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Certificate to File Action"){
+                                cfa[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Case Dismissed"){
+                                dismissed[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Repudiated"){
+                                rep[enumber] = response.chartdata[i].shit;
                             }
                             else{
                                 record[enumber] = response.chartdata[i].shit;
@@ -420,7 +486,7 @@
                                 {
                                     label: 'Record',
                                     borderWith: 1,
-                                    backgroundColor : "rgba(255,171,145 ,1))",
+                                    backgroundColor : "rgba(255,171,145 ,1)",
                                     borderColor : "rgba(216,67,21 ,1)",
                                     data: record
                                 },
@@ -437,7 +503,29 @@
                                     backgroundColor : "rgba(159,168,218 ,1)",
                                     borderColor : "rgba(40,53,147 ,1)",
                                     data: ps6
+                                },
+                                {
+                                    label: 'Dismissed',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(188,170,164 ,1)",
+                                    borderColor : "rgba(78,52,46 ,1)",
+                                    data: dismissed
+                                },
+                                {
+                                    label: 'Repudiated',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(176,190,197 ,1)",
+                                    borderColor : "rgba(55,71,79 ,1)",
+                                    data: rep
+                                },
+                                {
+                                    label: 'Certificate to File Action',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(239,154,154 ,1)",
+                                    borderColor : "rgba(198,40,40 ,1)",
+                                    data: cfa
                                 }
+
                             ]
                         };
                         var options = {
@@ -468,293 +556,8 @@
                             options: options
                         });
 
-                        var unassigned = 0;
-                        var mediation = 0;
-                        var conciliation = 0;
-                        var arbitration = 0 ;
-                        var record = 0;
-                        var ps6 = 0;
-                        var settled = 0;
-                        var vawc = 0;
-                        for (var i = 0; i < response.tabledata.length; i++) {
-                            var comp = "";
-                            var res = "";
-                            for (var k = 0; k < response.resident.length; k++) {
-                                if(response.resident[k].personinvolve_case = response.tabledata[i].case_id){
-                                    if(response.resident[k].personinvolve_type=='C'){
-                                        comp+= response.resident[k].name+"<br>";
-                                    }
-                                    else{
-                                        res+= response.resident[k].name+"<br>";
-                                    }
-                                }
+                        myChart.destroy();
 
-                            }
-                            if((response.tabledata[i].case_status=="Captain")||(response.tabledata[i].case_status=="Pangkat")){
-                                    unassigned+=1;
-                                }
-                                else if(response.tabledata[i].case_status=="Mediation"){
-                                    mediation+=1;
-                                }
-                                else if(response.tabledata[i].case_status=="Conciliation"){
-                                    conciliation+=1;
-                                }
-                                else if(response.tabledata[i].case_status=="Arbitration"){
-                                    arbitration+=1;
-                                }
-                                else if(response.tabledata[i].case_status=="Record"){
-                                    record+=1;
-                                }
-                                else if(response.tabledata[i].case_status=="Police Station"){
-                                    ps6+=1;
-                                }
-                                else if(response.tabledata[i].case_status=="Settled"){
-                                    settled+=1;
-                                }
-                                else{
-                                    vawc+=1;
-                                }
-                            var row = "<tr><td>"+response.tabledata[i].case_id+"</td><td>"+response.tabledata[i].case_name+"</td><td>"+response.tabledata[i].case_filed+"</td><td>"+comp+"</td><td>"+res+"</td><td>"+response.tabledata[i].case_status+"</td></tr>";
-                            $('#reportTable').append(row);
-                        }
-                        var additionalrow = "<tr><td colspan='5'><strong class='pull-right'>Total Unassigned Cases: </strong></td><td>"+unassigned+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Mediation Cases: </strong></td><td>"+mediation+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Conciliation Cases: </strong></td><td>"+conciliation+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Arbitration Cases: </strong></td><td>"+arbitration+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Settled Cases: </strong></td><td>"+settled+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Record Only Cases: </strong></td><td>"+record+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total VAWC Cases: </strong></td><td>"+vawc+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Police Station Cases: </strong></td><td>"+ps6+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Number of Cases: </strong></td><td>"+(arbitration+unassigned+mediation+conciliation+record+ps6+vawc+settled)+"</td></tr>";
-                        $('#reportTable').append(additionalrow);
-                    }
-                });
-                }
-                else if(value=="2"){
-                    var weekdate = $('#weeklydate').val();
-                    var fromdate = (weekdate.split('|'))[0];
-                    var todate = (weekdate.split('|'))[1];
-                    $.ajax({
-                    url : "/reports_blotter/weekly",
-                    method: "POST",
-                    data:{
-                        _token : csrf_token,
-                        fromdate : fromdate,
-                        todate : todate
-                    },
-                    dataType: 'json',
-                    success: function(response){
-                        var unassigned = [];
-                        var settled = [];
-                        var mediation = [];
-                        var conciliation = [];
-                        var arbitration = [];
-                        var vawc = [];
-                        var ps6 = [];
-                        var record = [];
-                        var caseskp = [];
-                        for (var i = 0; i < response.chartdata.length; i++) {
-                            if(jQuery.inArray(response.chartdata[i].caseskp_name, caseskp)==-1){
-                                caseskp.push(response.chartdata[i].caseskp_name);
-
-                                if(response.chartdata[i].case_status=="Captain"||response.chartdata[i].case_status=="Pangkat"){
-                                unassigned.push(response.chartdata[i].shit);
-                                settled.push(0);
-                                mediation.push(0);
-                                arbitration.push(0);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(0);
-                                record.push(0);
-                                console.log("Released");
-                            }
-                            else if(response.chartdata[i].case_status=="Settled"){
-                                unassigned.push(0);
-                                settled.push(response.chartdata[i].shit);
-                                mediation.push(0);
-                                arbitration.push(0);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(0);
-                                record.push(0);
-                            }
-                            else if(response.chartdata[i].case_status=="Mediation"){
-                                unassigned.push(0);
-                                settled.push(0);
-                                mediation.push(response.chartdata[i].shit);
-                                arbitration.push(0);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(0);
-                                record.push(0);
-                            }
-                            else if(response.chartdata[i].case_status=="Conciliation"){
-                                unassigned.push(0);
-                                settled.push(0);
-                                mediation.push(0);
-                                arbitration.push(0);
-                                conciliation.push(response.chartdata[i].shit);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(0);
-                                record.push(0);
-                            }
-                            else if(response.chartdata[i].case_status=="Arbitration"){
-                                unassigned.push(0);
-                                settled.push(0);
-                                mediation.push(0);
-                                arbitration.push(response.chartdata[i].shit);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(0);
-                                record.push(0);
-                            }
-                            else if(response.chartdata[i].case_status=="Violence Against Women and Children"){
-                                unassigned.push(0);
-                                settled.push(0);
-                                mediation.push(0);
-                                arbitration.push(0);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(response.chartdata[i].shit);
-                                ps6.push(0);
-                                record.push(0);
-                            }
-                            else if(response.chartdata[i].case_status=="Police Station"){
-                                unassigned.push(0);
-                                settled.push(0);
-                                mediation.push(0);
-                                arbitration.push(0);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(response.chartdata[i].shit);
-                                record.push(0);
-                            }
-                            else{
-                                unassigned.push(0);
-                                settled.push(0);
-                                mediation.push(0);
-                                arbitration.push(0);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(0);
-                                record.push(response.chartdata[i].shit);
-                            }
-                                
-                        }
-                            else{
-                                var enumber = jQuery.inArray(response.chartdata[i].caseskp_name, caseskp);
-                                if(response.chartdata[i].case_status=="Captain"||response.chartdata[i].case_status=="Pangkat"){
-                                unassigned[enumber] = response.chartdata[i].shit;
-                            }
-                            else if(response.chartdata[i].case_status=="Settled"){
-                                settled[enumber] = response.chartdata[i].shit;
-                            }
-                            else if(response.chartdata[i].case_status=="Mediation"){
-                                mediation[enumber] = response.chartdata[i].shit;
-                            }
-                            else if(response.chartdata[i].case_status=="Conciliation"){
-                                conciliation[enumber] = response.chartdata[i].shit;
-                            }
-                            else if(response.chartdata[i].case_status=="Arbitration"){
-                                arbitration[enumber] = response.chartdata[i].shit;
-                            }
-                            else if(response.chartdata[i].case_status=="Violence Against Women and Children"){
-                                vawc[enumber] = response.chartdata[i].shit;
-                            }
-                            else if(response.chartdata[i].case_status=="Police Station"){
-                                ps6[enumber] = response.chartdata[i].shit;
-                            }
-                            else{
-                                record[enumber] = response.chartdata[i].shit;
-                            }
-                            
-                            console.log(released);
-                            console.log(forrelease);
-                            console.log(unpaid);
-                        }
-                        }
-                        var chartdata = {
-                            labels : caseskp,
-                            datasets : [
-                                {   
-                                    label: 'Unassigned',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(197,225,165 ,1)",
-                                    borderColor : "rgba(85,139,47 ,1)",
-                                    data: unassigned
-                                },
-                                      {
-                                    label: 'Mediation',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(129,212,250 ,1)",
-                                    borderColor : "rgba(2,119,189 ,1)",
-                                    data: mediation
-                                },
-                                {
-                                    label: 'Conciliation',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(244,143,177 ,1)",
-                                    borderColor : "rgba(173,20,87 ,1)",
-                                    data: conciliation
-                                },
-                                {
-                                    label: 'Arbitration',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(158,157,36 ,1)",
-                                    borderColor : "rgba(230,238,156 ,1)",
-                                    data: arbitration
-                                },
-                                {
-                                    label: 'Settled',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(255,204,128 ,1)",
-                                    borderColor : "rgba(239,108,0 ,1)",
-                                    data: settled
-                                },
-                                {
-                                    label: 'Record',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(255,171,145 ,1))",
-                                    borderColor : "rgba(216,67,21 ,1)",
-                                    data: record
-                                },
-                                {
-                                    label: 'Violence Against Women and Children',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(179,157,219 ,1)",
-                                    borderColor : "rgba(69,39,160 ,1)",
-                                    data: vawc
-                                },
-                                {
-                                    label: 'Police Station',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(159,168,218 ,1)",
-                                    borderColor : "rgba(40,53,147 ,1)",
-                                    data: ps6
-                                }
-                            ]
-                        };
-                        var options = {
-                            title :{
-                                display: true,
-                                position: "top",
-                                text : 'Blotter Case Status Report between '+fromdate+' to '+todate,
-                                fontSize : 16,
-                                fontColor: '#00796B'
-                            },
-                            legend: {
-                                display: true,
-                                position: "bottom",
-                            },
-                            scales :{
-                                yAxes : [{
-                                    ticks: {
-                                        min: 0
-                                    }
-                                }]
-                            }
-                        };
-
-                        var ctx = document.getElementById("chart").getContext('2d');
                         var myChart = new Chart(ctx, {
                             type : 'bar',
                             data : chartdata,
@@ -767,587 +570,11 @@
                         var arbitration = 0 ;
                         var record = 0;
                         var ps6 = 0;
-                        var vawc = 0;
                         var settled = 0;
-                        for (var i = 0; i < response.tabledata.length; i++) {
-                            var comp = "";
-                            var res = "";
-                            for (var k = 0; k < response.resident.length; k++) {
-                                if(response.resident[k].personinvolve_case = response.tabledata[i].case_id){
-                                    if(response.resident[k].personinvolve_type=='C'){
-                                        comp+= response.resident[k].name+"<br>";
-                                    }
-                                    else{
-                                        res+= response.resident[k].name+"<br>";
-                                    }
-                                }
-
-                            }
-                            if((response.tabledata[i].case_status=="Captain")||(response.tabledata[i].case_status=="Pangkat")){
-                                    unassigned+=1;
-                                }
-                                else if(response.tabledata[i].case_status=="Mediation"){
-                                    mediation+=1;
-                                }
-                                else if(response.tabledata[i].case_status=="Conciliation"){
-                                    conciliation+=1;
-                                }
-                                else if(response.tabledata[i].case_status=="Arbitration"){
-                                    arbitration+=1;
-                                }
-                                else if(response.tabledata[i].case_status=="Record"){
-                                    record+=1;
-                                }
-                                else if(response.tabledata[i].case_status=="Police Station"){
-                                    ps6+=1;
-                                }
-                                else if(response.tabledata[i].case_status=="Settled"){
-                                    settled+=1;
-                                }
-                                else{
-                                    vawc+=1;
-                                }
-                            var row = "<tr><td>"+response.tabledata[i].case_id+"</td><td>"+response.tabledata[i].case_name+"</td><td>"+response.tabledata[i].case_filed+"</td><td>"+comp+"</td><td>"+res+"</td><td>"+response.tabledata[i].case_status+"</td></tr>";
-                            $('#reportTable').append(row);
-                        }
-                        var additionalrow = "<tr><td colspan='5'><strong class='pull-right'>Total Unassigned Cases: </strong></td><td>"+unassigned+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Mediation Cases: </strong></td><td>"+mediation+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Conciliation Cases: </strong></td><td>"+conciliation+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Arbitration Cases: </strong></td><td>"+arbitration+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Settled Cases: </strong></td><td>"+settled+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Record Only Cases: </strong></td><td>"+record+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total VAWC Cases: </strong></td><td>"+vawc+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Police Station Cases: </strong></td><td>"+ps6+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Number of Cases: </strong></td><td>"+(arbitration+unassigned+mediation+conciliation+record+ps6+vawc+settled)+"</td></tr>";
-                        $('#reportTable').append(additionalrow);
-                    }
-                });
-                }
-                else if(value=="3"){
-                    var monthlymonth = $('#monthlymonth').val();
-                    var monthlyyear = $('#monthlyyear').val();
-                    var monthword = $('#monthlymonth option[value="'+monthlymonth+'"]').text();
-                    $.ajax({
-                    url : "/reports_blotter/monthly",
-                    method: "POST",
-                    data:{
-                        _token : csrf_token,
-                        monthlymonth : monthlymonth,
-                        monthlyyear : monthlyyear
-                    },
-                    dataType: 'json',
-                    success: function(response){
-                        var unassigned = [];
-                        var settled = [];
-                        var mediation = [];
-                        var conciliation = [];
-                        var arbitration = [];
-                        var vawc = [];
-                        var ps6 = [];
-                        var record = [];
-                        var caseskp = [];
-                        for (var i = 0; i < response.chartdata.length; i++) {
-                            if(jQuery.inArray(response.chartdata[i].caseskp_name, caseskp)==-1){
-                                caseskp.push(response.chartdata[i].caseskp_name);
-
-                                if(response.chartdata[i].case_status=="Captain"||response.chartdata[i].case_status=="Pangkat"){
-                                unassigned.push(response.chartdata[i].shit);
-                                settled.push(0);
-                                mediation.push(0);
-                                arbitration.push(0);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(0);
-                                record.push(0);
-                                console.log("Released");
-                            }
-                            else if(response.chartdata[i].case_status=="Settled"){
-                                unassigned.push(0);
-                                settled.push(response.chartdata[i].shit);
-                                mediation.push(0);
-                                arbitration.push(0);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(0);
-                                record.push(0);
-                            }
-                            else if(response.chartdata[i].case_status=="Mediation"){
-                                unassigned.push(0);
-                                settled.push(0);
-                                mediation.push(response.chartdata[i].shit);
-                                arbitration.push(0);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(0);
-                                record.push(0);
-                            }
-                            else if(response.chartdata[i].case_status=="Conciliation"){
-                                unassigned.push(0);
-                                settled.push(0);
-                                mediation.push(0);
-                                arbitration.push(0);
-                                conciliation.push(response.chartdata[i].shit);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(0);
-                                record.push(0);
-                            }
-                            else if(response.chartdata[i].case_status=="Arbitration"){
-                                unassigned.push(0);
-                                settled.push(0);
-                                mediation.push(0);
-                                arbitration.push(response.chartdata[i].shit);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(0);
-                                record.push(0);
-                            }
-                            else if(response.chartdata[i].case_status=="Violence Against Women and Children"){
-                                unassigned.push(0);
-                                settled.push(0);
-                                mediation.push(0);
-                                arbitration.push(0);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(response.chartdata[i].shit);
-                                ps6.push(0);
-                                record.push(0);
-                            }
-                            else if(response.chartdata[i].case_status=="Police Station"){
-                                unassigned.push(0);
-                                settled.push(0);
-                                mediation.push(0);
-                                arbitration.push(0);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(response.chartdata[i].shit);
-                                record.push(0);
-                            }
-                            else{
-                                unassigned.push(0);
-                                settled.push(0);
-                                mediation.push(0);
-                                arbitration.push(0);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(0);
-                                record.push(response.chartdata[i].shit);
-                            }
-                                
-                        }
-                            else{
-                                var enumber = jQuery.inArray(response.chartdata[i].caseskp_name, caseskp);
-                                if(response.chartdata[i].case_status=="Captain"||response.chartdata[i].case_status=="Pangkat"){
-                                unassigned[enumber] = response.chartdata[i].shit;
-                            }
-                            else if(response.chartdata[i].case_status=="Settled"){
-                                settled[enumber] = response.chartdata[i].shit;
-                            }
-                            else if(response.chartdata[i].case_status=="Mediation"){
-                                mediation[enumber] = response.chartdata[i].shit;
-                            }
-                            else if(response.chartdata[i].case_status=="Conciliation"){
-                                conciliation[enumber] = response.chartdata[i].shit;
-                            }
-                            else if(response.chartdata[i].case_status=="Arbitration"){
-                                arbitration[enumber] = response.chartdata[i].shit;
-                            }
-                            else if(response.chartdata[i].case_status=="Violence Against Women and Children"){
-                                vawc[enumber] = response.chartdata[i].shit;
-                            }
-                            else if(response.chartdata[i].case_status=="Police Station"){
-                                ps6[enumber] = response.chartdata[i].shit;
-                            }
-                            else{
-                                record[enumber] = response.chartdata[i].shit;
-                            }
-                            
-                            console.log(released);
-                            console.log(forrelease);
-                            console.log(unpaid);
-                        }
-                        }
-                        var chartdata = {
-                            labels : caseskp,
-                            datasets : [
-                                {   
-                                    label: 'Unassigned',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(197,225,165 ,1)",
-                                    borderColor : "rgba(85,139,47 ,1)",
-                                    data: unassigned
-                                },
-                                      {
-                                    label: 'Mediation',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(129,212,250 ,1)",
-                                    borderColor : "rgba(2,119,189 ,1)",
-                                    data: mediation
-                                },
-                                {
-                                    label: 'Conciliation',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(244,143,177 ,1)",
-                                    borderColor : "rgba(173,20,87 ,1)",
-                                    data: conciliation
-                                },
-                                {
-                                    label: 'Arbitration',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(158,157,36 ,1)",
-                                    borderColor : "rgba(230,238,156 ,1)",
-                                    data: arbitration
-                                },
-                                {
-                                    label: 'Settled',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(255,204,128 ,1)",
-                                    borderColor : "rgba(239,108,0 ,1)",
-                                    data: settled
-                                },
-                                {
-                                    label: 'Record',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(255,171,145 ,1))",
-                                    borderColor : "rgba(216,67,21 ,1)",
-                                    data: record
-                                },
-                                {
-                                    label: 'Violence Against Women and Children',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(179,157,219 ,1)",
-                                    borderColor : "rgba(69,39,160 ,1)",
-                                    data: vawc
-                                },
-                                {
-                                    label: 'Police Station',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(159,168,218 ,1)",
-                                    borderColor : "rgba(40,53,147 ,1)",
-                                    data: ps6
-                                }
-                            ]
-                        };
-                        var options = {
-                            title :{
-                                display: true,
-                                position: "top",
-                                text : 'Blotter Case Status Report for '+ monthlymonth + ' '+monthlyyear,
-                                fontSize : 16,
-                                fontColor: '#00796B'
-                            },
-                            legend: {
-                                display: true,
-                                position: "bottom",
-                            },
-                            scales :{
-                                yAxes : [{
-                                    ticks: {
-                                        min: 0
-                                    }
-                                }]
-                            }
-                        };
-
-                        var ctx = document.getElementById("chart").getContext('2d');
-                        var myChart = new Chart(ctx, {
-                            type : 'bar',
-                            data : chartdata,
-                            options: options
-                        });
-
-                        var unassigned = 0;
-                        var mediation = 0;
-                        var conciliation = 0;
-                        var arbitration = 0 ;
-                        var record = 0;
-                        var ps6 = 0;
                         var vawc = 0;
-                        var settled = 0;
-                        for (var i = 0; i < response.tabledata.length; i++) {
-                            var comp = "";
-                            var res = "";
-                            for (var k = 0; k < response.resident.length; k++) {
-                                if(response.resident[k].personinvolve_case = response.tabledata[i].case_id){
-                                    if(response.resident[k].personinvolve_type=='C'){
-                                        comp+= response.resident[k].name+"<br>";
-                                    }
-                                    else{
-                                        res+= response.resident[k].name+"<br>";
-                                    }
-                                }
-
-                            }
-                            if((response.tabledata[i].case_status=="Captain")||(response.tabledata[i].case_status=="Pangkat")){
-                                    unassigned+=1;
-                                }
-                                else if(response.tabledata[i].case_status=="Mediation"){
-                                    mediation+=1;
-                                }
-                                else if(response.tabledata[i].case_status=="Conciliation"){
-                                    conciliation+=1;
-                                }
-                                else if(response.tabledata[i].case_status=="Arbitration"){
-                                    arbitration+=1;
-                                }
-                                else if(response.tabledata[i].case_status=="Record"){
-                                    record+=1;
-                                }
-                                else if(response.tabledata[i].case_status=="Police Station"){
-                                    ps6+=1;
-                                }
-                                else if(response.tabledata[i].case_status=="Settled"){
-                                    settled+=1;
-                                }
-                                else{
-                                    vawc+=1;
-                                }
-                            var row = "<tr><td>"+response.tabledata[i].case_id+"</td><td>"+response.tabledata[i].case_name+"</td><td>"+response.tabledata[i].case_filed+"</td><td>"+comp+"</td><td>"+res+"</td><td>"+response.tabledata[i].case_status+"</td></tr>";
-                            $('#reportTable').append(row);
-                        }
-                        var additionalrow = "<tr><td colspan='5'><strong class='pull-right'>Total Unassigned Cases: </strong></td><td>"+unassigned+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Mediation Cases: </strong></td><td>"+mediation+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Conciliation Cases: </strong></td><td>"+conciliation+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Arbitration Cases: </strong></td><td>"+arbitration+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Settled Cases: </strong></td><td>"+settled+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Record Only Cases: </strong></td><td>"+record+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total VAWC Cases: </strong></td><td>"+vawc+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Police Station Cases: </strong></td><td>"+ps6+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Number of Cases: </strong></td><td>"+(arbitration+unassigned+mediation+conciliation+record+ps6+vawc+settled)+"</td></tr>";
-                        $('#reportTable').append(additionalrow);
-                    }
-                });
-                }
-                else{
-                    var yearlyyear = $('#yearlyyear').val();
-                    $.ajax({
-                    url : "/reports_blotter/yearly",
-                    method: "POST",
-                    data:{
-                        _token : csrf_token,
-                        yearlyyear : yearlyyear
-                    },
-                    dataType: 'json',
-                    success: function(response){
-                        var unassigned = [];
-                        var settled = [];
-                        var mediation = [];
-                        var conciliation = [];
-                        var arbitration = [];
-                        var vawc = [];
-                        var ps6 = [];
-                        var record = [];
-                        var caseskp = [];
-                        for (var i = 0; i < response.chartdata.length; i++) {
-                            if(jQuery.inArray(response.chartdata[i].caseskp_name, caseskp)==-1){
-                                caseskp.push(response.chartdata[i].caseskp_name);
-
-                                if(response.chartdata[i].case_status=="Captain"||response.chartdata[i].case_status=="Pangkat"){
-                                unassigned.push(response.chartdata[i].shit);
-                                settled.push(0);
-                                mediation.push(0);
-                                arbitration.push(0);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(0);
-                                record.push(0);
-                                console.log("Released");
-                            }
-                            else if(response.chartdata[i].case_status=="Settled"){
-                                unassigned.push(0);
-                                settled.push(response.chartdata[i].shit);
-                                mediation.push(0);
-                                arbitration.push(0);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(0);
-                                record.push(0);
-                            }
-                            else if(response.chartdata[i].case_status=="Mediation"){
-                                unassigned.push(0);
-                                settled.push(0);
-                                mediation.push(response.chartdata[i].shit);
-                                arbitration.push(0);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(0);
-                                record.push(0);
-                            }
-                            else if(response.chartdata[i].case_status=="Conciliation"){
-                                unassigned.push(0);
-                                settled.push(0);
-                                mediation.push(0);
-                                arbitration.push(0);
-                                conciliation.push(response.chartdata[i].shit);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(0);
-                                record.push(0);
-                            }
-                            else if(response.chartdata[i].case_status=="Arbitration"){
-                                unassigned.push(0);
-                                settled.push(0);
-                                mediation.push(0);
-                                arbitration.push(response.chartdata[i].shit);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(0);
-                                record.push(0);
-                            }
-                            else if(response.chartdata[i].case_status=="Violence Against Women and Children"){
-                                unassigned.push(0);
-                                settled.push(0);
-                                mediation.push(0);
-                                arbitration.push(0);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(response.chartdata[i].shit);
-                                ps6.push(0);
-                                record.push(0);
-                            }
-                            else if(response.chartdata[i].case_status=="Police Station"){
-                                unassigned.push(0);
-                                settled.push(0);
-                                mediation.push(0);
-                                arbitration.push(0);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(response.chartdata[i].shit);
-                                record.push(0);
-                            }
-                            else{
-                                unassigned.push(0);
-                                settled.push(0);
-                                mediation.push(0);
-                                arbitration.push(0);
-                                conciliation.push(0);
-                                mediation.push(0);
-                                vawc.push(0);
-                                ps6.push(0);
-                                record.push(response.chartdata[i].shit);
-                            }
-                                
-                        }
-                            else{
-                                var enumber = jQuery.inArray(response.chartdata[i].caseskp_name, caseskp);
-                                if(response.chartdata[i].case_status=="Captain"||response.chartdata[i].case_status=="Pangkat"){
-                                unassigned[enumber] = response.chartdata[i].shit;
-                            }
-                            else if(response.chartdata[i].case_status=="Settled"){
-                                settled[enumber] = response.chartdata[i].shit;
-                            }
-                            else if(response.chartdata[i].case_status=="Mediation"){
-                                mediation[enumber] = response.chartdata[i].shit;
-                            }
-                            else if(response.chartdata[i].case_status=="Conciliation"){
-                                conciliation[enumber] = response.chartdata[i].shit;
-                            }
-                            else if(response.chartdata[i].case_status=="Arbitration"){
-                                arbitration[enumber] = response.chartdata[i].shit;
-                            }
-                            else if(response.chartdata[i].case_status=="Violence Against Women and Children"){
-                                vawc[enumber] = response.chartdata[i].shit;
-                            }
-                            else if(response.chartdata[i].case_status=="Police Station"){
-                                ps6[enumber] = response.chartdata[i].shit;
-                            }
-                            else{
-                                record[enumber] = response.chartdata[i].shit;
-                            }
-                        }
-                        }
-                        var chartdata = {
-                            labels : caseskp,
-                            datasets : [
-                                {   
-                                    label: 'Unassigned',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(197,225,165 ,1)",
-                                    borderColor : "rgba(85,139,47 ,1)",
-                                    data: unassigned
-                                },
-                                      {
-                                    label: 'Mediation',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(129,212,250 ,1)",
-                                    borderColor : "rgba(2,119,189 ,1)",
-                                    data: mediation
-                                },
-                                {
-                                    label: 'Conciliation',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(244,143,177 ,1)",
-                                    borderColor : "rgba(173,20,87 ,1)",
-                                    data: conciliation
-                                },
-                                {
-                                    label: 'Arbitration',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(158,157,36 ,1)",
-                                    borderColor : "rgba(230,238,156 ,1)",
-                                    data: arbitration
-                                },
-                                {
-                                    label: 'Settled',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(255,204,128 ,1)",
-                                    borderColor : "rgba(239,108,0 ,1)",
-                                    data: settled
-                                },
-                                {
-                                    label: 'Record',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(255,171,145 ,1))",
-                                    borderColor : "rgba(216,67,21 ,1)",
-                                    data: record
-                                },
-                                {
-                                    label: 'Violence Against Women and Children',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(179,157,219 ,1)",
-                                    borderColor : "rgba(69,39,160 ,1)",
-                                    data: vawc
-                                },
-                                {
-                                    label: 'Police Station',
-                                    borderWith: 1,
-                                    backgroundColor : "rgba(159,168,218 ,1)",
-                                    borderColor : "rgba(40,53,147 ,1)",
-                                    data: ps6
-                                }
-                            ]
-                        };
-                        var options = {
-                            title :{
-                                display: true,
-                                position: "top",
-                                text : 'Blotter Case Status Report for '+ yearlyyear,
-                                fontSize : 16,
-                                fontColor: '#00796B'
-                            },
-                            legend: {
-                                display: true,
-                                position: "bottom",
-                            },
-                            scales :{
-                                yAxes : [{
-                                    ticks: {
-                                        min: 0
-                                    }
-                                }]
-                            }
-                        };
-
-                        var ctx = document.getElementById("chart").getContext('2d');
-                        var myChart = new Chart(ctx, {
-                            type : 'bar',
-                            data : chartdata,
-                            options: options
-                        });
-
-                        var unassigned = 0;
-                        var mediation = 0;
-                        var conciliation = 0;
-                        var arbitration = 0 ;
-                        var record = 0;
-                        var ps6 = 0;
-                        var vawc = 0;
-                        var settled = 0;
+                        var rep = 0;
+                        var dis = 0;
+                        var cfa = 0;
                         for (var i = 0; i < response.tabledata.length; i++) {
                             var comp = "";
                             var res = "";
@@ -1383,13 +610,1213 @@
                                 else if(response.tabledata[i].case_status=="Settled"){
                                     settled+=1;
                                 }
+                                else if(response.tabledata[i].case_status=="Repudiated"){
+                                    rep+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Case Dismissed"){
+                                    dis+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Certificate to File Action"){
+                                    cfa+=1;
+                                }
                                 else{
                                     vawc+=1;
                                 }
                             var row = "<tr><td>"+response.tabledata[i].case_id+"</td><td>"+response.tabledata[i].case_name+"</td><td>"+response.tabledata[i].case_filed+"</td><td>"+comp+"</td><td>"+res+"</td><td>"+response.tabledata[i].case_status+"</td></tr>";
                             $('#reportTable').append(row);
                         }
-                        var additionalrow = "<tr><td colspan='5'><strong class='pull-right'>Total Unassigned Cases: </strong></td><td>"+unassigned+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Mediation Cases: </strong></td><td>"+mediation+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Conciliation Cases: </strong></td><td>"+conciliation+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Arbitration Cases: </strong></td><td>"+arbitration+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Settled Cases: </strong></td><td>"+settled+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Record Only Cases: </strong></td><td>"+record+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total VAWC Cases: </strong></td><td>"+vawc+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Police Station Cases: </strong></td><td>"+ps6+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Number of Cases: </strong></td><td>"+(arbitration+unassigned+mediation+conciliation+record+ps6+vawc+settled)+"</td></tr>";
+                        var additionalrow = "<tr><td colspan='5'><strong class='pull-right'>Total Unassigned Cases: </strong></td><td>"+unassigned+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Mediation Cases: </strong></td><td>"+mediation+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Conciliation Cases: </strong></td><td>"+conciliation+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Arbitration Cases: </strong></td><td>"+arbitration+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Settled Cases: </strong></td><td>"+settled+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Record Only Cases: </strong></td><td>"+record+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total VAWC Cases: </strong></td><td>"+vawc+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Police Station Cases: </strong></td><td>"+ps6+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Repudiated Cases: </strong></td><td>"+rep+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Certificate to File Action: </strong></td><td>"+cfa+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Dismissed Cases: </strong></td><td>"+dis+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Number of Cases: </strong></td><td>"+(arbitration+unassigned+mediation+conciliation+record+ps6+vawc+settled+cfa+dis+rep)+"</td></tr>";
+                        $('#reportTable').append(additionalrow);
+                    }
+                });
+                }
+                else if(value=="2"){
+                    var weekdate = $('#weeklydate').val();
+                    var fromdate = (weekdate.split('|'))[0];
+                    var todate = (weekdate.split('|'))[1];
+                    $.ajax({
+                    url : "/reports_blotter/weekly",
+                    method: "POST",
+                    data:{
+                        _token : csrf_token,
+                        fromdate : fromdate,
+                        todate : todate
+                    },
+                    dataType: 'json',
+                    success: function(response){
+                        var unassigned = [];
+                        var settled = [];
+                        var mediation = [];
+                        var conciliation = [];
+                        var arbitration = [];
+                        var vawc = [];
+                        var ps6 = [];
+                        var record = [];
+                        var cfa = [];
+                        var dismissed = [];
+                        var caseskp = [];
+                        var rep = [];
+                        for (var i = 0; i < response.chartdata.length; i++) {
+                            if(jQuery.inArray(response.chartdata[i].caseskp_name, caseskp)==-1){
+                                caseskp.push(response.chartdata[i].caseskp_name);
+
+                                if(response.chartdata[i].case_status=="Captain"||response.chartdata[i].case_status=="Pangkat"){
+                                unassigned.push(response.chartdata[i].shit);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                record.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status=="Settled"){
+                                unassigned.push(0);
+                                settled.push(response.chartdata[i].shit);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                record.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status=="Mediation"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(response.chartdata[i].shit);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                record.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status=="Conciliation"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(response.chartdata[i].shit);
+                                vawc.push(0);
+                                ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                record.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status=="Arbitration"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(response.chartdata[i].shit);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                record.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status=="Violence Against Women and Children"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(response.chartdata[i].shit);
+                                ps6.push(0);
+                                record.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status=="Police Station"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(response.chartdata[i].shit);
+                                record.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status =="Certificate to File Action"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                record.push(0);
+                                cfa.push(response.chartdata[i].shit);
+                                dismissed.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status =="Case Dismissed"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                record.push(0);
+                                cfa.push(0);
+                                dismissed.push(response.chartdata[i].shit);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status =="Repudiated"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                record.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                rep.push(response.chartdata[i].shit);
+                            }
+                            else{
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                record.push(response.chartdata[i].shit);
+                                rep.push(0);
+                            }
+                                
+                        }
+                            else{
+                                var enumber = jQuery.inArray(response.chartdata[i].caseskp_name, caseskp);
+                                if(response.chartdata[i].case_status=="Captain"||response.chartdata[i].case_status=="Pangkat"){
+                                unassigned[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Settled"){
+                                settled[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Mediation"){
+                                mediation[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Conciliation"){
+                                conciliation[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Arbitration"){
+                                arbitration[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Violence Against Women and Children"){
+                                vawc[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Police Station"){
+                                ps6[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Certificate to File Action"){
+                                cfa[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Case Dismissed"){
+                                dismissed[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Repudiated"){
+                                rep[enumber] = response.chartdata[i].shit;
+                            }
+                            else{
+                                record[enumber] = response.chartdata[i].shit;
+                            }
+                            
+                        }
+                        }
+                        var chartdata = {
+                            labels : caseskp,
+                            datasets : [
+                                {   
+                                    label: 'Unassigned',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(197,225,165 ,1)",
+                                    borderColor : "rgba(85,139,47 ,1)",
+                                    data: unassigned
+                                },
+                                      {
+                                    label: 'Mediation',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(129,212,250 ,1)",
+                                    borderColor : "rgba(2,119,189 ,1)",
+                                    data: mediation
+                                },
+                                {
+                                    label: 'Conciliation',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(244,143,177 ,1)",
+                                    borderColor : "rgba(173,20,87 ,1)",
+                                    data: conciliation
+                                },
+                                {
+                                    label: 'Arbitration',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(158,157,36 ,1)",
+                                    borderColor : "rgba(230,238,156 ,1)",
+                                    data: arbitration
+                                },
+                                {
+                                    label: 'Settled',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(255,204,128 ,1)",
+                                    borderColor : "rgba(239,108,0 ,1)",
+                                    data: settled
+                                },
+                                {
+                                    label: 'Record',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(255,171,145 ,1)",
+                                    borderColor : "rgba(216,67,21 ,1)",
+                                    data: record
+                                },
+                                {
+                                    label: 'Violence Against Women and Children',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(179,157,219 ,1)",
+                                    borderColor : "rgba(69,39,160 ,1)",
+                                    data: vawc
+                                },
+                                {
+                                    label: 'Police Station',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(159,168,218 ,1)",
+                                    borderColor : "rgba(40,53,147 ,1)",
+                                    data: ps6
+                                },
+                                {
+                                    label: 'Dismissed',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(188,170,164 ,1)",
+                                    borderColor : "rgba(78,52,46 ,1)",
+                                    data: dismissed
+                                },
+                                {
+                                    label: 'Repudiated',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(176,190,197 ,1)",
+                                    borderColor : "rgba(55,71,79 ,1)",
+                                    data: rep
+                                },
+                                {
+                                    label: 'Certificate to File Action',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(239,154,154 ,1)",
+                                    borderColor : "rgba(198,40,40 ,1)",
+                                    data: cfa
+                                }
+
+                            ]
+                        };
+                        var options = {
+                            title :{
+                                display: true,
+                                position: "top",
+                                text : 'Blotter Case Status Report between '+ fromdate +' to '+todate,
+                                fontSize : 16,
+                                fontColor: '#00796B'
+                            },
+                            legend: {
+                                display: true,
+                                position: "bottom",
+                            },
+                            scales :{
+                                yAxes : [{
+                                    ticks: {
+                                        min: 0
+                                    }
+                                }]
+                            }
+                        };
+
+                        var ctx = document.getElementById("chart").getContext('2d');
+                        var myChart = new Chart(ctx, {
+                            type : 'bar',
+                            data : chartdata,
+                            options: options
+                        });
+
+                        myChart.destroy();
+
+                        var myChart = new Chart(ctx, {
+                            type : 'bar',
+                            data : chartdata,
+                            options: options
+                        });
+
+                        var unassigned = 0;
+                        var mediation = 0;
+                        var conciliation = 0;
+                        var arbitration = 0 ;
+                        var record = 0;
+                        var ps6 = 0;
+                        var settled = 0;
+                        var vawc = 0;
+                        var rep = 0;
+                        var dis = 0;
+                        var cfa = 0;
+                        for (var i = 0; i < response.tabledata.length; i++) {
+                            var comp = "";
+                            var res = "";
+                            for (var k = 0; k < response.resident.length; k++) {
+                                if(response.resident[k].personinvolve_case == response.tabledata[i].case_id){
+                                    if(response.resident[k].personinvolve_type=='C'){
+                                        comp+= response.resident[k].name+"<br>";
+                                    }
+                                    else{
+                                        res+= response.resident[k].name+"<br>";
+                                    }
+                                }
+
+                            }
+                            if((response.tabledata[i].case_status=="Captain")||(response.tabledata[i].case_status=="Pangkat")){
+                                    unassigned+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Mediation"){
+                                    mediation+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Conciliation"){
+                                    conciliation+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Arbitration"){
+                                    arbitration+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Record"){
+                                    record+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Police Station"){
+                                    ps6+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Settled"){
+                                    settled+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Repudiated"){
+                                    rep+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Case Dismissed"){
+                                    dis+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Certificate to File Action"){
+                                    cfa+=1;
+                                }
+                                else{
+                                    vawc+=1;
+                                }
+                            var row = "<tr><td>"+response.tabledata[i].case_id+"</td><td>"+response.tabledata[i].case_name+"</td><td>"+response.tabledata[i].case_filed+"</td><td>"+comp+"</td><td>"+res+"</td><td>"+response.tabledata[i].case_status+"</td></tr>";
+                            $('#reportTable').append(row);
+                        }
+                        var additionalrow = "<tr><td colspan='5'><strong class='pull-right'>Total Unassigned Cases: </strong></td><td>"+unassigned+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Mediation Cases: </strong></td><td>"+mediation+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Conciliation Cases: </strong></td><td>"+conciliation+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Arbitration Cases: </strong></td><td>"+arbitration+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Settled Cases: </strong></td><td>"+settled+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Record Only Cases: </strong></td><td>"+record+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total VAWC Cases: </strong></td><td>"+vawc+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Police Station Cases: </strong></td><td>"+ps6+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Repudiated Cases: </strong></td><td>"+rep+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Certificate to File Action: </strong></td><td>"+cfa+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Dismissed Cases: </strong></td><td>"+dis+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Number of Cases: </strong></td><td>"+(arbitration+unassigned+mediation+conciliation+record+ps6+vawc+settled+cfa+dis+rep)+"</td></tr>";
+                        $('#reportTable').append(additionalrow);
+                    }
+                });
+                }
+                else if(value=="3"){
+                    var monthlymonth = $('#monthlymonth').val();
+                    var monthlyyear = $('#monthlyyear').val();
+                    var monthword = $('#monthlymonth option[value="'+monthlymonth+'"]').text();
+                    $.ajax({
+                    url : "/reports_blotter/monthly",
+                    method: "POST",
+                    data:{
+                        _token : csrf_token,
+                        monthlymonth : monthlymonth,
+                        monthlyyear : monthlyyear
+                    },
+                    dataType: 'json',
+                    success: function(response){
+                        var unassigned = [];
+                        var settled = [];
+                        var mediation = [];
+                        var conciliation = [];
+                        var arbitration = [];
+                        var vawc = [];
+                        var ps6 = [];
+                        var record = [];
+                        var cfa = [];
+                        var dismissed = [];
+                        var caseskp = [];
+                        var rep = [];
+                        for (var i = 0; i < response.chartdata.length; i++) {
+                            if(jQuery.inArray(response.chartdata[i].caseskp_name, caseskp)==-1){
+                                caseskp.push(response.chartdata[i].caseskp_name);
+
+                                if(response.chartdata[i].case_status=="Captain"||response.chartdata[i].case_status=="Pangkat"){
+                                unassigned.push(response.chartdata[i].shit);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                record.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status=="Settled"){
+                                unassigned.push(0);
+                                settled.push(response.chartdata[i].shit);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                record.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status=="Mediation"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(response.chartdata[i].shit);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                record.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status=="Conciliation"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(response.chartdata[i].shit);
+                                vawc.push(0);
+                                ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                record.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status=="Arbitration"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(response.chartdata[i].shit);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                record.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status=="Violence Against Women and Children"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(response.chartdata[i].shit);
+                                ps6.push(0);
+                                record.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status=="Police Station"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(response.chartdata[i].shit);
+                                record.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status =="Certificate to File Action"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                record.push(0);
+                                cfa.push(response.chartdata[i].shit);
+                                dismissed.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status =="Case Dismissed"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                record.push(0);
+                                cfa.push(0);
+                                dismissed.push(response.chartdata[i].shit);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status =="Repudiated"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                record.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                rep.push(response.chartdata[i].shit);
+                            }
+                            else{
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                record.push(response.chartdata[i].shit);
+                                rep.push(0);
+                            }
+                                
+                        }
+                            else{
+                                var enumber = jQuery.inArray(response.chartdata[i].caseskp_name, caseskp);
+                                if(response.chartdata[i].case_status=="Captain"||response.chartdata[i].case_status=="Pangkat"){
+                                unassigned[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Settled"){
+                                settled[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Mediation"){
+                                mediation[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Conciliation"){
+                                conciliation[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Arbitration"){
+                                arbitration[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Violence Against Women and Children"){
+                                vawc[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Police Station"){
+                                ps6[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Certificate to File Action"){
+                                cfa[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Case Dismissed"){
+                                dismissed[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Repudiated"){
+                                rep[enumber] = response.chartdata[i].shit;
+                            }
+                            else{
+                                record[enumber] = response.chartdata[i].shit;
+                            }
+                            
+                        }
+                        }
+                        var chartdata = {
+                            labels : caseskp,
+                            datasets : [
+                                {   
+                                    label: 'Unassigned',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(197,225,165 ,1)",
+                                    borderColor : "rgba(85,139,47 ,1)",
+                                    data: unassigned
+                                },
+                                      {
+                                    label: 'Mediation',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(129,212,250 ,1)",
+                                    borderColor : "rgba(2,119,189 ,1)",
+                                    data: mediation
+                                },
+                                {
+                                    label: 'Conciliation',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(244,143,177 ,1)",
+                                    borderColor : "rgba(173,20,87 ,1)",
+                                    data: conciliation
+                                },
+                                {
+                                    label: 'Arbitration',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(158,157,36 ,1)",
+                                    borderColor : "rgba(230,238,156 ,1)",
+                                    data: arbitration
+                                },
+                                {
+                                    label: 'Settled',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(255,204,128 ,1)",
+                                    borderColor : "rgba(239,108,0 ,1)",
+                                    data: settled
+                                },
+                                {
+                                    label: 'Record',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(255,171,145 ,1)",
+                                    borderColor : "rgba(216,67,21 ,1)",
+                                    data: record
+                                },
+                                {
+                                    label: 'Violence Against Women and Children',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(179,157,219 ,1)",
+                                    borderColor : "rgba(69,39,160 ,1)",
+                                    data: vawc
+                                },
+                                {
+                                    label: 'Police Station',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(159,168,218 ,1)",
+                                    borderColor : "rgba(40,53,147 ,1)",
+                                    data: ps6
+                                },
+                                {
+                                    label: 'Dismissed',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(188,170,164 ,1)",
+                                    borderColor : "rgba(78,52,46 ,1)",
+                                    data: dismissed
+                                },
+                                {
+                                    label: 'Repudiated',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(176,190,197 ,1)",
+                                    borderColor : "rgba(55,71,79 ,1)",
+                                    data: rep
+                                },
+                                {
+                                    label: 'Certificate to File Action',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(239,154,154 ,1)",
+                                    borderColor : "rgba(198,40,40 ,1)",
+                                    data: cfa
+                                }
+
+                            ]
+                        };
+                        var options = {
+                            title :{
+                                display: true,
+                                position: "top",
+                                text : 'Blotter Case Status Report for the month of '+ monthlymonth+ ' '+yearlyyear,
+                                fontSize : 16,
+                                fontColor: '#00796B'
+                            },
+                            legend: {
+                                display: true,
+                                position: "bottom",
+                            },
+                            scales :{
+                                yAxes : [{
+                                    ticks: {
+                                        min: 0
+                                    }
+                                }]
+                            }
+                        };
+
+                        var ctx = document.getElementById("chart").getContext('2d');
+                        var myChart = new Chart(ctx, {
+                            type : 'bar',
+                            data : chartdata,
+                            options: options
+                        });
+
+                        myChart.destroy();
+
+                        var myChart = new Chart(ctx, {
+                            type : 'bar',
+                            data : chartdata,
+                            options: options
+                        });
+
+                        var unassigned = 0;
+                        var mediation = 0;
+                        var conciliation = 0;
+                        var arbitration = 0 ;
+                        var record = 0;
+                        var ps6 = 0;
+                        var settled = 0;
+                        var vawc = 0;
+                        var rep = 0;
+                        var dis = 0;
+                        var cfa = 0;
+                        for (var i = 0; i < response.tabledata.length; i++) {
+                            var comp = "";
+                            var res = "";
+                            for (var k = 0; k < response.resident.length; k++) {
+                                if(response.resident[k].personinvolve_case == response.tabledata[i].case_id){
+                                    if(response.resident[k].personinvolve_type=='C'){
+                                        comp+= response.resident[k].name+"<br>";
+                                    }
+                                    else{
+                                        res+= response.resident[k].name+"<br>";
+                                    }
+                                }
+
+                            }
+                            if((response.tabledata[i].case_status=="Captain")||(response.tabledata[i].case_status=="Pangkat")){
+                                    unassigned+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Mediation"){
+                                    mediation+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Conciliation"){
+                                    conciliation+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Arbitration"){
+                                    arbitration+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Record"){
+                                    record+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Police Station"){
+                                    ps6+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Settled"){
+                                    settled+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Repudiated"){
+                                    rep+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Case Dismissed"){
+                                    dis+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Certificate to File Action"){
+                                    cfa+=1;
+                                }
+                                else{
+                                    vawc+=1;
+                                }
+                            var row = "<tr><td>"+response.tabledata[i].case_id+"</td><td>"+response.tabledata[i].case_name+"</td><td>"+response.tabledata[i].case_filed+"</td><td>"+comp+"</td><td>"+res+"</td><td>"+response.tabledata[i].case_status+"</td></tr>";
+                            $('#reportTable').append(row);
+                        }
+                        var additionalrow = "<tr><td colspan='5'><strong class='pull-right'>Total Unassigned Cases: </strong></td><td>"+unassigned+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Mediation Cases: </strong></td><td>"+mediation+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Conciliation Cases: </strong></td><td>"+conciliation+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Arbitration Cases: </strong></td><td>"+arbitration+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Settled Cases: </strong></td><td>"+settled+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Record Only Cases: </strong></td><td>"+record+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total VAWC Cases: </strong></td><td>"+vawc+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Police Station Cases: </strong></td><td>"+ps6+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Repudiated Cases: </strong></td><td>"+rep+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Certificate to File Action: </strong></td><td>"+cfa+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Dismissed Cases: </strong></td><td>"+dis+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Number of Cases: </strong></td><td>"+(arbitration+unassigned+mediation+conciliation+record+ps6+vawc+settled+cfa+dis+rep)+"</td></tr>";
+                        $('#reportTable').append(additionalrow);
+                    }
+                });
+                }
+                else{
+                    var yearlyyear = $('#yearlyyear').val();
+                    $.ajax({
+                    url : "/reports_blotter/yearly",
+                    method: "POST",
+                    data:{
+                        _token : csrf_token,
+                        yearlyyear : yearlyyear
+                    },
+                    dataType: 'json',
+                    success: function(response){
+                        var unassigned = [];
+                        var settled = [];
+                        var mediation = [];
+                        var conciliation = [];
+                        var arbitration = [];
+                        var vawc = [];
+                        var ps6 = [];
+                        var record = [];
+                        var cfa = [];
+                        var dismissed = [];
+                        var caseskp = [];
+                        var rep = [];
+                        for (var i = 0; i < response.chartdata.length; i++) {
+                            if(jQuery.inArray(response.chartdata[i].caseskp_name, caseskp)==-1){
+                                caseskp.push(response.chartdata[i].caseskp_name);
+
+                                if(response.chartdata[i].case_status=="Captain"||response.chartdata[i].case_status=="Pangkat"){
+                                unassigned.push(response.chartdata[i].shit);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                record.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status=="Settled"){
+                                unassigned.push(0);
+                                settled.push(response.chartdata[i].shit);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                record.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status=="Mediation"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(response.chartdata[i].shit);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                record.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status=="Conciliation"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(response.chartdata[i].shit);
+                                vawc.push(0);
+                                ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                record.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status=="Arbitration"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(response.chartdata[i].shit);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                record.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status=="Violence Against Women and Children"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(response.chartdata[i].shit);
+                                ps6.push(0);
+                                record.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status=="Police Station"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(response.chartdata[i].shit);
+                                record.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status =="Certificate to File Action"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                record.push(0);
+                                cfa.push(response.chartdata[i].shit);
+                                dismissed.push(0);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status =="Case Dismissed"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                record.push(0);
+                                cfa.push(0);
+                                dismissed.push(response.chartdata[i].shit);
+                                rep.push(0);
+                            }
+                            else if(response.chartdata[i].case_status =="Repudiated"){
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                record.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                rep.push(response.chartdata[i].shit);
+                            }
+                            else{
+                                unassigned.push(0);
+                                settled.push(0);
+                                mediation.push(0);
+                                arbitration.push(0);
+                                conciliation.push(0);
+                                vawc.push(0);
+                                ps6.push(0);
+                                cfa.push(0);
+                                dismissed.push(0);
+                                record.push(response.chartdata[i].shit);
+                                rep.push(0);
+                            }
+                                
+                        }
+                            else{
+                                var enumber = jQuery.inArray(response.chartdata[i].caseskp_name, caseskp);
+                                if(response.chartdata[i].case_status=="Captain"||response.chartdata[i].case_status=="Pangkat"){
+                                unassigned[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Settled"){
+                                settled[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Mediation"){
+                                mediation[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Conciliation"){
+                                conciliation[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Arbitration"){
+                                arbitration[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Violence Against Women and Children"){
+                                vawc[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Police Station"){
+                                ps6[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Certificate to File Action"){
+                                cfa[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Case Dismissed"){
+                                dismissed[enumber] = response.chartdata[i].shit;
+                            }
+                            else if(response.chartdata[i].case_status=="Repudiated"){
+                                rep[enumber] = response.chartdata[i].shit;
+                            }
+                            else{
+                                record[enumber] = response.chartdata[i].shit;
+                            }
+                            
+                        }
+                        }
+                        var chartdata = {
+                            labels : caseskp,
+                            datasets : [
+                                {   
+                                    label: 'Unassigned',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(197,225,165 ,1)",
+                                    borderColor : "rgba(85,139,47 ,1)",
+                                    data: unassigned
+                                },
+                                      {
+                                    label: 'Mediation',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(129,212,250 ,1)",
+                                    borderColor : "rgba(2,119,189 ,1)",
+                                    data: mediation
+                                },
+                                {
+                                    label: 'Conciliation',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(244,143,177 ,1)",
+                                    borderColor : "rgba(173,20,87 ,1)",
+                                    data: conciliation
+                                },
+                                {
+                                    label: 'Arbitration',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(158,157,36 ,1)",
+                                    borderColor : "rgba(230,238,156 ,1)",
+                                    data: arbitration
+                                },
+                                {
+                                    label: 'Settled',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(255,204,128 ,1)",
+                                    borderColor : "rgba(239,108,0 ,1)",
+                                    data: settled
+                                },
+                                {
+                                    label: 'Record',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(255,171,145 ,1)",
+                                    borderColor : "rgba(216,67,21 ,1)",
+                                    data: record
+                                },
+                                {
+                                    label: 'Violence Against Women and Children',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(179,157,219 ,1)",
+                                    borderColor : "rgba(69,39,160 ,1)",
+                                    data: vawc
+                                },
+                                {
+                                    label: 'Police Station',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(159,168,218 ,1)",
+                                    borderColor : "rgba(40,53,147 ,1)",
+                                    data: ps6
+                                },
+                                {
+                                    label: 'Dismissed',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(188,170,164 ,1)",
+                                    borderColor : "rgba(78,52,46 ,1)",
+                                    data: dismissed
+                                },
+                                {
+                                    label: 'Repudiated',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(176,190,197 ,1)",
+                                    borderColor : "rgba(55,71,79 ,1)",
+                                    data: rep
+                                },
+                                {
+                                    label: 'Certificate to File Action',
+                                    borderWith: 1,
+                                    backgroundColor : "rgba(239,154,154 ,1)",
+                                    borderColor : "rgba(198,40,40 ,1)",
+                                    data: cfa
+                                }
+
+                            ]
+                        };
+                        var options = {
+                            title :{
+                                display: true,
+                                position: "top",
+                                text : 'Blotter Case Status Report for the Year'+ yearlyyear,
+                                fontSize : 16,
+                                fontColor: '#00796B'
+                            },
+                            legend: {
+                                display: true,
+                                position: "bottom",
+                            },
+                            scales :{
+                                yAxes : [{
+                                    ticks: {
+                                        min: 0
+                                    }
+                                }]
+                            }
+                        };
+
+                        var ctx = document.getElementById("chart").getContext('2d');
+                        var myChart = new Chart(ctx, {
+                            type : 'pie',
+                            data : chartdata,
+                            options: options
+                        });
+
+                        myChart.destroy();
+
+                        var myChart = new Chart(ctx, {
+                            type : 'bar',
+                            data : chartdata,
+                            options: options
+                        });
+
+                        var unassigned = 0;
+                        var mediation = 0;
+                        var conciliation = 0;
+                        var arbitration = 0 ;
+                        var record = 0;
+                        var ps6 = 0;
+                        var settled = 0;
+                        var vawc = 0;
+                        var rep = 0;
+                        var dis = 0;
+                        var cfa = 0;
+                        for (var i = 0; i < response.tabledata.length; i++) {
+                            var comp = "";
+                            var res = "";
+                            for (var k = 0; k < response.resident.length; k++) {
+                                if(response.resident[k].personinvolve_case == response.tabledata[i].case_id){
+                                    if(response.resident[k].personinvolve_type=='C'){
+                                        comp+= response.resident[k].name+"<br>";
+                                    }
+                                    else{
+                                        res+= response.resident[k].name+"<br>";
+                                    }
+                                }
+
+                            }
+                            if((response.tabledata[i].case_status=="Captain")||(response.tabledata[i].case_status=="Pangkat")){
+                                    unassigned+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Mediation"){
+                                    mediation+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Conciliation"){
+                                    conciliation+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Arbitration"){
+                                    arbitration+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Record"){
+                                    record+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Police Station"){
+                                    ps6+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Settled"){
+                                    settled+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Repudiated"){
+                                    rep+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Case Dismissed"){
+                                    dis+=1;
+                                }
+                                else if(response.tabledata[i].case_status=="Certificate to File Action"){
+                                    cfa+=1;
+                                }
+                                else{
+                                    vawc+=1;
+                                }
+                            var row = "<tr><td>"+response.tabledata[i].case_id+"</td><td>"+response.tabledata[i].case_name+"</td><td>"+response.tabledata[i].case_filed+"</td><td>"+comp+"</td><td>"+res+"</td><td>"+response.tabledata[i].case_status+"</td></tr>";
+                            $('#reportTable').append(row);
+                        }
+                        var additionalrow = "<tr><td colspan='5'><strong class='pull-right'>Total Unassigned Cases: </strong></td><td>"+unassigned+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Mediation Cases: </strong></td><td>"+mediation+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Conciliation Cases: </strong></td><td>"+conciliation+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Arbitration Cases: </strong></td><td>"+arbitration+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Settled Cases: </strong></td><td>"+settled+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Record Only Cases: </strong></td><td>"+record+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total VAWC Cases: </strong></td><td>"+vawc+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Police Station Cases: </strong></td><td>"+ps6+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Repudiated Cases: </strong></td><td>"+rep+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Certificate to File Action: </strong></td><td>"+cfa+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Dismissed Cases: </strong></td><td>"+dis+"</td></tr><tr><td colspan='5'><strong class='pull-right'>Total Number of Cases: </strong></td><td>"+(arbitration+unassigned+mediation+conciliation+record+ps6+vawc+settled+cfa+dis+rep)+"</td></tr>";
                         $('#reportTable').append(additionalrow);
                     }
                 });

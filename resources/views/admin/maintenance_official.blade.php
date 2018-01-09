@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>Maintenance | Officials</title>
-	@include('admin.layout.head');
+	@include('admin.layout.head')
     <link href="{{asset('plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css')}}" rel="stylesheet">
 </head>
 <body class="theme-blue-grey">
@@ -28,21 +28,21 @@
 
 
             @if($return['position']==0)
-                @include('admin.aside_admin');
+                @include('admin.aside_admin')
             @elseif($return['position']==1)
-                @include('admin.aside_pb');
+                @include('admin.aside_pb')
             @elseif($return['position']==2)
-                @include('admin.aside_pb');
+                @include('admin.aside_pb')
             @elseif($return['position']==3)
-                @include('admin.aside_admin');
+                @include('admin.aside_admin')
             @elseif($return['position']==4)
-                @include('admin.aside_sec');
+                @include('admin.aside_sec')
             @elseif($return['position']==5)
-                @include('admin.aside_desk');
+                @include('admin.aside_desk')
             @elseif($return['position']==6)
-                @include('admin.aside_bpso');
+                @include('admin.aside_bpso')
             @elseif($return['position']==7)
-                @include('admin.aside_cashier');
+                @include('admin.aside_cashier')
             @endif
 	  </aside>
     <section class="content">
@@ -66,7 +66,7 @@
             <!-- Basic Table -->
            <div class="row clearfix">
                                     <div class="col-sm-2 col-sm-offset-10">
-                                        <button type="button" class="btn bg-teal btn-lg waves-effect waves-float pull-right" data-toggle="modal" data-target="#defaultModal"><i class="material-icons">add</i>Add Official</button>
+                                        <button type="button" class="btn bg-teal btn-lg waves-effect waves-float pull-right" id="adding"><i class="material-icons">add</i>Add Official</button>
                                     </div>
                                 </div>
                                 <br>
@@ -96,7 +96,93 @@
         </div>
     </section>
 
-<div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
+
+<div class="modal fade" id="positionmodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row clearfix">
+                    <div class="col-lg-9 col-md-3 col-sm-6 col-xs-12">
+                        <div class="info-box bg-teal">
+                            <div class="icon">
+                                <i class="material-icons">person_add</i>
+                            </div>
+                            <div class="content">
+                                <div class="text"><h3>SELECT POSITION</h3></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <label>Position</label>
+                        </div>
+                        <div class="col-md-6">
+                            <select id="posinmodal" class="show-tick">
+                                @foreach($positions as $position)
+                                    <option value="{{ $position->Pos_ID }}">{{ $position->Pos_Name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="col-md-4 col-md-offset-8">
+                        <button type="button" class="btn btn-space waves-effect bg-teal" id="subpos">Submit</button>
+                        <button type="button" class="btn btn-space waves-effect bg-teal" id="canpos">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addmodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row clearfix">
+                    <div class="col-lg-9 col-md-3 col-sm-6 col-xs-12">
+                        <div class="info-box bg-teal">
+                            <div class="icon">
+                                <i class="material-icons">person_add</i>
+                            </div>
+                            <div class="content">
+                                <div class="text"><h3> ADD BARANGAY OFFICIAL</h3></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row clearfix">
+                    <div class="col-sm-12">
+                        <div class="body table-responsive">
+                            <table id="residentTable" class="table table-bordered table-condensed table-striped table-hover dataTable">
+                                <thead class="bg-blue-grey">
+                                    <td>Resident ID</td>
+                                    <td>Image</td>
+                                    <td>Name</td>
+                                    <td>Birthdate</td>
+                                    <td>Address</td>
+                                    <td>Contact Number</td>
+                                    <td>Select</td>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- <div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -246,7 +332,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
     <div class="modal fade" id="updatemodal" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
@@ -456,7 +542,82 @@
                 ],
             });
 
-            //var table = $('#OfficialTable').DataTable();
+            var restable = $('#residentTable').DataTable();
+
+            $('#adding').on('click', function(){
+                restable.destroy();
+                restable = $('#residentTable').DataTable({
+                "bSort": false,
+                "ajax" : {
+                    "url": "/maintenance/barangay/official/getresidents",
+                    "dataSrc" : function (json) {
+                        var return_data = new Array();
+                        for(var i=0;i< json.length; i++){
+                            return_data.push({
+                            'ID' : json[i].resident_id,
+                            'Image'  : '<img src="../../' + json[i].resident_image +'" width="40px" height="40px">',
+                            'Name' : json[i].resident_fname+' '+json[i].resident_lname,
+                            'Bdate' : json[i].resident_bdate,
+                            'Add' : json[i].resident_hno+' '+json[i].street_name+' '+json[i].area_name,
+                            'Con' : json[i].resident_contact,
+                            'Button' : "<button type = 'button' class = 'select btn btn-space bg-blue waves-effect' value='"+json[i].resident_id+"' data-toggle = 'tooltip' data-placement = 'bottom' title data-original-title='Select Resident'>Select</button>"
+                            })
+                        }     
+                        return return_data;
+                    }
+                },
+                "columns": [
+                    { "data": "ID" },
+                    { "data": "Image"},
+                    { "data": "Name" },
+                    { "data": "Bdate" },
+                    { "data": "Add" },
+                    { "data": "Con" },
+                    { "data": "Button" }
+                ]
+            });
+                $('#addmodal').modal('toggle');
+
+            });
+            
+
+            var selectedres = null;
+
+            $(document).on('click', 'button.select', function(){
+                selectedres = $(this).val();
+                $('#addmodal').modal('toggle');
+                $('#positionmodal').modal('toggle');
+            });
+
+            $('#canpos').on('click', function(){
+                $('#positionmodal').modal('toggle');
+            })
+
+            $('#subpos').on('click', function(){
+                $.ajax({
+                    url: '/maintenance/barangay/official/storebyres',
+                    method: 'POST',
+                    data:{
+                        _token: CSRF_TOKEN,
+                        id: selectedres,
+                        pos: $('#posinmodal').val()
+                    },
+                    success: function(response){
+                        if(response=="success"){
+                            swal({
+                                title : "Record Added",
+                                type : "success",
+                                timer : 1000,
+                                showConfirmButton : false
+                            });
+                            $('#positionmodal').modal('toggle');
+                            table.ajax.reload();
+                        }else{
+                            alert("error");
+                        }
+                    }
+                });
+            });
 
             $('#image').change(function (event){
                 $("#toimage").fadeIn("fast").attr('src',URL.createObjectURL(event.target.files[0]));

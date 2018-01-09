@@ -56,14 +56,21 @@
                                 </tr>
                                 <tr>
                                     <td style="width:50%;"><h5>Case Filed: </h5><p>&nbsp;{{$records[0]->case_filed}}</p></td>
-                                    <td style="width:50%;"><h5>Case Status: </h5><p>&nbsp;{{$records[0]->case_status}}</p>
+                                    <td style="width:50%;"><h5>Case Status: </h5><p id="casestatus">&nbsp;{{$records[0]->case_status}}</p>
                                         @if($records[0]->case_status=="Settled")
                                             <button type="button" class="settled btn btn-space waves-effect bg-teal" value="{{$records[0]->case_id}}">View Settlement</button>
+                                            @if(!empty($settlement[0]->settledate))<button type="button" class="rep btn btn-space waves-effect bg-red" value="{{$records[0]->case_id}}">Repudiate Settlement</button>
+                                            @endif
+                                        @elseif($records[0]->case_status=="Repudiated")
+                                            <button type="button" class="settled btn btn-space waves-effect bg-red" value="{{$records[0]->case_id}}">View Repudiated Settlement</button>
                                         @elseif($records[0]->case_status=="Police Station")
                                             <button type="button" class="letterprintps btn btn-space waves-effect bg-teal" value="{{$records[0]->case_id}}">Print Letter</button>
                                         @elseif($records[0]->case_status=="Violence Against Women and Children")
                                             <button type="button" class="letterprintvawc btn btn-space waves-effect bg-teal" value="{{$records[0]->case_id}}">Print Letter</button>
-                                        @endif</td>
+                                        @endif
+                                    @if(($records[0]->case_status=='Mediation')&&($records[0]->case_status!='Conciliation'))
+                                        <button type="button" class="arb btn btn-space waves-effect bg-blue-grey" value="{{$records[0]->case_id}}">Proceed to Arbitration</button>
+                                    @endif</td>
                                 </tr>
                                 <tr>
                                     <td style="width:50%;"> <span><h5>Official/s Assigned :</h5>
@@ -149,12 +156,12 @@
                                                                 @elseif($hearing->hearing_status=="Done")
                                                                 <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-indigo">View</button></td>
                                                                 @elseif($hearing->hearing_status=='For Reschedule')
-                                                                <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-red">Reschedule</button></td>
+                                                                <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}|{{$hearing->hearing_sched}}" class="view btn btn-space btn-group waves-effect bg-red">Reschedule</button></td>
                                                                 @else
                                                                 <td></td>
                                                                 @endif
 
-                                                            }
+                                                            
                                                             </tr>
                                                         @endforeach
                                                     @else
@@ -194,7 +201,7 @@
                                                                 @elseif($hearing->hearing_status=="Done")
                                                                 <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-indigo">View</button></td>
                                                                 @elseif($hearing->hearing_status=='For Reschedule')
-                                                                <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-red">Reschedule</button></td>
+                                                                <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}|{{$hearing->hearing_sched}}" class="view btn btn-space btn-group waves-effect bg-red">Reschedule</button></td>
                                                                 @else
                                                                 <td></td>
                                                                 @endif
@@ -224,6 +231,7 @@
                                                 </thead>
                                                 <tbody>
                                                     @if($hearingsarb!=null)
+                                                        @foreach($hearingsarb as $hearing)
                                                         <tr>
                                                                 <td>{{$hearing->hearing_id}}</td>
                                                                 <td>{{$hearing->hearing_sched}}</td>
@@ -234,13 +242,14 @@
                                                                 @elseif($hearing->hearing_status=="Pending")
                                                                 <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-indigo">View</button></td>
                                                                 @elseif($hearing->hearing_status=="Done")
-                                                                <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-indigo">View</button></td>
+                                                                <td><button type="button" value="{{$records[0]->case_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-indigo">View Award</button></td>
                                                                 @elseif($hearing->hearing_status=='For Reschedule')
                                                                 <td><button type="button" value="{{$hearing->hearing_id}}|{{$hearing->hearing_status}}" class="view btn btn-space btn-group waves-effect bg-red">Reschedule</button></td>
                                                                 @else
                                                                 <td></td>
                                                                 @endif
                                                             </tr>
+                                                        @endforeach
                                                     @else
                                                         <tr><td colspan='5'><strong>No Data Found</strong></tr>
                                                     @endif
@@ -265,6 +274,26 @@
             <div class="modal-body">
                 <div class="row clearfix">
                     <div class="body" id="modalbody">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="reschedmodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                <div class="row clearfix">
+                    <div class="body" id="modalbody1">
+                        <div class="col-sm-12">
+                            <input type="text" id="dt" class="form-control">
+                            <br>
+                            <button type="button" id="reschedbtn" class="btn btn-space waves-effect pull-right bg-teal">Proceed</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -318,7 +347,7 @@ $(document).ready(function(){
                             todisplay += '<td><button type="button" class="print btn btn-space waves-effect bg-black" value="'+response[i].resident_id+'|'+response[i].personinvolve_type+'|'+response[i].hl_lettertype+'"><i class="material-icons">print</i></button></td>';
                         }
                         else if(response[i].hl_datereceive==null&&response[i].hl_printdate!=null){
-                            todisplay += '<td><button type="button" class="save btn btn-space waves-effect bg-teal pull-right" value="'+response[i].resident_id+'_'+response[i].hl_lettertype+'">Received</button></span></td>';
+                            todisplay += '<td><button type="button" class="save btn btn-space waves-effect bg-teal pull-right" value="'+response[i].resident_id+'_'+response[i].hl_lettertype+'">Tag as Received</button></span></td>';
                         }
                         else{
                             todisplay += '<td><button type="button" class="btn btn-space waves-effect bg-teal pull-right" disabled>Received last '+response[i].hl_datereceive+'</button><button type="button" class="print btn btn-space waves-effect bg-black" value="'+response[i].resident_id+'|'+response[i].personinvolve_type+'|'+response[i].hl_lettertype+'"><i class="material-icons">print</i> Reprint</button></td>';
@@ -397,7 +426,7 @@ $(document).ready(function(){
                             todisplay += '<td><button type="button" class="print btn btn-space waves-effect bg-black" value="'+response[i].resident_id+'|'+response[i].personinvolve_type+'|'+response[i].hl_lettertype+'"><i class="material-icons">print</i></button></td>';
                         }
                         else if(response[i].hl_datereceive==null&&response[i].hl_printdate!=null){
-                            todisplay += '<td><button type="button" class="save btn btn-space waves-effect bg-teal pull-right" value="'+response[i].resident_id+'_'+response[i].hl_lettertype+'">Received</button></span></td>';
+                            todisplay += '<td><button type="button" class="save btn btn-space waves-effect bg-teal pull-right" value="'+response[i].resident_id+'_'+response[i].hl_lettertype+'">Tag as Received</button></span></td>';
                         }
                         else{
                             todisplay += '<td><button type="button" class="btn btn-space waves-effect bg-teal pull-right" disabled>Received last '+response[i].hl_datereceive+'</button><button type="button" class="print btn btn-space waves-effect bg-black" value="'+response[i].resident_id+'|'+response[i].personinvolve_type+'|'+response[i].hl_lettertype+'"><i class="material-icons">print</i> Reprint</button></td>';
@@ -414,6 +443,18 @@ $(document).ready(function(){
             });
         }
         else if(status=="For Reschedule"){
+            var scheddate = moment(($(this).val()).split('|')[2], 'YYYY-MM-DD');
+             $('#dt').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                locale: {
+                    format: 'YYYY-MM-DD'
+                },
+                minDate: scheddate,
+                maxDate: moment().add(7, 'days')
+            });
+
+            $('#reschedmodal').modal('toggle');
 
         }
         else if(status=="For Process"){
@@ -423,6 +464,8 @@ $(document).ready(function(){
 
         }
     });    
+
+   
    
     $('#atable tbody').on('click', 'button.view', function(){
         var id = ($(this).val()).split('|')[0];
@@ -464,7 +507,8 @@ $(document).ready(function(){
             $(location).attr('href', '/blotter/barangay/schedule/'+id);
         }
         else if(status=='Done'){
-           
+           window.open("/blotter/barangay/arbitration/print/"+id,'_blank');
+         return false;
         }
     });
 
@@ -478,6 +522,12 @@ $(document).ready(function(){
         }
         else if(lettertype=="Notice of Hearing - Mediation Proceedings"){
             $(location).attr('href', '/blotter/barangay/print/noticemed/'+resid+'_'+hearingid);   
+        }
+        else if(lettertype=="Notice of Hearing (RE: Failure to Appear)"){
+            $(location).attr('href', '/blotter/barangay/print/noticemedre/'+resid+'_'+hearingid);   
+        }
+        else if(lettertype=="Subpoena"){
+            $(location).attr('href', '/blotter/barangay/print/subpoena/'+resid+'_'+hearingid);      
         }
     });
     
@@ -524,6 +574,49 @@ $(document).ready(function(){
     $(document).on('click', 'button.settled', function(){
         $(location).attr('href', '/blotter/barangay/printsettlement/'+$(this).val());
     });    
+
+    $(document).on('click', 'button.arb', function(){
+        var arbid = $(this).val();
+        swal({
+                    title: "Are you sure you want to continue?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Proceed",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false,
+                    closeOnCancel: true,
+                },  
+                function(isConfirm) {
+                    if (isConfirm){
+                        $(location).attr('href', '/blotter/barangay/arbitration/'+arbid);
+                    }
+                    else{
+
+                    }
+                });
+    });
+
+    $(document).on('click', 'button.rep', function(){
+        var caseid = $(this).val();
+        $.ajax({
+            url : '/blotter/barangay/repudiate',
+            method: 'POST',
+            data: {
+                _token: CSRF_TOKEN,
+                id : caseid
+            }, 
+            success: function(response){
+                if(response=="success"){
+                    $('#casestatus').text("Repudiated");
+                    $('.settled').hide();
+                    $('.settled').text("View Repudiated Settlement");
+                    $(location).attr('href', '/blotter/barangay/print/cfa/'+caseid);
+                }
+
+            }
+        })
+    });
 });
 </script>
 </body>

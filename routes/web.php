@@ -35,6 +35,7 @@ Route::delete('/resident', 'ResidentController@destroy');
 Route::get('/resident/update/{id}', 'ResidentController@showrecord');
 Route::post('/resident/update', 'ResidentController@update');
 Route::delete('/resident/delete', 'ResidentController@destroy');
+Route::post('/resident/nonres', 'ResidentController@nonres');
 
 //Resident
 
@@ -42,10 +43,12 @@ Route::delete('/resident/delete', 'ResidentController@destroy');
 
 Route::get('/maintenance/barangay/official', 'OfficialController@create');
 Route::get('/maintenance/barangay/official/get', 'OfficialController@getOfficials');
+Route::get('/maintenance/barangay/official/getresidents', 'OfficialController@getResidents');
 Route::post('/maintenance/barangay/official', 'OfficialController@store');
 Route::delete('/maintenance/barangay/official/{id}', 'OfficialController@destroy');
 Route::get('/maintenance/barangay/official/{id}', 'OfficialController@getdetails');
 Route::post('/maintenance/barangay/official/update', 'OfficialController@update');
+Route::post('/maintenance/barangay/official/storebyres', 'OfficialController@storebyres');
 
 Route::get('/maintenance/barangay/street', 'StreetController@create');
 Route::post('/maintenance/barangay/street', 'StreetController@store');
@@ -93,6 +96,8 @@ Route::get('/maintenance/clearance/clearance/getClearances', 'ClearanceControlle
 
 // Clearance
 Route::get('/clearance/clearance', 'ClearanceReqController@create');
+
+Route::get('/clearance/clearance/checkcap', 'ClearanceReqController@checkcap');
 Route::get('/clearance/clearance/get', 'ClearanceReqController@getClearances');
 Route::get('/clearance/clearance/clearancedetails/{id}', 'ClearanceReqController@getClearancesDetails');
 Route::delete('/clearance/clearance/removerequest/{id}', 'ClearanceReqController@removeRequest');
@@ -173,9 +178,23 @@ Route::get('/blotter/barangay/received/{id}', 'RecordController@receive');
 
 Route::get('/blotter/barangay/print/summon/{id}', 'PrintController@summon');
 Route::get('/blotter/barangay/print/noticemed/{id}', 'PrintController@noticemed');
-Route::get('/blotter/barangay/print/noticemedf{id}', 'PrintController@noticemedf');
+Route::get('/blotter/barangay/print/noticemedre/{id}', 'PrintController@noticemedre');
+Route::get('/blotter/barangay/print/subpoena/{id}', 'PrintController@subpoena');
+Route::get('/blotter/barangay/print/cfa/{id}', 'PrintController@cfa');
 
 Route::post('/blotter/barangay/attendance', 'HearingController@attendance');
+
+Route::get('/blotter/barangay/arbitration/{id}', 'HearingController@arb');
+Route::post('/blotter/barangay/arbitration/save', 'HearingController@arbsave');
+Route::get('/blotter/barangay/arbitration/print/{id}', 'PrintController@arbaward');
+Route::post('/blotter/barangay/removearb/{id}', 'HearingController@arbdelete');
+
+Route::post('/blotter/barangay/repudiate', 'RecordController@repudiate');
+
+Route::post('/blotter/barangay/allocatepangkat', 'PangkatController@createpangkat');
+Route::post('/barangay/blotter/assignpangkat', 'PangkatController@savepangkat');
+
+
 //Barangay Blotter
 
 // Incident Blotter
@@ -256,6 +275,7 @@ Route::get('/profile', 'ProfileController@index');
 
 
 });
+
 
 
 

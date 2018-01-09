@@ -14,7 +14,11 @@ class ReleaseController extends Controller
 	public function create(){
 
 		$return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official'),'admin'=>Session::get('admin')];
-        return view('admin.release')->with(array('return'=>$return));
+
+        $check = DB::select('select official_id from tbl_official where position_id = 1 and official_exists =1');
+
+
+        return view('admin.release')->with(array('return'=>$return, 'check'=>$check));
 	}
 
 	public function getTrans(){
@@ -85,7 +89,20 @@ class ReleaseController extends Controller
         $exists = DB::select('select request_issuedate from tbl_request where request_id = '.$id);
 
         if(empty($exists[0]->request_issuedate)){
+
+            $wala = DB::select('select o.official_id from tbl_official o join tbl_request r on r.request_captain = o. official_id where o.official_exists = 0 and r.request_id = '.$id);
+
+            if(empty($wala[0]->official_id)){
+
+                $newcap = DB::select('select official_id from tbl_official where position_id = 1 and official_exists=1');
+
+                DB::table('tbl_request')->where('request_id',$id)->update(['request_captain'=>$newcap[0]->official_id]);
+            }
+
+
             DB::table('tbl_request')->where('request_id',$id)->update(['request_issuedate'=>date('Y-m-d H:i:s'), 'request_status'=>'Released']);
+
+
         }
 
 
@@ -136,6 +153,7 @@ class ReleaseController extends Controller
                 $body[0]->clearance_content = str_replace($check, date('F d, Y', strtotime($stringtoadd, strtotime($request[0]->request_issuedate))), $body[0]->clearance_content);
             }
         }
+
 
                 $foot = DB::select('select concat(r.resident_fname," ",coalesce(r.resident_mname,"")," ",r.resident_lname) as name, "Barangay Captain" as position_name from tbl_resident r join tbl_official o on o.resident_id = r.resident_id join tbl_request re on re.request_captain=o.official_id where o.official_id ='.$request[0]->request_captain);
 

@@ -96,27 +96,11 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4>List of Lupons</h4>
+                            <h4>Raffled Lupons</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="row clearfix">
-                                <h5>*Note: The list are arranged by least number of cases handled by an official</h5>
+                            <div class="row clearfix" id="palit">
                             </div>
-                            <br>
-                            <div class="row clearfix">
-                                <div class="col-sm-12" id="cont">
-
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row-clearfix">
-                                <div class="col-sm-3 col-sm-offset-9">
-                                    <button type="button" class="save btn btn-lg bg-teal pull-right" id="save">SAVE</button>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-                            <br>
                         </div>
                     </div>
                 </div>
@@ -136,6 +120,7 @@ $(document).ready(function(){
         "ajax": {
                 "url" : '/blotter/barangay/records',
                 "dataSrc" : function (json) {
+                    console.log(json);
                         var return_data = new Array();
                         if(json.length!=0){
                         var id = json[0].case_id;
@@ -155,7 +140,7 @@ $(document).ready(function(){
                                 }
                                 var button = "";
                                 if(i==json.length-1){
-                                    if((json[i].case_status=="Lupon")||(json[i].case_status=="Captain")||(json[i].cases_status=="Pangkat")){
+                                    if((json[i].case_status=="Captain")||(json[i].case_status=="Pangkat")){
                                         button = "<button type='button' class='assign btn btn-space bg-indigo waves-effect' data-toggle='tooltip' data-placement='bottom' title data-original-title='Assign Case'><i class='material-icons'>assignment_ind</i></button><button class='delete btn btn-space bg-red waves-effect'><i class='material-icons'>delete</i></button>";
                                     }
                                     else{
@@ -174,7 +159,7 @@ $(document).ready(function(){
                             }                                    
                             else{
                                 var button="";
-                                 if((json[i-1].case_status=="Lupon")||(json[i-1].case_status=="Captain")||(json[i-1].cases_status=="Pangkat")){
+                                 if((json[i-1].case_status=="Captain")||(json[i-1].case_status=="Pangkat")){
                                         button = "<button type='button' class='assign btn btn-space bg-indigo waves-effect' data-toggle='tooltip' data-placement='bottom' title data-original-title='Assign Case'><i class='material-icons'>assignment_ind</i></button><button class='delete btn btn-space bg-red waves-effect'><i class='material-icons'>delete</i></button>";
                                     }
                                     else{
@@ -194,13 +179,13 @@ $(document).ready(function(){
                                 res = "";
                                 wit = "";
                                 if(json[i].personinvolve_type=='C'){
-                                    com = json[i].name;
+                                    com = json[i].name+'<br>';
                                 }
                                 else if(json[i].personinvolve_type=='R'){
-                                    res = json[i].name;
+                                    res = json[i].name+'<br>';
                                 }
                                 else{
-                                    wit = json[i].name;   
+                                    wit = json[i].name+'<br>';   
                                 }
                             }
                         }
@@ -275,6 +260,28 @@ $(document).ready(function(){
                 }
             });
         }
+        else{
+            $.ajax({
+                url: '/blotter/barangay/allocatepangkat',
+                method: 'POST',
+                data : {
+                    _token: CSRF_TOKEN,
+                    id: id
+                },
+                success: function(response){
+                    console.log(response);
+                    var todiv = "<div class='col-sm-12'>";
+                    for (var i = 0; i < response.length; i++) {
+                        todiv += '<label>'+response[i].official_id+'-'+response[i].name+'</label><div class="demo-radio-button"><input type="radio" class="radio-col-teal" name="group'+(i+1)+'" value="'+response[i].official_id+'_pp" id="pp'+(i+1)+'"><label for="pp'+(i+1)+'">Pangkat President</label><input type="radio" class="radio-col-teal" name="group'+(i+1)+'" value="'+response[i].official_id+'_ps" id="ps'+(i+1)+'"><label for="ps'+(i+1)+'">Pangkat Secretary</label><input type="radio" class="radio-col-teal" value="'+response[i].official_id+'_pm" name="group'+(i+1)+'" id="pm'+(i+1)+'"><label for="pm'+(i+1)+'">Pangkat Member</label></div><br>';
+                    }
+                    todiv+="</div><div class='col-sm-12'><button type='button' class='savep btn pull-right btn-space waves-effect bg-teal' id='savepangkat'>SAVE</button></div>";
+                    console.log(todiv);
+                    $('#palit').empty();
+                    $('#palit').append(todiv);
+                    $('#yesu').modal('toggle');
+                }
+            });
+        }
 
     });
 
@@ -310,10 +317,8 @@ $(document).ready(function(){
     });
 
     $('#recordtable tbody').on('click', 'button.process', function(){
-
         var rowid = $(this).val();
         $(location).attr('href', '/blotter/barangay/show/'+rowid);
-      
     });
 
     $('#save').on('click', function(){
@@ -349,6 +354,37 @@ $(document).ready(function(){
             }
         }); 
     }); 
+
+    $(document).on('click', 'button.savep', function(){
+
+        var group1 = $("input[name='group1']:checked").val();
+        var group2 = $("input[name='group2']:checked").val();
+        var group3 = $("input[name='group3']:checked").val();
+
+        $.ajax({
+            url : '/barangay/blotter/assignpangkat',
+            method: 'POST',
+            data :{
+                _token: CSRF_TOKEN,
+                group1 : group1,
+                group2: group2,
+                group3: group3,
+                id: id
+            },
+            success: function(response){
+                if(response=="success"){
+                    swal({
+                        title: "Case Allocated!",
+                        text: "CasevSuccessfully allocated to a pangkat",
+                        type: "success",
+                        showConfirmButton: true
+                    });
+                    $('#yesu').modal('toggle');
+                    table.ajax.reload();
+                }
+            }
+        });
+    });
 
     
 });

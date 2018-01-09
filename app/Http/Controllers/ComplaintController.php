@@ -23,16 +23,18 @@ class ComplaintController extends Controller
     }
 
    public function com(Request $req){
+
       if(!empty($req->used)){
-        $com = DB::select('select r.resident_id, concat(r.resident_fname," ",r.resident_lname) as name, r.resident_bdate, concat(r.resident_hno," ",s.street_name," Street ",a.area_name) as address from tbl_resident r join tbl_street s on r.resident_street = s.street_id join tbl_area a on a.area_id = s.street_area where r.resident_id not in('.$req->used.') and r.resident_exists = 1 and  TIMESTAMPDIFF(year,r.resident_bdate, now() ) >=18 ');
+        $com = DB::select('select r.resident_id, concat(r.resident_fname," ",r.resident_lname) as name, r.resident_bdate, concat(r.resident_hno," ",s.street_name," Street ",a.area_name) as address from tbl_resident r join tbl_street s on r.resident_street = s.street_id join tbl_area a on a.area_id = s.street_area where r.resident_id not in (select r.resident_id from tbl_resident r join tbl_official o on o.resident_id = r.resident_id where o.official_exists = 1 and o.position_id in(0,1,2)) and r.resident_id not in('.$req->used.') and r.resident_exists = 1 and  TIMESTAMPDIFF(year,r.resident_bdate, now() ) >=18 and r.resident_non =0');
 
         return response()->json($com);
       }
       else{
-        $com = DB::select('select r.resident_id, concat(r.resident_fname," ",r.resident_lname) as name, r.resident_bdate, concat(r.resident_hno," ",s.street_name," Street ",a.area_name) as address from tbl_resident r join tbl_street s on r.resident_street = s.street_id join tbl_area a on a.area_id = s.street_area where r.resident_exists = 1 and  TIMESTAMPDIFF(year,r.resident_bdate, now() ) >=18');
+        $com = DB::select('select r.resident_id, concat(r.resident_fname," ",r.resident_lname) as name, r.resident_bdate, concat(r.resident_hno," ",s.street_name," Street ",a.area_name) as address from tbl_resident r join tbl_street s on r.resident_street = s.street_id join tbl_area a on a.area_id = s.street_area where r.resident_id not in ((select r.resident_id from tbl_resident r join tbl_official o on o.resident_id = r.resident_id where o.official_exists = 1 and o.position_id in(0,1,2)), and r.resident_exists = 1 and  TIMESTAMPDIFF(year,r.resident_bdate, now() ) >=18  and r.resident_non =0');
 
         return response()->json($com);
       }
+
    }
 
    public function process(Request $request){

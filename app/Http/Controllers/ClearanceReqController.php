@@ -28,9 +28,21 @@ class ClearanceReqController extends Controller
         return view('admin.clearance')->with(array('clearances'=>$clearance, 'return'=>$return));
     }
 
+    public function checkcap(){
+
+        $check = DB::select('select official_id from tbl_official where official_exists = 1 and position_id = 1');
+
+        if(!empty($check[0]->official_id)){
+            return response("success");
+        }
+        else{
+            return response("failed");
+        }
+    }
+
     public function getResidents($id){
 
-        $residents = DB::select('select r.resident_id as resident_id, concat(r.resident_fname," ",coalesce(r.resident_mname,"")," ",r.resident_lname) as name, r.resident_bdate, concat(r.resident_hno," ",s.street_name," ",a.area_name) as address, coalesce(r.resident_contact,"") as contact from tbl_resident r join tbl_street s on r.resident_street = s.street_id join tbl_area a on a.area_id = s.street_area where r.resident_exists = 1 and r.resident_id != "'.$id.'"' );
+        $residents = DB::select('select r.resident_id as resident_id, concat(r.resident_fname," ",coalesce(r.resident_mname,"")," ",r.resident_lname) as name, r.resident_bdate, concat(r.resident_hno," ",s.street_name," ",a.area_name) as address, coalesce(r.resident_contact,"") as contact from tbl_resident r join tbl_street s on r.resident_street = s.street_id join tbl_area a on a.area_id = s.street_area where r.resident_exists = 1 and r.resident_id != "'.$id.'"  and r.resident_non =0' );
 
         return response()->json($residents);
     }
@@ -44,7 +56,7 @@ class ClearanceReqController extends Controller
 
     public function storeClearance(Request $request){
 
-        $check = DB::select('select r.resident_id from tbl_resident r join tbl_personinvolve p on r.resident_id = p.personinvolve_resident join tbl_case c on c.case_id = p.personinvolve_case where p.personinvolve_type="R" and c.case_status != "Settled" and r.resident_id = "'.$request->resid.'"');
+        $check = DB::select('select r.resident_id from tbl_resident r join tbl_personinvolve p on r.resident_id = p.personinvolve_resident join tbl_case c on c.case_id = p.personinvolve_case where p.personinvolve_type="R" and c.case_status not in ("Settled","Case Dismissed") and r.resident_id = "'.$request->resid.'"');
         if(empty($check[0]->resident_id)){
 
             $secondcheck = DB::select('select r.request_id from tbl_request r join tbl_trans t on t.trans_id = r.request_transaction join tbl_price p on p.price_id = r.request_price where DATE(t.trans_date) = curdate() and r.request_resident = "'.$request->resid.'" and p.clearance_id in(select p.clearance_id from tbl_price p join tbl_request re on re.request_price = p.price_id join tbl_trans t on re.request_transaction=t.trans_id where DATE(t.trans_date) = curdate() and re.request_resident = "'.$request->resid.'")');
@@ -56,7 +68,7 @@ class ClearanceReqController extends Controller
         $trans->save();
 
 
-        $captain = DB::select('select o.official_id from tbl_resident r join tbl_official o on o.resident_id = r.resident_id where o.position_id = 1');
+        $captain = DB::select('select o.official_id from tbl_resident r join tbl_official o on o.resident_id = r.resident_id where o.position_id = 1 and o.official_exists = 1');
 
             for ($x = 0; $x < count($request->clearance[0]["clearance"]); $x++) {
                 

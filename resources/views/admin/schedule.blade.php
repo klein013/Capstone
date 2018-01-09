@@ -173,7 +173,7 @@ $(document).ready(function(){
     });
 
     $('#modalbody').on('click', 'button.process', function(){
-        window.open(window.location.href+"/"+id[0],'_self');
+        window.open(window.location.href+"/"+id,'_self');
     });
 
      $.validator.addMethod("dateISOF", function (value, element)

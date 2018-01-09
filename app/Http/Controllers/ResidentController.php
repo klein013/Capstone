@@ -38,7 +38,7 @@ class ResidentController extends Controller
 
     public function getResidents()
     {
-        $resident = DB::select("select resident_id, resident_fname, resident_lname, resident_image, resident_hno, street_name, area_name from tbl_resident join tbl_street on tbl_resident.resident_street=tbl_street.street_id join tbl_area on tbl_street.street_area=tbl_area.area_id where resident_exists = 1 and resident_id != '0' order by resident_id asc");
+        $resident = DB::select("select resident_id, resident_fname, resident_lname, resident_image, resident_hno, street_name, area_name from tbl_resident join tbl_street on tbl_resident.resident_street=tbl_street.street_id join tbl_area on tbl_street.street_area=tbl_area.area_id where resident_exists = 1 and resident_id != '0' and resident_non = 0 order by resident_id asc");
 
         return response()->json($resident);
     }
@@ -82,6 +82,7 @@ class ResidentController extends Controller
         $residents->resident_allowmessage = $request->allow;
         $residents->resident_yearstayed = $request->year;
         $residents->resident_contact = $request->contact;
+        $residents->resident_non = 0;
 
         $residents->save();
 
@@ -145,5 +146,38 @@ class ResidentController extends Controller
     {
         DB::table('tbl_resident')->where('resident_id',$request->id)->update(['resident_exists' => 0]);
         return response("success");
+    }
+
+    public function nonres(Request $request){
+
+        $ifexists = DB::select('select * from tbl_resident where resident_contact = "'.$request->contact.'" and resident_exists=1');
+
+
+        if(empty($ifexists[0]->resident_id)){
+            $residents = new TblResident;
+        $residents->resident_fname = $request->fname;
+        $residents->resident_mname = $request->mname;
+        $residents->resident_lname = $request->lname;
+        $residents->resident_bdate = $request->bdate;
+        $residents->resident_hno = $request->address;
+        $residents->resident_street = null;
+        $residents->resident_gender = $request->gender;
+        $residents->resident_exists = 1;
+        $residents->resident_allowmessage = null;
+        $residents->resident_yearstayed = null;
+        $residents->resident_contact = $request->contact;
+        $residents->resident_non = 1;
+
+        $residents->save();
+
+        $check = DB::select('select lpad(id, 8, "0") as resident_id from tbl_resident_seq order by id desc limit 1');
+
+        $residents->resident_id = "RES".$check[0]->resident_id;
+
+        return response()->json($residents);
+        }
+        else{
+            return response("Contact Number already used");
+        }   
     }
 }

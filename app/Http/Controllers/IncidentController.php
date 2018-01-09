@@ -64,7 +64,7 @@ class IncidentController extends Controller
         $inc->incident_statement = $request->desc;
         $inc->incident_lat = $latitude;
         $inc->incident_long = $longitude;
-        $inc->incident_status = "On-going";
+        $inc->incident_status = $request->status;
         $inc->incident_cat = $request->cat;
         $inc->incident_notes = $request->notes;
         $inc->incident_exists = 1;
@@ -78,7 +78,7 @@ class IncidentController extends Controller
 
     public function sendMessages(Request $request){
         $numbers = DB::select('select resident_contact from tbl_resident where resident_exists = 1 and resident_contact is not null and resident_allowmessage = 1');
-        $job = (new SendMessages(["numbers" => $numbers, "incident" => $request->incident]))->delay(Carbon::now()->addMinutes(1));
+        $job = (new SendMessages(["numbers" => $numbers, "incident" => $request->incident, 'time' => $request->datetime, 'stat'=>$request->stat]))->delay(Carbon::now()->addMinutes(1));
 
         dispatch($job);
 

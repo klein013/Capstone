@@ -63,166 +63,194 @@
                         </div>
                  </div>
             </div>
-
-             <center> <h2>On This Day</h2></center>
-             <br>
-
-            <h4>Clearance</h4>
-            <br>
-            <div class="row clearfix">
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-pink hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">accessibility</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">NEW RESIDENTS</div>
-                            <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20">4 </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-cyan hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">announcement</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">COMPLAINT</div>
-                            <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20">0</div>
+         <div class="row clearfix">
+                <div class="col-sm-4 col-sm-offset-2">
+                    <div class="card">
+                        <div class="body bg-teal">
+                            <div class="font-bold m-b--35">BARANGAY ANNOUNCEMENTS</div>
+                            <center>
+                            <ul class="dashboard-stat-list">
+                                @if(!empty($events[0]->hs_id))
+                                    @foreach($events as $event)
+                                        <li>{{$event->hs_name}}</li>
+                                    @endforeach
+                                @else
+                                    <li>No Events Found</li>
+                                @endif
+                                
+                            </ul>
+                        </center>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-orange hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">file_download</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">RELEASE</div>
-                            <div class="number count-to" data-from="0" data-to="243" data-speed="1000" data-fresh-interval="20">4</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-green hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">gavel</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">CLEARANCE</div>
-                            <div class="number count-to" data-from="0" data-to="1225" data-speed="1000" data-fresh-interval="20">Php 432</div>
+                @if($return['position']==1||$return['position']==2||$return['position']==0)
+                <div class="col-sm-4 col-sm-offset-1">
+                    <div class="card">
+                        <div class="body bg-teal">
+                            <div class="font-bold m-b--35">CASES FOR TODAY</div>
+                            <center>
+                            <ul class="dashboard-stat-list">
+                                @if(!empty($cases[0]->caseid))
+                                    @foreach($cases as $case)
+                                        <li>{{$case->case_id}} - {{$case->caseskp_name}}</li>
+                                    @endforeach
+                                @else
+                                    <li>No Cases Found</li>
+                                @endif
+                            </ul>
+                            </center>
                         </div>
                     </div>
                 </div>
+                @endif
             </div>
-            <h4>Barangay Blotter</h4>
-            <br>
-            <div class="row clearfix">
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-pink hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">report</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">NEW COMPLAINTS</div>
-                            <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20"> 0 </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-cyan hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">gavel</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">HEARING</div>
-                            <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20"> 1</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-             <h4>Incident</h4>
-            <br>
-            <div class="row clearfix">
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-pink hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">error</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">NEW INCIDENTS</div>
-                            <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20"> 0 </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-cyan hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">error</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">PENDING INCIDENTS</div>
-                            <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20"> 1</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            
+<br>
                  <div class="form-group">
                         <div class="form-line">
                                                 
                         </div>
                  </div>
 
-                <div class="row clearfix">
-                <!-- Visitors -->
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
-                
-                </div>
-                <!-- #END# Visitors -->
-                <!-- Latest Social Trends -->
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6">
-                    <div class="card">
-                        <div class="body bg-teal">
-                            <div class="m-b--35 font-bold">LATEST RECORD TRENDS</div>
-                            <ul class="dashboard-stat-list">
-                                <li>
-                                    #newresidents
-                                    <span class="pull-right">
-                                        4
-                                    </span>
-                                </li>
-                                <li>
-                                    #release
-                                    <span class="pull-right">
-                                        4
-                                    </span>
-                                </li>
-                                <li>#clearance</li>
-                                <li>#hearing</li>
-                                <li>#pendingincidents</li>
-                                <li>
-                                    #newcomplaint
-                                </li>
-
-                                <li>
-                                    #newincidents
-                                </li>
-                            </ul>
+        @if($return['position']==1||$return['position']==2||$return['position']==0)   
+        <div class="card">
+        <div class="row clearfix">
+            <div class="col-sm-6">
+                <br>
+            <center><h4>Barangay Blotter</h4></center>
+            <br>
+                <div class="col-sm-6">
+                    <div class="info-box bg-amber hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">fiber_new</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">NEW COMPLAINTS</div>
+                            <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20">{{$complaintsforadmin[0]->number}}</div>
                         </div>
                     </div>
                 </div>
-                <!-- #END# Latest Social Trends -->
-                <!-- Answered Tickets -->
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-2">
-                    
+                <div class="col-sm-6">
+                    <div class="info-box bg-amber hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">gavel</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">HEARING</div>
+                            <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20">{{$hearingsforadmin[0]->number}}</div>
+                        </div>
+                    </div>
                 </div>
-                <!-- #END# Answered Tickets -->
             </div>
-    </section>
+            @if($return['position']==1||$return['position']==5||$return['position']==6||$return['position']==0) 
+        
+            <div class="col-sm-6">
+                
+            <br>
+            <center><h4>Incident Blotter</h4></center>
+            <br>
+                <div class="col-sm-6">
+                    <div class="info-box bg-green hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">error</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">NEW INCIDENTS</div>
+                            <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20">{{$incidentsall[0]->number}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="info-box bg-green hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">error</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">PENDING INCIDENTS</div>
+                            <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20">{{$incidentsreported[0]->number}}</div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            @endif
+            </div>
+        </div>
+            @endif
+            
+        
+            
+            @if($return['position']==3||$return['position']==4||$return['position']==5||$return['position']==6||$return['position']==0) 
+            <div class="card">
+            <div class="row clearfix">
+                
+            <br>
+            <center><h4>Clearance</h4></center>
+            <br>
+                <div class="col-sm-12">
+                <div class="col-sm-3">
+                    <div class="info-box bg-blue hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">fiber_new</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">NEW REQUESTS</div>
+                            <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20">{{$clearancesrequest[0]->number}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="info-box bg-blue hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">assignment</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">PENDING REQUESTS</div>
+                            <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20">{{$clearancepending[0]->number}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="info-box bg-blue hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">new_releases</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">RELEASED</div>
+                            <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20">{{$clearancereleased[0]->number}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="info-box bg-blue hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">attach_money</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">AMOUNT COLLECTED</div>
+                            <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20">
+                                @if(empty($clearancecollected[0]->number))
+                                    0.00
+                                @else
+                                    {{$clearancecollected[0]->number}}
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+            @endif
 
+        </div>
     </section>
 
 @include('admin.layout.scripts');
+<script>
+    $(document).ready(function(){
+
+    });
+</script>
 </body>
 </html>

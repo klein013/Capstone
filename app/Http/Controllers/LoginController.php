@@ -39,7 +39,11 @@ class LoginController extends Controller
 
         $incidentsall = DB::select('select count(*) as number  from tbl_incident where incident_exists = 1 and DATE(incident_filed) = curdate()');
 
-      return view('admin.index')->with(['return'=>$return, 'complaintsforadmin'=>$complaintsforadmin, 'hearingsforadmin'=>$hearingsforadmin, 'clearancesrequest'=>$clearancesrequest, 'clearancereleased'=>$clearancereleased, 'clearancecollected'=>$clearancecollected, 'clearancepending'=>$clearancepending, 'complaintsfornon'=>$complaintsfornon, 'hearingsfornon'=>$hearingsfornon, 'incidentsreported'=>$incidentsreported, 'incidentsall'=>$incidentsall ]);
+        $cases = DB::select('select c.case_id, k.caseskp_name from tbl_case c join tbl_caseskp k on k.caseskp_id = c.case_caseskp join tbl_hearing h on h.hearing_case = c.case_id where DATE(h.hearing_sched) = curdate()limit 3');
+
+        $events = DB::select('select * from tbl_hs where DATE(created_at) = curdate() limit 3');
+
+      return view('admin.index')->with(['return'=>$return, 'complaintsforadmin'=>$complaintsforadmin, 'hearingsforadmin'=>$hearingsforadmin, 'clearancesrequest'=>$clearancesrequest, 'clearancereleased'=>$clearancereleased, 'clearancecollected'=>$clearancecollected, 'clearancepending'=>$clearancepending, 'complaintsfornon'=>$complaintsfornon, 'hearingsfornon'=>$hearingsfornon, 'incidentsreported'=>$incidentsreported, 'incidentsall'=>$incidentsall, 'events'=>$events, 'cases'=>$cases ]);
     }
 
     public function login(Request $request){

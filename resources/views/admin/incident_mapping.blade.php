@@ -106,10 +106,11 @@
             </div>
         </div>
 	</section>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJ_OtJXKaXF7UGSqnrjLAiA66uh2WH5hw&callback=initMap"
-  type="text/javascript"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier/1.0.3/oms.min.js"></script>
+    
 @include('admin.layout.scripts');
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJ_OtJXKaXF7UGSqnrjLAiA66uh2WH5hw&callback=initMap"
+  type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier/1.0.3/oms.min.js"></script>s
 <script>
 
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
@@ -166,6 +167,7 @@ function initMap() {
 
     var ctr =0, last=0;
     var marker;
+
     $('#search').validate({
         rules:{
             fdate: {
@@ -187,7 +189,6 @@ function initMap() {
                 },
                 dataType: 'json',
                 success: function(response){
-                    console.log(response[0].incident_id);
                     if(ctr!=0){
                         console.log(ctr+" "+last+" "+response.length);
                         for(i=0;i<last;i++){

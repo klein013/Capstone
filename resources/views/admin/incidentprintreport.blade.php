@@ -356,10 +356,10 @@
                         var actiondone = 0;
                         var pending = 0;
                         for (var i = 0; i < response.tabledata.length; i++) {
-                            if(response.tabledata[i].request_status!="On-going"){
+                            if(response.tabledata[i].request_status=="On-going"){
                                 ongoing+=1;
                             }
-                            else if(response.tabledata[i].request_status!="Pending"){
+                            else if(response.tabledata[i].request_status=="Pending"){
                                 pending+=1;
                             }
                             else{
@@ -497,10 +497,10 @@
                         var actiondone = 0;
                         var pending = 0;
                         for (var i = 0; i < response.tabledata.length; i++) {
-                            if(response.tabledata[i].request_status!="On-going"){
+                            if(response.tabledata[i].request_status=="On-going"){
                                 ongoing+=1;
                             }
-                            else if(response.tabledata[i].request_status!="Pending"){
+                            else if(response.tabledata[i].request_status=="Pending"){
                                 pending+=1;
                             }
                             else{
@@ -638,10 +638,10 @@
                         var actiondone = 0;
                         var pending = 0;
                         for (var i = 0; i < response.tabledata.length; i++) {
-                            if(response.tabledata[i].request_status!="On-going"){
+                            if(response.tabledata[i].request_status=="On-going"){
                                 ongoing+=1;
                             }
-                            else if(response.tabledata[i].request_status!="Pending"){
+                            else if(response.tabledata[i].request_status=="Pending"){
                                 pending+=1;
                             }
                             else{
@@ -777,10 +777,10 @@
                         var actiondone = 0;
                         var pending = 0;
                         for (var i = 0; i < response.tabledata.length; i++) {
-                            if(response.tabledata[i].request_status!="On-going"){
+                            if(response.tabledata[i].request_status=="On-going"){
                                 ongoing+=1;
                             }
-                            else if(response.tabledata[i].request_status!="Pending"){
+                            else if(response.tabledata[i].request_status=="Pending"){
                                 pending+=1;
                             }
                             else{

@@ -48,6 +48,7 @@
 
 	
     <section class="content">
+        @if(!empty($check[0]->official_id))
         <div class="container-fluid">
             <div class="block-header">
                 <div class="row clearfix">
@@ -124,8 +125,28 @@
                     </div>
                 </div>
     </div>
+    @else
+        <div class="container-fluid">
+            <div class="col-lg-8 col-lg-offset-2">
+                <div class="card">
+                    <div class="row clearfix">
+                        <br><br><br><br>
+                        <div class="col-sm-12">
+                        <center>
+                            <h1>Releasing is not allowed</h1>
+                        </center>
+                        <center>
+                        <h3>There is no registered barangay captain</h3>
+                    </center>
+                    <br><br><br><br>
+                    </div>
 
+                    </div>
+                </div>
+            </div>
+        </div>
 
+    @endif
     </section>
    
 

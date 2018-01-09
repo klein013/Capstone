@@ -130,7 +130,14 @@
                         
                         <div class="modal-body">
                             <form id="incident">
-                            
+                            <div class="row clearfix">
+                                <div class="col-md-3">
+                                    <div class="demo_checkbox">
+                                        <input type="checkbox" name="broadcast" value="check" id = "broadcast">
+                                        <label for="broadcast">Broadcast to all</label>
+                                    </div>
+                                </div>
+                            </div>
                             <div class='row clearfix'>
                                 <div class="col-md-6">
                                     <label>Street</label>
@@ -196,6 +203,19 @@
                                     <div class="form-group">
                                         <div class="form-line">
                                             <textarea rows="4" class="form-control no-resize" id="notes" name="notes" placeholder="Please type a note"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-md-12">
+                                    <label>Status</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <select class="form-control show-tick" id="status" name="status">
+                                                <option value="On-going" selected="">On-going</option>
+                                                <option value="Action Done">Done</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -710,9 +730,16 @@
                         required: false,
                         maxlength: 300,
                         letterwithbasicpunc: true
+                    },
+                    status:{
+                        required: true
                     }
                 },
                 submitHandler: function(form){
+                    var check = $('#broadcast:checked').val();
+                    if(check==undefined){
+                        check=null;
+                    }
                     $.ajax({
                     url : '/storeIncident',
                     method : 'POST',
@@ -723,7 +750,8 @@
                         datetime: $('#dt').val(),
                         cat: $('#cat').val(),
                         desc: $('#desc').val(),
-                        notes: $('#notes').val()
+                        notes: $('#notes').val(),
+                        status: $('#status').val(),
                     },
                     dataType : 'json',
                     success : function(response){
@@ -744,16 +772,20 @@
                         $('#desc').val("");
                         $('#dt').val("");
                         $('#notes').val("");
+                        if(check=="check"){
                         $.ajax({
                             type: "get",
                             url: "/sendMessages",
                             data: {
-                                incident : response[0].incidentcat_name
+                                incident : response[0].incidentcat_name,
+                                datetime : response[0].incident_datetime,
+                                stat : response[0].incident_status
                             },
                             success: function(data) {
                                 console.log("success"+" "+data);
                             }
                         });
+                            }
                     }
                     });
                 },

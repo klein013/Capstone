@@ -23,13 +23,13 @@ class RecordController extends Controller
     public function showblotter($id){
       $return = ['name'=>Session::get('name') ,'image'=>Session::get('image'), 'position'=>Session::get('position'), 'official'=>Session::get('official'),'admin'=>Session::get('admin')];
 
-      $records = DB::select('select lpad(c.case_id,8,"0") as case_id, c.case_filed, concat(r.resident_fname," ",r.resident_lname) as name, p.personinvolve_type, k.caseskp_name, c.case_status from tbl_case c join tbl_personinvolve p on c.case_id = p.personinvolve_case join tbl_resident r on p.personinvolve_resident = r.resident_id join tbl_caseskp k on c.case_caseskp = k.caseskp_id where c.case_exists = 1 and c.case_id = '.$id);
+      $records = DB::select('select lpad(c.case_id,8,"0") as case_id, c.case_filed, concat(r.resident_fname," ",r.resident_lname) as name, p.personinvolve_type, k.caseskp_name, c.case_status from tbl_case c join tbl_personinvolve p on c.case_id = p.personinvolve_case left join tbl_resident r on p.personinvolve_resident = r.resident_id join tbl_caseskp k on c.case_caseskp = k.caseskp_id where c.case_exists = 1 and c.case_id = '.$id.' group by c.case_id, p.personinvolve_type ');
 
       $hearingsmed = DB::select('select h.hearing_id, concat(s.casestage_name,"-",s.casestage_no) as casestage, h.hearing_sched, h.hearing_status from tbl_hearing h join tbl_casestage s on s.casestage_id = h.hearing_type where h.hearing_exists =1 and h.hearing_type<4 and h.hearing_case = '.$id);
 
       $hearingscon = DB::select('select coalesce(h.hearing_id,null) as hearing_id, concat(s.casestage_name,"-",s.casestage_no) as casestage, h.hearing_sched, h.hearing_status from tbl_hearing h join tbl_casestage s on s.casestage_id = h.hearing_type where h.hearing_exists =1 and h.hearing_type in(4,5,6) and h.hearing_case = '.$id);
 
-      $hearingsarb = DB::select('select coalesce(h.hearing_id,null) as hearing_id, concat(s.casestage_name,"-",s.casestage_no) as casestage, h.hearing_sched, h.hearing_status from tbl_hearing h join tbl_casestage s on s.casestage_id = h.hearing_type where h.hearing_exists =1 and h.hearing_type =7 and h.hearing_case = '.$id);
+      $hearingsarb = DB::select('select coalesce(h.hearing_id,null) as hearing_id, concat(s.casestage_name,"-",coalesce(s.casestage_no,"")) as casestage, h.hearing_sched, h.hearing_status from tbl_hearing h join tbl_casestage s on s.casestage_id = h.hearing_type where h.hearing_exists =1 and h.hearing_type =7 and h.hearing_case = '.$id);
 
       $checkalloc = DB::select('select * from tbl_caseallocation where caseallocation_case = '.$id);
 
@@ -38,17 +38,20 @@ class RecordController extends Controller
       }
       else{
 
-        $allocated = DB::select('select concat(r.resident_fname," ",r.resident_lname) as name, lpad(o.official_id,8,"0") as official_id from tbl_resident r join tbl_official o on o.resident_id = r.resident_id join tbl_pangkat p on o.official_id = p.pangkat_secretary and o.official_id = p.pangkat_member and o.official_id = p.pangkat_president join tbl_caseallocation a on a.caseallocation_pangkat = p.pangkat_id where a.caseallocation_case = '.$id);
+        $pangkat = DB::select('select concat(pangkat_president,",",pangkat_secretary,",",pangkat_member) as pangkat from tbl_pangkat where pangkat_id = 3');
+
+        $allocated = DB::select('select concat(r.resident_fname," ",r.resident_lname) as name, lpad(o.official_id,8,"0") as official_id from tbl_resident r join tbl_official o on o.resident_id = r.resident_id where o.official_id in ('.$pangkat[0]->pangkat.')');
       }
 
 
+      $settle = DB::select('select DATE(s.settlement_datetime) as settledate from tbl_settlement s join tbl_hearing h on s.settlement_hearing = h.hearing_id where h.hearing_case = '.$id.' and TIMESTAMPDIFF(day,s.settlement_datetime, now() ) >= 10');
 
-      return view('admin.recorddetails')->with(['return'=>$return, 'records'=>$records, 'hearingsmed'=>$hearingsmed, 'hearingscon'=>$hearingscon, 'hearingsarb'=>$hearingsarb, 'allocated'=>$allocated]);
+      return view('admin.recorddetails')->with(['return'=>$return, 'records'=>$records, 'hearingsmed'=>$hearingsmed, 'hearingscon'=>$hearingscon, 'hearingsarb'=>$hearingsarb, 'allocated'=>$allocated, 'settlement'=>$settle]);
     }
 
     public function show(){
     	
-    	$records = DB::select('select lpad(c.case_id,8,"0") as case_id, c.case_filed, concat(r.resident_fname," ",r.resident_lname) as name, p.personinvolve_type, k.caseskp_name, c.case_status from tbl_case c join tbl_personinvolve p on c.case_id = p.personinvolve_case join tbl_resident r on p.personinvolve_resident = r.resident_id join tbl_caseskp k on c.case_caseskp = k.caseskp_id where c.case_exists = 1 order by 6,1,2');
+    	$records = DB::select('select lpad(c.case_id,8,"0") as case_id, c.case_filed, concat(r.resident_fname," ",r.resident_lname) as name, p.personinvolve_type, k.caseskp_name, c.case_status from tbl_case c join tbl_personinvolve p on c.case_id = p.personinvolve_case left join tbl_resident r on p.personinvolve_resident = r.resident_id join tbl_caseskp k on c.case_caseskp = k.caseskp_id where c.case_exists = 1 group by c.case_id, p.personinvolve_type ORDER BY 1,6,2');
 
     	return response()->json($records);
 
@@ -154,7 +157,7 @@ class RecordController extends Controller
 
       $off = DB::select('select official_id from tbl_official where position_id = 1 and official_exists = 1 ;');
 
-      if(!empty($off)){
+      if(!empty($off[0]->official_id)){
         $alloc = new TblCaseallocation;
 
         $alloc->caseallocation_case = $request->id;
@@ -166,7 +169,7 @@ class RecordController extends Controller
           $open = strtotime($brgytime[0]->brgyinfo_opening);
           $close = strtotime($brgytime[0]->brgyinfo_closing);
 
-          $hearing = DB::select('select DISTINCT(h.hearing_id), h.hearing_sched from tbl_hearing h join tbl_caseallocation c on h.hearing_case = c.caseallocation_case where c.caseallocation_official = '.$off[0]->official_id.' and DATE(h.hearing_sched) = (curdate() + interval '.$request->number.' DAY) and h.hearing_exists = 1 order by TIME(h.hearing_sched)');
+          $hearing = DB::select('select DISTINCT(h.hearing_id), h.hearing_sched from tbl_hearing h join tbl_caseallocation c on h.hearing_case = c.caseallocation_case where c.caseallocation_official = '.$off[0]->official_id.' and DATE(h.hearing_sched) = (curdate() + interval '.$request->number.' DAY) and h.hearing_exists = 1 and h.hearing_status != "Void" order by TIME(h.hearing_sched)');
 
           $det = [];
           if(empty($hearing[0])){
@@ -197,6 +200,9 @@ class RecordController extends Controller
                 else if($resident->personinvolve_type=='R'){
                   $hearingletter->hl_lettertype = 'Notice of Hearing - Mediation Proceedings'; 
                 }
+                else{
+                           $hearingletter->hl_lettertype = 'Subpoena';   
+                        }
 
                 $hearingletter->save();
               }
@@ -259,10 +265,13 @@ class RecordController extends Controller
                 else if($resident->personinvolve_type=='R'){
                   $hearingletter->hl_lettertype = 'Notice of Hearing - Mediation Proceedings'; 
                 }
+                else{
+                           $hearingletter->hl_lettertype = 'Subpoena';   
+                        }
 
                 $hearingletter->save();
               }
-              array_push($det,['sched'=>date('Y-m-d H:i:s', strtotime("$heardate $newtime")), 'case'=>$newhearing->hearing_case.'\n '.$checktrue]);
+              array_push($det,['sched'=>date('Y-m-d H:i:s', strtotime("$heardate $newtime")), 'case'=>$newhearing->hearing_case]);
             }
             else if(strtotime($newtime) < $close){
               
@@ -290,11 +299,14 @@ class RecordController extends Controller
                 else if($resident->personinvolve_type=='R'){
                   $hearingletter->hl_lettertype = 'Notice of Hearing - Mediation Proceedings'; 
                 }
+                else{
+                           $hearingletter->hl_lettertype = 'Subpoena';   
+                        }
 
                 $hearingletter->save();
               }
 
-              array_push($det,['sched'=>date('Y-m-d H:i:s', strtotime("$heardate $newtime")), 'case'=>$newhearing->hearing_case.'\n '.$checktrue]);
+              array_push($det,['sched'=>date('Y-m-d H:i:s', strtotime("$heardate $newtime")), 'case'=>$newhearing->hearing_case]);
             }
             else if(strtotime($newtime) >= $close){
 
@@ -327,10 +339,13 @@ class RecordController extends Controller
                 else if($resident->personinvolve_type=='R'){
                   $hearingletter->hl_lettertype = 'Notice of Hearing - Mediation Proceedings'; 
                 }
+                else{
+                           $hearingletter->hl_lettertype = 'Subpoena';   
+                        }
 
                 $hearingletter->save();
               }
-              array_push($det,['sched'=>date('Y-m-d H:i:s', strtotime("$heardate $newtime")), 'case'=>$newhearing->hearing_case.'\n '.$checktrue]);
+              array_push($det,['sched'=>date('Y-m-d H:i:s', strtotime("$heardate $newtime")), 'case'=>$newhearing->hearing_case]);
             }
         }
         return response()->json($det);
@@ -354,7 +369,7 @@ class RecordController extends Controller
 
     public function showprint($id){
 
-      $letters = DB::select('select concat(r.resident_fname," ",r.resident_lname) as name, r.resident_id, l.hl_lettertype, p.personinvolve_type, l.hl_printdate, DATE(l.hl_datereceive) as hl_datereceive from tbl_hearingletter l join tbl_personinvolve p on p.personinvolve_resident = l.hl_personinvolve join tbl_resident r on r.resident_id = p.personinvolve_resident where l.hl_hearing = '.$id);
+      $letters = DB::select('select DISTINCT(concat(r.resident_fname," ",r.resident_lname)) as name, r.resident_id, l.hl_lettertype, l.hl_printdate, DATE(l.hl_datereceive) as hl_datereceive from tbl_hearingletter l join tbl_resident r on r.resident_id = l.hl_personinvolve where l.hl_hearing = '.$id);
 
       return response()->json($letters);
 
@@ -367,6 +382,14 @@ class RecordController extends Controller
       DB::table('tbl_hearingletter')->where([['hl_personinvolve','=',$request[0]], ['hl_lettertype','=',$request[1]], ['hl_hearing','=',$request[2]]])->update(['hl_datereceive'=>date('Y-m-d H:i:s')]);
 
       return response("success");
+    }
+
+    public function repudiate(Request $request){
+
+      DB::table('tbl_case')->where('case_id',$request->id)->update(['case_status'=>'Repudiated']);
+
+      return response("success");
+
     }
 }
 
